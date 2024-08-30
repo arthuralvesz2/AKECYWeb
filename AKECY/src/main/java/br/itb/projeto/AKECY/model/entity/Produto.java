@@ -20,6 +20,7 @@ public class Produto {
 	private String nome;
 	private String descricao;
 	private String codigoBarras;
+	private String tamanho;
 	private byte[] foto;
 	private String urlFoto;
 	private double preco;
@@ -31,6 +32,14 @@ public class Produto {
 	private String statusProd;
 
 	
+    
+	public String getTamanho() {
+		return tamanho;
+	}
+
+	public void setTamanho(String tamanho) {
+		this.tamanho = tamanho;
+	}
 
 	public long getIdProduto() {
 		return idProduto;
