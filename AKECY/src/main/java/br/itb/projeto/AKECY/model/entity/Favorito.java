@@ -24,6 +24,8 @@ public class Favorito {
 	@ManyToOne
 	@JoinColumn(name = "idUsuario")
 	private Usuario usuario;
+	
+	
 
 	public long getIdFavorito() {
 		return idFavorito;
