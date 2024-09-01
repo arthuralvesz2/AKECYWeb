@@ -25,6 +25,7 @@ public class Usuario {
 	private String telefone;
 	private String cpf;
 	private String nivelAcesso;
+	private String sexo;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate dataNasc;
@@ -35,8 +36,15 @@ public class Usuario {
 	// Source -> Generate Getters and Setters...
 	
 	
+	
 	public String getTelefone() {
 		return telefone;
+	}
+	public String getSexo() {
+		return sexo;
+	}
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 	public LocalDate getDataNasc() {
 		return dataNasc;
@@ -47,8 +55,6 @@ public class Usuario {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-
-	
 	public String getCpf() {
 		return cpf;
 	}
