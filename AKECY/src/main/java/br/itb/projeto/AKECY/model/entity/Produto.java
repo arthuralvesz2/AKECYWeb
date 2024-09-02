@@ -26,7 +26,7 @@ public class Produto {
 	private double preco;
 	
 	@ManyToOne
-	@JoinColumn(name = "categoria_id")
+	@JoinColumn(name = "idCategoria")
 	private Categoria categoria;
 	
 	private String statusProd;

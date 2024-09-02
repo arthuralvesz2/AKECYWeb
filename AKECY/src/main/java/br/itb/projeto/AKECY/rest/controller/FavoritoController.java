@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.itb.projeto.AKECY.model.entity.Favorito;
-import br.itb.projeto.AKECY.model.entity.Produto;
-import br.itb.projeto.AKECY.model.entity.Usuario;
+
+import br.itb.projeto.AKECY.rest.response.MessageResponse;
 import br.itb.projeto.AKECY.service.FavoritoService;
 
 @RestController
@@ -32,6 +32,16 @@ public class FavoritoController {
 		
 		return new ResponseEntity<List<Favorito>>(favoritos, HttpStatus.OK);
 	}
+	
+	@PostMapping("create")
+	public ResponseEntity<?> create(@RequestBody Favorito favorito) {
+
+		Favorito _favorito = favoritoService.create(favorito);
+		
+		return ResponseEntity.ok()
+				.body(new MessageResponse("Favorito cadastrado com sucesso!"));
+	}
    }
 
 
+   
