@@ -1,4 +1,4 @@
-package br.itb.projeto.AKECY.rest.controller;
+package br.itb.projeto.AKECY.controller;
 
 import java.util.List;
 
