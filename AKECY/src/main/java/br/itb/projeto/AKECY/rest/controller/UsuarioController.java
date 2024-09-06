@@ -28,6 +28,7 @@ public class UsuarioController {
 		super();
 		this.usuarioService = usuarioService;
 	}
+	
 
 	@GetMapping("findAll")
 	public ResponseEntity<List<Usuario>> findAll() {
