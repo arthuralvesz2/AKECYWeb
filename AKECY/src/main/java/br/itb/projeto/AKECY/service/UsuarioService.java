@@ -44,6 +44,10 @@ public class UsuarioService {
 		}
 		return null;
 	}
+	
+	public Usuario findByTelefone(String telefone) {
+        return usuarioRepository.findByTelefone(telefone);
+    }
 
 	// A CONTA DE USUÁRIO SERÁ CRIADA COM UMA SENHA PADRÃO
 	// ELE DEVE ALTERAR NO PRIMEIRO ACESSO
@@ -79,6 +83,25 @@ public class UsuarioService {
 		
 		return usuarioRepository.save(usuario);
 	}
+	
+	@Transactional
+	public Usuario acessar(String email, String senha) {
+	    Usuario usuario = usuarioRepository.findByEmail(email);
+	    
+	    // Converte a senha em base64
+	    String _senha = Base64.getEncoder().encodeToString(senha.getBytes());
+	    
+	    // Se o usuário existe
+	    if (usuario != null) {
+	        // Verifica se a senha é correta
+	        if (usuario.getSenha().equals(_senha)) {
+	            return usuario; // Retorna o usuário, independentemente do status
+	        }
+	    }
+	    
+	    return null; // Se a senha estiver errada ou o usuário não existir, retorna null
+	}
+
 	
 	@Transactional
 	public Usuario signin(String email, String senha) {

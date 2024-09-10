@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> AKECY - Mudar senha </title>
+    <link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="text/javascript" src="/js/JavaScript.js"></script>
+
+</head>
+
+<body class="log">
+
+    <main>
+
+        <div class="esq">
+            <img src="/images/voldest.png" class="voldest">
+            <div id="logoh">
+                <a href="index - nologin">
+                    <img src="/images/logo.png" class="imgdest"></a>
+            </div>
+        </div>
+
+        <div class="dir">
+            <form action="login">
+                <h1 class="txt1l"> Trocar a senha </h1> <br> <br> <br>
+                
+                <label for="senha"> Nova senha </label> <br> <br>
+                <input id="senha" type="password" minlength="7" placeholder="********" required> <br> <br> <br>
+            
+                <label for="senha2"> Confirme a nova senha </label> <br> <br>
+                <input id="senha2" type="password" placeholder="********" minlength="7" required oninput="verificarSenhas()"> <br> <br> <br> <br>
+                 <p id="mensagemSenha" style="color: red;"></p>
+
+                <div class="centralizar">
+                    <button class="buttonl"> Confirmar </button>
+                </div>
+
+                <div class="centralizar outrsl">
+                    <p> Lembrou da senha? <a class="linka" href="login"> Faça login aqui </a> </p>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+</body>
+
+</html>
