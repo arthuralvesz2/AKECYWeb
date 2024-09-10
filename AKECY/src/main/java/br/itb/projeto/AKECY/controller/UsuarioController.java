@@ -24,183 +24,178 @@ import br.itb.projeto.AKECY.model.repository.UsuarioRepository;
 import br.itb.projeto.AKECY.rest.exception.ResourceNotFoundException;
 import br.itb.projeto.AKECY.rest.response.MessageResponse;
 import br.itb.projeto.AKECY.service.UsuarioService;
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
 @RequestMapping("/AKECY/usuario/")
 public class UsuarioController {
 
-	
-	private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
-	public UsuarioController(UsuarioService usuarioService) {
-		super();
-		this.usuarioService = usuarioService;
-	}
-	
-	private String serverMessage = null;
-	
-	//leva para a tela de cadastro
-	@GetMapping("/cadastro")
-    public String showFormCadastroUsuario(Usuario usuario, Model model) {
-		
-		model.addAttribute("usuario", usuario);
-		model.addAttribute("serverMessage", serverMessage);
-		serverMessage = "";
-		
-		return "cadastro";
-	}
-	
-	//action do formulario que salva os usuarios e retorna para a tela de login
-	@PostMapping("/salvar")
-	public String salvar(ModelMap model,
-			@ModelAttribute("usuario") Usuario usuario) {
-		
-		Usuario _usuario = usuarioService.findByEmail(usuario.getEmail());
-		
-		if (_usuario == null) {
-			
-			usuarioService.create(usuario);
-			model.addAttribute("usuario", new Usuario());
-			serverMessage = "Usuário cadastrado com sucesso!!!";
-			
-		} else if (_usuario != null) {
-			
-			model.addAttribute("usuario", new Usuario());
-			serverMessage = "Usuário já cadastrado no sistema!";	
-			
-		}
-		
-		if (usuario.getNome().equals("") || usuario.getEmail().equals("") || usuario.getSenha().equals("")) {
-			
-			serverMessage = "Dados Incompletos!!!";	
-			
-		} 
-	
-		return "redirect:/AKECY/usuario/login";
-	}
-    
-	//leva para a tela de login
-	@GetMapping("/login")
-    public String showFormLogin(Model model) {
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    @GetMapping("/cadastro")
+    public String showFormCadastroUsuario(Usuario usuario, Model model, HttpSession session) {
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+        session.removeAttribute("serverMessage");
+        return "cadastro";
+    }
+
+    @PostMapping("/salvar")
+    public String salvar(@ModelAttribute("usuario") Usuario usuario, HttpSession session) {
+        Usuario _usuario = usuarioService.findByEmail(usuario.getEmail());
+
+        if (_usuario == null) {
+            usuarioService.create(usuario);
+            session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
+        } else {
+            session.setAttribute("serverMessage", "Usuário já cadastrado no sistema!");
+        }
+
+        if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
+            session.setAttribute("serverMessage", "Dados Incompletos!!!");
+        }
+
+        return "redirect:/AKECY/usuario/login";
+    }
+
+    @GetMapping("/login")
+    public String showFormLogin(Model model, HttpSession session) {
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("serverMessage", serverMessage);
-		serverMessage = "";
+        model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+        session.removeAttribute("serverMessage"); // Remove a mensagem após ser adicionada ao modelo
         return "login";
     }
-	
-	//action para se o usuario está ativo ou se é um adm
-	@PostMapping("/verificar-login")
-	public String verificarLogin(@ModelAttribute("usuario") Usuario usuario, Model model) {
-	    // Chama o método acessar do serviço para verificar o login
-	    Usuario _usuario = usuarioService.acessar(usuario.getEmail(), usuario.getSenha());
 
-	    if (_usuario != null) {
-	        // Se o status for INATIVO, exibe a mensagem apropriada
-	        if ("INATIVO".equals(_usuario.getStatusUsuario())) {
-	            model.addAttribute("serverMessage", "Seu usuário está inativo.");
-	            return "login"; // Mantém o usuário na página de login com a mensagem de erro
-	        }
-	        
-	        // Verifica o nível de acesso para redirecionar o usuário para a página correta
-	        if ("ADMIN".equals(_usuario.getNivelAcesso())) {
-	            return "redirect:/AKECY/usuario/index-adm"; // Página para ADMIN
-	        } else {
-	            return "redirect:/AKECY/usuario/index"; // Página padrão para usuários ativos não-admin
-	        }
-	    } else {
-	        // Mensagem genérica se o login falhar
-	        model.addAttribute("serverMessage", "Email ou senha incorretos.");
-	        return "login"; // Retorna para a página de login com mensagem de erro
-	    }
-	}
-	
-	
-	
-	private boolean codigoEnviado = false;
 
-	// Exibe a página de troca de senha (única para enviar e verificar código)
+
+    @PostMapping("/verificar-login")
+    public String verificarLogin(@ModelAttribute("usuario") Usuario usuario, Model model, HttpSession session) {
+        Usuario _usuario = usuarioService.acessar(usuario.getEmail(), usuario.getSenha());
+        
+
+        if (_usuario != null) {
+            if ("INATIVO".equals(_usuario.getStatusUsuario())) {
+                session.setAttribute("serverMessage", "Seu usuário está inativo.");
+                return "login";
+            }
+
+            if ("ADMIN".equals(_usuario.getNivelAcesso())) {
+                return "redirect:/AKECY/usuario/index-adm";
+            } else {
+                return "redirect:/AKECY/usuario/index";
+            }
+        } else {
+            session.setAttribute("serverMessage", "Email ou senha incorretos.");
+            return "login"; // Retorna para a página de login
+        }
+    }
+
+
     @GetMapping("/mudar-senha")
-    public String showFormMudarSenha(Model model) {
-    	model.addAttribute("usuario", new Usuario());
-        model.addAttribute("serverMessage", serverMessage);
-        model.addAttribute("codigoEnviado", codigoEnviado);
-        serverMessage = "";
+    public String showFormMudarSenha(Model model, HttpSession session) {
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+        session.removeAttribute("serverMessage");
         return "mudar-senha";
     }
 
-    // Action que envia o código
     @PostMapping("/enviar-codigo")
     public String enviarCodigo(@RequestParam(value = "email", required = false) String email,
                                @RequestParam(value = "telefone", required = false) String telefone,
-                               Model model) {
+                               HttpSession session) {
         if ((email == null || email.isEmpty()) && (telefone == null || telefone.isEmpty())) {
-            serverMessage = "Informe o e-mail ou o telefone.";
+            session.setAttribute("serverMessage", "Informe o e-mail ou o telefone.");
             return "redirect:/AKECY/usuario/mudar-senha";
         }
 
-        Usuario usuario = null;
+        Usuario usuario = usuarioService.solicitarTrocaSenha(email != null ? email : telefone);
 
-        if (email != null && !email.isEmpty()) {
-            usuario = usuarioService.findByEmail(email);
-        } else if (telefone != null && !telefone.isEmpty()) {
-            usuario = usuarioService.findByTelefone(telefone);
-        }
-
-        if (usuario != null) {
-            // Simulando que o código foi enviado
-            serverMessage = "Código enviado para o e-mail/telefone informado.";
-            codigoEnviado = true;  // Código foi enviado, agora podemos verificar
+        if (usuario == null) {
+            session.setAttribute("serverMessage", "Usuário não encontrado.");
+        } else if ("INATIVO".equals(usuario.getStatusUsuario())) {
+            session.setAttribute("serverMessage", "Usuário inativo.");
         } else {
-            serverMessage = "Usuário não encontrado.";
-            codigoEnviado = false;
+            session.setAttribute("emailOuTelefoneRecuperado", email != null ? email : telefone);
+            session.setAttribute("serverMessage", "Código enviado para o e-mail/telefone informado.");
         }
 
         return "redirect:/AKECY/usuario/mudar-senha";
     }
 
-    // Action que verifica o código e redireciona para a confirmação de troca de senha
     @PostMapping("/verificar-codigo")
-    public String verificarCodigo(@RequestParam("codigo") String codigo,
-                                  Model model) {
-        // Verifica se o código é "000000"
+    public String verificarCodigo(@RequestParam("codigo") String codigo, HttpSession session) {
         if ("000000".equals(codigo)) {
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         } else {
-            serverMessage = "Código inválido.";
+            session.setAttribute("serverMessage", "Código inválido.");
             return "redirect:/AKECY/usuario/mudar-senha";
         }
     }
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@GetMapping("/index")
+    @GetMapping("/mudar-senha-confirmar")
+    public String showMudarSenhaConfirmar(Model model, HttpSession session) {
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("serverMessage", session.getAttribute("serverMessage") != null ? session.getAttribute("serverMessage") : "");
+        session.removeAttribute("serverMessage");
+        return "mudar-senha-confirmar";
+    }
+
+    
+    @PostMapping("/mudar-senha-confirmar")
+    public String mudarSenhaConfirmar(@RequestParam("novaSenha") String novaSenha, HttpSession session) {
+        String emailOuTelefoneRecuperado = (String) session.getAttribute("emailOuTelefoneRecuperado");
+
+        if (emailOuTelefoneRecuperado == null || emailOuTelefoneRecuperado.isEmpty()) {
+            session.setAttribute("serverMessage", "Erro ao alterar a senha. Tente novamente.");
+            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+        }
+
+        Usuario usuario = usuarioService.findByEmail(emailOuTelefoneRecuperado);
+        if (usuario == null) {
+            usuario = usuarioService.findByTelefone(emailOuTelefoneRecuperado);
+        }
+
+        String novaSenhaConfirmacao = (String) session.getAttribute("novaSenhaConfirmacao");
+
+        if (novaSenhaConfirmacao == null || !novaSenhaConfirmacao.equals(novaSenha)) {
+            session.setAttribute("serverMessage", "As senhas não coincidem. Por favor, verifique.");
+            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+        }
+
+        if (usuario != null && "TROCAR_SENHA".equals(usuario.getStatusUsuario())) {
+            usuario.setSenha(novaSenha); // Certifique-se de que a senha seja criptografada
+            usuario.setStatusUsuario("ATIVO");
+            usuarioService.update(usuario);
+            session.setAttribute("serverMessage", "Senha alterada com sucesso!");
+            return "redirect:/AKECY/usuario/login";
+        } else {
+            session.setAttribute("serverMessage", "Usuário não encontrado ou não está autorizado a trocar a senha.");
+            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+        }
+    }
+
+
+
+
+    
+    @GetMapping("/index")
     public String showIndex(Model model) {
         return "index";
     }
-	
-	@GetMapping("/index-adm")
+
+    @GetMapping("/index-adm")
     public String showIndexAdm(Model model) {
         return "index - adm";
     }
+
+
 		
-	@GetMapping("/mudar-senha-confirmar")
-    public String showMudarSenhaConfirmar(Model model) {
-        return "mudar-senha-confirmar";
-    }
+	
 	
 	
 	

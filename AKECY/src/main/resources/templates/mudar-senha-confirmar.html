@@ -6,8 +6,7 @@
     <link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/style.css" />
-    <script type="text/javascript" src="/js/JavaScript.js"></script>
-
+    <script type="text/javascript" src="/js/JavaScript.js" defer></script>
 </head>
 
 <body class="log">
@@ -23,18 +22,23 @@
         </div>
 
         <div class="dir">
-            <form action="login">
+            <form th:action="@{/AKECY/usuario/mudar-senha-confirmar}" th:object="${usuario}" onsubmit="return verificarSenhas()">
                 <h1 class="txt1l"> Trocar a senha </h1> <br> <br> <br>
                 
                 <label for="senha"> Nova senha </label> <br> <br>
-                <input id="senha" type="password" minlength="7" placeholder="********" required> <br> <br> <br>
+                <input id="senha" th:field="*{senha}" type="password" minlength="7" placeholder="********" required> <br> <br> <br>
             
                 <label for="senha2"> Confirme a nova senha </label> <br> <br>
                 <input id="senha2" type="password" placeholder="********" minlength="7" required oninput="verificarSenhas()"> <br> <br> <br> <br>
-                 <p id="mensagemSenha" style="color: red;"></p>
+                <p id="mensagemSenha" style="color: red;"></p>
+
+                <!-- Exibindo a mensagem de erro do servidor -->
+                <div th:if="${session.serverMessage != null}">
+                    <p th:text="${session.serverMessage}" style="color: red;"></p>
+                </div>
 
                 <div class="centralizar">
-                    <button class="buttonl"> Confirmar </button>
+                    <button class="buttonl" type="submit"> Confirmar </button>
                 </div>
 
                 <div class="centralizar outrsl">
@@ -48,3 +52,5 @@
 </body>
 
 </html>
+
+

@@ -60,8 +60,10 @@ function verificarSenhas() {
 
     if (senha1 === senha2) {
         mensagemSenha.textContent = '';
+        return true; // Permite o envio do formulário
     } else {
         mensagemSenha.textContent = 'As senhas não coincidem. Por favor, verifique.';
+        return false; // Impede o envio do formulário
     }
 }
 

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
     <title> AKECY - Mudar senha </title>
     <link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/mudar-senha.css" />
     <script type="text/javascript" src="/js/JavaScript.js"></script>
 </head>
 
@@ -34,7 +35,7 @@
                 <input id="tele" th:field="*{telefone}" type="text" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{5}-\d{4}" maxlength="15" minlength="15" class="menor2" style="width: 130px;" oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarTelefone()"> <br> <br>
 
                 <!-- Botão para enviar o código -->
-                <button class="buttone" type="submit"> Enviar código </button> <br> <br> 
+                <button class="buttone" type="submit"> Enviar código </button> <br> <br> <br> <br>
 
                 <!-- Mensagem do servidor -->
                 <p th:if="${serverMessage != null}" th:text="${serverMessage}" style="color: red; font-size: 1.2em; text-align: center; 

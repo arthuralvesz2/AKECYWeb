@@ -171,4 +171,52 @@ public class UsuarioService {
 		return null;
 	}
 	
+	
+	
+	@Transactional
+	public Usuario solicitarTrocaSenha(String emailOuTelefone) {
+	    // Procura o usuário pelo email
+	    Usuario usuario = usuarioRepository.findByEmail(emailOuTelefone);
+	    
+	    // Se não encontrar pelo email, tenta encontrar pelo telefone
+	    if (usuario == null) {
+	        usuario = usuarioRepository.findByTelefone(emailOuTelefone);
+	    }
+	    
+	    // Se o usuário for encontrado e não estiver inativo
+	    if (usuario != null && !"INATIVO".equals(usuario.getStatusUsuario())) {
+	        usuario.setStatusUsuario("TROCAR_SENHA");
+	        return usuarioRepository.save(usuario);
+	    }
+	    
+	    // Se o usuário não for encontrado ou estiver inativo
+	    return null;
+	}
+	
+	
+	
+	
+	@Transactional
+	public Usuario update(Usuario usuario) {
+	    Optional<Usuario> existingUser = usuarioRepository.findById(usuario.getIdUsuario());
+
+	    if (existingUser.isPresent()) {
+	        Usuario usuarioAtualizado = existingUser.get();
+
+	        // Criptografar a nova senha se fornecida
+	        if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
+	            String senhaCriptografada = Base64.getEncoder().encodeToString(usuario.getSenha().getBytes());
+	            usuarioAtualizado.setSenha(senhaCriptografada);
+	        }
+
+	        // Atualizar outras informações, se necessário
+	        usuarioAtualizado.setDataCadastro(LocalDateTime.now());
+	        usuarioAtualizado.setStatusUsuario("ATIVO");
+
+	        return usuarioRepository.save(usuarioAtualizado);
+	    }
+
+	    return null; // Retorna null se o usuário não for encontrado
+	}
+	
 }

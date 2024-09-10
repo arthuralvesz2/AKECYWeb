@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* Assegura que o fundo geral é branco */
+}
+
+main {
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden; /* Previne qualquer overflow das imagens ou conteúdo */
+}
+
+.esq {
+    width: 50%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+#logoh {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    
+}
+
+.imgdest {
+    width: 150px; /* Ajuste conforme necessário */
+    
+}
+
+.dir {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center; /* Centraliza horizontalmente */
+    padding: 20px; /* Diminua o padding se necessário */
+    background-color: #fff; /* Fundo branco para a área do formulário */
+}
+
+.txt2l {
+    color: #707070;
+    font-size: 30px;
+    font-weight: 200;
+    text-align: left;
+}
+
+.txt3l {
+    color: #707070;
+    font-size: 17px;
+    font-weight: 200;
+    text-align: left;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff9900; /* Cor laranja do botão */
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #e68a00;
+}
+
+.centralizar {
+    text-align: center;
+}
+
+.outrsl {
+    margin-top: 20px;
+}
+
+.linka {
+    color: #ff9900;
+    text-decoration: none;
+}
+
+.linka:hover {
+    text-decoration: underline;
+}
+
+.menor2 {
+    width: 100px;
+}
+
+.voldest {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+
+/* Estilos adicionais para dispositivos menores */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    .esq, .dir {
+        width: 100%;
+    }
+
+    .esq {
+        height: 200px;
+    }
+
+    .imgdest {
+        width: 120px;
+    }
+}
+
+
+
+
