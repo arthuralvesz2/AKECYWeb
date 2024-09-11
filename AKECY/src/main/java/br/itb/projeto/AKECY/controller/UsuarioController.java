@@ -41,7 +41,7 @@ public class UsuarioController {
     public String showFormCadastroUsuario(Usuario usuario, Model model, HttpSession session) {
         model.addAttribute("usuario", usuario);
         model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
-        session.removeAttribute("serverMessage");
+        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
         return "cadastro";
     }
 
@@ -50,14 +50,14 @@ public class UsuarioController {
         Usuario _usuario = usuarioService.findByEmail(usuario.getEmail());
 
         if (_usuario == null) {
-            usuarioService.create(usuario);
-            session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
+            if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
+                session.setAttribute("serverMessage", "Dados Incompletos!!!");
+            } else {
+                usuarioService.create(usuario);
+                session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
+            }
         } else {
             session.setAttribute("serverMessage", "Usuário já cadastrado no sistema!");
-        }
-
-        if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
-            session.setAttribute("serverMessage", "Dados Incompletos!!!");
         }
 
         return "redirect:/AKECY/usuario/login";
@@ -67,21 +67,18 @@ public class UsuarioController {
     public String showFormLogin(Model model, HttpSession session) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
-        session.removeAttribute("serverMessage"); // Remove a mensagem após ser adicionada ao modelo
+        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
         return "login";
     }
-
-
 
     @PostMapping("/verificar-login")
     public String verificarLogin(@ModelAttribute("usuario") Usuario usuario, Model model, HttpSession session) {
         Usuario _usuario = usuarioService.acessar(usuario.getEmail(), usuario.getSenha());
-        
 
         if (_usuario != null) {
             if ("INATIVO".equals(_usuario.getStatusUsuario())) {
                 session.setAttribute("serverMessage", "Seu usuário está inativo.");
-                return "login";
+                return "redirect:/AKECY/usuario/login"; // Redireciona para garantir que a página de login seja atualizada
             }
 
             if ("ADMIN".equals(_usuario.getNivelAcesso())) {
@@ -91,16 +88,15 @@ public class UsuarioController {
             }
         } else {
             session.setAttribute("serverMessage", "Email ou senha incorretos.");
-            return "login"; // Retorna para a página de login
+            return "redirect:/AKECY/usuario/login"; // Redireciona para garantir que a página de login seja atualizada
         }
     }
-
 
     @GetMapping("/mudar-senha")
     public String showFormMudarSenha(Model model, HttpSession session) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
-        session.removeAttribute("serverMessage");
+        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
         return "mudar-senha";
     }
 
@@ -141,11 +137,10 @@ public class UsuarioController {
     public String showMudarSenhaConfirmar(Model model, HttpSession session) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("serverMessage", session.getAttribute("serverMessage") != null ? session.getAttribute("serverMessage") : "");
-        session.removeAttribute("serverMessage");
+        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
         return "mudar-senha-confirmar";
     }
 
-    
     @PostMapping("/mudar-senha-confirmar")
     public String mudarSenhaConfirmar(@RequestParam("novaSenha") String novaSenha, HttpSession session) {
         String emailOuTelefoneRecuperado = (String) session.getAttribute("emailOuTelefoneRecuperado");
@@ -179,10 +174,6 @@ public class UsuarioController {
         }
     }
 
-
-
-
-    
     @GetMapping("/index")
     public String showIndex(Model model) {
         return "index";
@@ -192,6 +183,8 @@ public class UsuarioController {
     public String showIndexAdm(Model model) {
         return "index - adm";
     }
+
+
 
 
 		
