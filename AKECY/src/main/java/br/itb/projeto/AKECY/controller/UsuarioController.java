@@ -102,26 +102,31 @@ public class UsuarioController {
 
     @PostMapping("/enviar-codigo")
     public String enviarCodigo(@RequestParam(value = "email", required = false) String email,
-                               @RequestParam(value = "telefone", required = false) String telefone,
                                HttpSession session) {
-        if ((email == null || email.isEmpty()) && (telefone == null || telefone.isEmpty())) {
-            session.setAttribute("serverMessage", "Informe o e-mail ou o telefone.");
+        if (email == null || email.isEmpty()) {
+            session.setAttribute("serverMessage", "Informe o e-mail.");
+            session.setAttribute("codigoEnviado", false); // Garante que não exibirá o campo de código
             return "redirect:/AKECY/usuario/mudar-senha";
         }
 
-        Usuario usuario = usuarioService.solicitarTrocaSenha(email != null ? email : telefone);
+        Usuario usuario = usuarioService.solicitarTrocaSenha(email);
 
         if (usuario == null) {
             session.setAttribute("serverMessage", "Usuário não encontrado.");
+            session.setAttribute("codigoEnviado", false);
         } else if ("INATIVO".equals(usuario.getStatusUsuario())) {
             session.setAttribute("serverMessage", "Usuário inativo.");
+            session.setAttribute("codigoEnviado", false);
         } else {
-            session.setAttribute("emailOuTelefoneRecuperado", email != null ? email : telefone);
-            session.setAttribute("serverMessage", "Código enviado para o e-mail/telefone informado.");
+            session.setAttribute("emailRecuperado", email);
+            session.setAttribute("serverMessage", "Código enviado para o e-mail informado.");
+            session.setAttribute("codigoEnviado", true); // Aqui, sinalizamos que o código foi enviado com sucesso
         }
 
         return "redirect:/AKECY/usuario/mudar-senha";
     }
+
+
 
     @PostMapping("/verificar-codigo")
     public String verificarCodigo(@RequestParam("codigo") String codigo, HttpSession session) {
@@ -143,17 +148,14 @@ public class UsuarioController {
 
     @PostMapping("/mudar-senha-confirmar")
     public String mudarSenhaConfirmar(@RequestParam("novaSenha") String novaSenha, HttpSession session) {
-        String emailOuTelefoneRecuperado = (String) session.getAttribute("emailOuTelefoneRecuperado");
+        String emailRecuperado = (String) session.getAttribute("emailRecuperado");
 
-        if (emailOuTelefoneRecuperado == null || emailOuTelefoneRecuperado.isEmpty()) {
+        if (emailRecuperado == null || emailRecuperado.isEmpty()) {
             session.setAttribute("serverMessage", "Erro ao alterar a senha. Tente novamente.");
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         }
 
-        Usuario usuario = usuarioService.findByEmail(emailOuTelefoneRecuperado);
-        if (usuario == null) {
-            usuario = usuarioService.findByTelefone(emailOuTelefoneRecuperado);
-        }
+        Usuario usuario = usuarioService.findByEmail(emailRecuperado);
 
         String novaSenhaConfirmacao = (String) session.getAttribute("novaSenhaConfirmacao");
 
@@ -173,6 +175,7 @@ public class UsuarioController {
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         }
     }
+
 
     @GetMapping("/index")
     public String showIndex(Model model) {
