@@ -59,11 +59,13 @@
     <!-- Garantir que o código seja exibido se o código for enviado -->
     <script th:inline="javascript">
         var codigoEnviado = /*[[${codigoEnviado}]]*/ false;
-
+        console.log("Valor de codigoEnviado:", codigoEnviado);
+    
         if (codigoEnviado) {
             document.getElementById("codeSection").style.display = "block";
         }
     </script>
+    
 
 </body>
 

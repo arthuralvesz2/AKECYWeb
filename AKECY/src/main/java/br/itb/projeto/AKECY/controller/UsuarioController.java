@@ -96,9 +96,13 @@ public class UsuarioController {
     public String showFormMudarSenha(Model model, HttpSession session) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+        model.addAttribute("codigoEnviado", session.getAttribute("codigoEnviado")); // Adiciona ao modelo
         session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
+        session.removeAttribute("codigoEnviado"); // Remover códigoEnviado após ser usado
         return "mudar-senha";
     }
+
+
 
     @PostMapping("/enviar-codigo")
     public String enviarCodigo(@RequestParam(value = "email", required = false) String email,
@@ -128,6 +132,7 @@ public class UsuarioController {
 
 
 
+
     @PostMapping("/verificar-codigo")
     public String verificarCodigo(@RequestParam("codigo") String codigo, HttpSession session) {
         if ("000000".equals(codigo)) {
@@ -147,34 +152,57 @@ public class UsuarioController {
     }
 
     @PostMapping("/mudar-senha-confirmar")
-    public String mudarSenhaConfirmar(@RequestParam("novaSenha") String novaSenha, HttpSession session) {
+    public String mudarSenhaConfirmar(@RequestParam("senha") String novaSenha, 
+                                       @RequestParam("novaSenhaConfirmacao") String novaSenhaConfirmacao, 
+                                       HttpSession session) {
+        System.out.println("Nova Senha: " + novaSenha);
+        System.out.println("Confirmação de Senha: " + novaSenhaConfirmacao);
         String emailRecuperado = (String) session.getAttribute("emailRecuperado");
 
         if (emailRecuperado == null || emailRecuperado.isEmpty()) {
+            System.out.println("Email não encontrado.");
             session.setAttribute("serverMessage", "Erro ao alterar a senha. Tente novamente.");
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         }
 
-        Usuario usuario = usuarioService.findByEmail(emailRecuperado);
+        if (novaSenha == null || novaSenha.isEmpty() || novaSenhaConfirmacao == null || novaSenhaConfirmacao.isEmpty()) {
+            System.out.println("Senha ou confirmação de senha estão vazias.");
+            session.setAttribute("serverMessage", "Por favor, insira e confirme sua nova senha.");
+            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+        }
 
-        String novaSenhaConfirmacao = (String) session.getAttribute("novaSenhaConfirmacao");
-
-        if (novaSenhaConfirmacao == null || !novaSenhaConfirmacao.equals(novaSenha)) {
+        if (!novaSenha.equals(novaSenhaConfirmacao)) {
+            System.out.println("As senhas não coincidem.");
             session.setAttribute("serverMessage", "As senhas não coincidem. Por favor, verifique.");
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         }
 
+        Usuario usuario = usuarioService.findByEmail(emailRecuperado);
+        System.out.println("Usuário encontrado: " + usuario);
+
         if (usuario != null && "TROCAR_SENHA".equals(usuario.getStatusUsuario())) {
-            usuario.setSenha(novaSenha); // Certifique-se de que a senha seja criptografada
+            usuario.setSenha(Base64.getEncoder().encodeToString(novaSenha.getBytes()));
             usuario.setStatusUsuario("ATIVO");
-            usuarioService.update(usuario);
-            session.setAttribute("serverMessage", "Senha alterada com sucesso!");
-            return "redirect:/AKECY/usuario/login";
+
+            Usuario usuarioAtualizado = usuarioService.update(usuario);
+            System.out.println("Usuário atualizado: " + usuarioAtualizado);
+
+            if (usuarioAtualizado != null) {
+                session.setAttribute("serverMessage", "Senha alterada com sucesso!");
+                return "redirect:/AKECY/usuario/login";
+            } else {
+                System.out.println("Erro ao atualizar o usuário.");
+                session.setAttribute("serverMessage", "Erro ao atualizar a senha.");
+                return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+            }
         } else {
+            System.out.println("Usuário não encontrado ou não autorizado.");
             session.setAttribute("serverMessage", "Usuário não encontrado ou não está autorizado a trocar a senha.");
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         }
     }
+
+
 
 
     @GetMapping("/index")

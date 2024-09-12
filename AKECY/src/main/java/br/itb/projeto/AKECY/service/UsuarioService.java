@@ -203,14 +203,13 @@ public class UsuarioService {
 	    if (existingUser.isPresent()) {
 	        Usuario usuarioAtualizado = existingUser.get();
 
-	        // Criptografar a nova senha se fornecida
+	        // Verifica se há uma nova senha e a criptografa
 	        if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
 	            String senhaCriptografada = Base64.getEncoder().encodeToString(usuario.getSenha().getBytes());
 	            usuarioAtualizado.setSenha(senhaCriptografada);
 	        }
 
-	        // Atualizar outras informações, se necessário
-	        usuarioAtualizado.setDataCadastro(LocalDateTime.now());
+	        // Atualiza o status do usuário
 	        usuarioAtualizado.setStatusUsuario("ATIVO");
 
 	        return usuarioRepository.save(usuarioAtualizado);
@@ -218,5 +217,6 @@ public class UsuarioService {
 
 	    return null; // Retorna null se o usuário não for encontrado
 	}
+
 	
 }
