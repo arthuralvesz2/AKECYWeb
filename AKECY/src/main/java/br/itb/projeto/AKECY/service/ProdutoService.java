@@ -27,7 +27,18 @@ public class ProdutoService {
 	@Transactional
 	public Produto create(Produto produto) {
 		
-		produto.setUrlFoto(null);
+		produto.setIdProduto(null);
+		produto.setNome(null);
+		produto.setDescricao(null);
+		produto.setDescricaoCompleta(null);
+		produto.setTamanhosDisponiveis(null);
+		produto.setFoto1(null);
+		produto.setFoto2(null);
+		produto.setFoto3(null);
+		produto.setFoto4(null);
+		produto.setFoto5(null);
+		produto.setPreco(null);
+		produto.setCategoria(null);
 		produto.setStatusProd("ATIVO");
 		
 		return produtoRepository.save(produto);
