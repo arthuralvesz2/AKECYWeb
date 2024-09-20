@@ -1,9 +1,7 @@
 package br.itb.projeto.AKECY.model.entity;
 
 import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,18 +13,19 @@ import jakarta.persistence.Table;
 public class Mensagem {
 
 	@Id
-	@GeneratedValue
-		(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idMensagem;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
 	private LocalDateTime dataMensagem;
+	
 	private String emissorMensagem;
 	private String email;
 	private String telefone;
 	private String texto;
 	private String statusMensagem;
 	
+	// Getters and Setters 
 	
 	public long getIdMensagem() {
 		return idMensagem;

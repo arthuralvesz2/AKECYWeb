@@ -11,14 +11,14 @@ import jakarta.persistence.Table;
 public class Cupom {
 	
 	@Id
-	@GeneratedValue
-	      (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idCupom;
+	
 	private String desconto;
 	private String cashback;
     private String codigo;
     
-    
+	// Getters and Setters 
     
 	public String getDesconto() {
 		return desconto;

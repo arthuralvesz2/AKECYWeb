@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> AKECY - Mudar senha </title>
+    <link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/mudar-senha.css" />
+    <script type="text/javascript" src="/js/JavaScript.js"></script>
+</head>
+
+<body class="log">
+
+    <main>
+
+        <div class="esq">
+            <img src="/images/voldest.png" class="voldest">
+            <div id="logoh">
+                <a href="index - nologin">
+                    <img src="/images/logo.png" class="imgdest"></a>
+            </div>
+        </div>
+
+        <div class="dir">
+            <!-- Formulário para enviar código via e-mail -->
+            <form th:action="@{/AKECY/usuario/enviar-codigo}" th:object="${usuario}" method="post">
+                <h1 class="txt2l"> Trocar a senha </h1>
+                <h1 class="txt3l"> Identifique-se para receber um e-mail ou SMS <br> com um código para confirmar sua identidade </h1> <br> <br> 
+                
+                <label for="email"> E-mail </label> <br> <br>
+                <input id="email" th:field="*{email}" type="email" placeholder="Insira seu e-mail" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"> <br> <br>
+            
+                <!-- Botão para enviar o código -->
+                <button class="buttone" type="submit"> Enviar código </button> <br> <br> <br> <br>
+
+                <!-- Mensagem do servidor -->
+                <p th:if="${serverMessage != null}" th:text="${serverMessage}" style="color: red; font-size: 1.2em; text-align: center; 
+                margin-top: -20px; margin-bottom: 20px; display: block;"></p> <br> <br>
+            </form>
+
+            <!-- Verifica se o código foi enviado e exibe o campo para digitar o código -->
+            <div id="codeSection" style="display:none;">
+                <form th:action="@{/AKECY/usuario/verificar-codigo}" th:object="${usuario}" method="post">
+                    <label for="code"> Código recebido </label> <br> <br>
+                    <input id="code" name="codigo" type="text" class="menor2" minlength="6" maxlength="6" required oninput="this.value = this.value.replace(/[^0-9]/g, '');"> <br> <br> <br> <br>
+
+                    <div class="centralizar">
+                        <button class="buttonl" type="submit"> Confirmar </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="centralizar outrsl">
+                <p> Lembrou da senha? <a class="linka" href="login"> Faça login aqui </a> </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Garantir que o código seja exibido se o código for enviado -->
+    <script th:inline="javascript">
+        var codigoEnviado = /*[[${codigoEnviado}]]*/ false;
+        console.log("Valor de codigoEnviado:", codigoEnviado);
+    
+        if (codigoEnviado) {
+            document.getElementById("codeSection").style.display = "block";
+        }
+    </script>
+    
+
+</body>
+
+</html>
+
+
+
+
