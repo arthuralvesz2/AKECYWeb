@@ -4,7 +4,6 @@ import java.util.List;
 import java.io.IOException;
 import java.util.Base64;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,6 @@ import br.itb.projeto.AKECY.rest.exception.ResourceNotFoundException;
 import br.itb.projeto.AKECY.rest.response.MessageResponse;
 import br.itb.projeto.AKECY.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
-
 
 @Controller
 @RequestMapping("/AKECY/usuario/")
@@ -53,7 +51,7 @@ public class UsuarioController {
             if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
                 session.setAttribute("serverMessage", "Dados Incompletos!!!");
             } else {
-                usuarioService.create(usuario);
+                usuarioService.create(usuario); // Senha será codificada no serviço
                 session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
             }
         } else {
@@ -78,7 +76,7 @@ public class UsuarioController {
         if (_usuario != null) {
             if ("INATIVO".equals(_usuario.getStatusUsuario())) {
                 session.setAttribute("serverMessage", "Seu usuário está inativo.");
-                return "redirect:/AKECY/usuario/login"; // Redireciona para garantir que a página de login seja atualizada
+                return "redirect:/AKECY/usuario/login";
             }
 
             if ("ADMIN".equals(_usuario.getNivelAcesso())) {
@@ -88,7 +86,7 @@ public class UsuarioController {
             }
         } else {
             session.setAttribute("serverMessage", "Email ou senha incorretos.");
-            return "redirect:/AKECY/usuario/login"; // Redireciona para garantir que a página de login seja atualizada
+            return "redirect:/AKECY/usuario/login";
         }
     }
 
@@ -101,8 +99,6 @@ public class UsuarioController {
         session.removeAttribute("codigoEnviado"); // Remover códigoEnviado após ser usado
         return "mudar-senha";
     }
-
-
 
     @PostMapping("/enviar-codigo")
     public String enviarCodigo(@RequestParam(value = "email", required = false) String email,
@@ -124,18 +120,15 @@ public class UsuarioController {
         } else {
             session.setAttribute("emailRecuperado", email);
             session.setAttribute("serverMessage", "Código enviado para o e-mail informado.");
-            session.setAttribute("codigoEnviado", true); // Aqui, sinalizamos que o código foi enviado com sucesso
+            session.setAttribute("codigoEnviado", true); // Sinaliza que o código foi enviado com sucesso
         }
 
         return "redirect:/AKECY/usuario/mudar-senha";
     }
 
-
-
-
     @PostMapping("/verificar-codigo")
     public String verificarCodigo(@RequestParam("codigo") String codigo, HttpSession session) {
-        if ("000000".equals(codigo)) {
+        if ("000000".equals(codigo)) { // Simulação de código
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         } else {
             session.setAttribute("serverMessage", "Código inválido.");
@@ -153,8 +146,8 @@ public class UsuarioController {
 
     @PostMapping("/mudar-senha-confirmar")
     public String mudarSenhaConfirmar(@RequestParam("senha") String novaSenha, 
-                                       @RequestParam("novaSenhaConfirmacao") String novaSenhaConfirmacao, 
-                                       HttpSession session) {
+                                      @RequestParam("novaSenhaConfirmacao") String novaSenhaConfirmacao, 
+                                      HttpSession session) {
         System.out.println("Nova Senha: " + novaSenha);
         System.out.println("Confirmação de Senha: " + novaSenhaConfirmacao);
         String emailRecuperado = (String) session.getAttribute("emailRecuperado");
@@ -181,7 +174,7 @@ public class UsuarioController {
         System.out.println("Usuário encontrado: " + usuario);
 
         if (usuario != null && "TROCAR_SENHA".equals(usuario.getStatusUsuario())) {
-            usuario.setSenha(Base64.getEncoder().encodeToString(novaSenha.getBytes()));
+            usuario.setSenha(novaSenha); // O serviço irá codificar a senha
             usuario.setStatusUsuario("ATIVO");
 
             Usuario usuarioAtualizado = usuarioService.update(usuario);
@@ -202,9 +195,6 @@ public class UsuarioController {
         }
     }
 
-
-
-
     @GetMapping("/index")
     public String showIndex(Model model) {
         return "index";
@@ -212,16 +202,10 @@ public class UsuarioController {
 
     @GetMapping("/index-adm")
     public String showIndexAdm(Model model) {
-        return "index - adm";
+        return "index-adm";
     }
 
 
-
-
-		
-	
-	
-	
 	
 	
 	
@@ -270,42 +254,24 @@ public class UsuarioController {
 	@PostMapping("create")
 	public ResponseEntity<?> create(@RequestBody Usuario usuario) {
 
-		Usuario _usuario = usuarioService.create (usuario);
-		
-		if (_usuario == null) {
-
-			return ResponseEntity.badRequest().body(
-					new MessageResponse("Usuário já cadastrado!"));
-		}
-		return ResponseEntity.ok()
-				.body(new MessageResponse("Usuário cadastrado com sucesso!"));
-	}
-/*
-	@PostMapping("signin")
-	public ResponseEntity<?> signin(
-			@RequestParam String email, @RequestParam String senha) {
-
-		Usuario usuario = usuarioService.signin(email, senha);
-		if (usuario != null) {
-			return ResponseEntity.ok().body(usuario);
-		}
-		return ResponseEntity.badRequest().body("Dados incorretos!");
-	}
-	*/
-	
-	@PostMapping("/signin")
-	public ResponseEntity<?> signin(@RequestBody Usuario usuario) {
-
-		Usuario _usuario = usuarioService
-				.signin(usuario.getEmail(), usuario.getSenha());
+		Usuario _usuario = usuarioService.create(usuario);
 
 		if (_usuario == null) {
-			throw new ResourceNotFoundException("*** Dados Incorretos! *** ");
-		}
 
-		return ResponseEntity.ok(_usuario);
+			return ResponseEntity.badRequest().body(new MessageResponse("Usuário já cadastrado!"));
+		}
+		return ResponseEntity.ok().body(new MessageResponse("Usuário cadastrado com sucesso!"));
 	}
-	
+	/*
+	 * @PostMapping("signin") public ResponseEntity<?> signin(
+	 * 
+	 * @RequestParam String email, @RequestParam String senha) {
+	 * 
+	 * Usuario usuario = usuarioService.signin(email, senha); if (usuario != null) {
+	 * return ResponseEntity.ok().body(usuario); } return
+	 * ResponseEntity.badRequest().body("Dados incorretos!"); }
+	 */
+
 
 	@PutMapping("inativar/{id}")
 	public ResponseEntity<Usuario> inativar(@PathVariable long id) {
@@ -324,14 +290,12 @@ public class UsuarioController {
 	}
 
 	@PutMapping("alterarSenha/{id}")
-	public ResponseEntity<?> alterarSenha(
-			@PathVariable long id, @RequestBody Usuario usuario) {
+	public ResponseEntity<?> alterarSenha(@PathVariable long id, @RequestBody Usuario usuario) {
 
 		Usuario _usuario = usuarioService.alterarSenha(id, usuario);
 
-		//return new ResponseEntity<Usuario>(_usuario, HttpStatus.OK);
-		return ResponseEntity.ok()
-				.body(new MessageResponse("Senha alterada com sucesso!"));
+		// return new ResponseEntity<Usuario>(_usuario, HttpStatus.OK);
+		return ResponseEntity.ok().body(new MessageResponse("Senha alterada com sucesso!"));
 	}
 
 }

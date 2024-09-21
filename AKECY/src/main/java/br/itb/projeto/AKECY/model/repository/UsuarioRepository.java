@@ -8,8 +8,9 @@ import br.itb.projeto.AKECY.model.entity.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-	public Usuario findByEmailAndSenha(String email, String senha);
+    Usuario findByEmailAndSenha(String email, String senha);
 	Usuario findByEmail(String email);
 	Usuario findByTelefone(String telefone);
+	
 	
 }
