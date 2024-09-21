@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> AKECY - Dados Pessoais </title>
+    <link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <script type="text/javascript" src="/js/JavaScript.js"></script>
+
+</head>
+
+<body class="noy">
+    <header>
+
+        <div id="principal">
+            <div id="logoh">
+                <a href="index">
+                    <img src="/images/logo.png"></a>
+            </div>
+            <input type="text" id="barra-pesquisa" placeholder="O que você procura?">
+            <div id="usuario-container">
+                <a href="dados-pessoais">
+                    <img src="/images/user_avatar.png">
+                    <div id="nome-usuario">
+                        Olá, <span th:text="${session.loggedInUser}">Usuário</span>
+                </a>
+            </div>
+        </div>
+        <div id="carrinho">
+            <a href="carrinhodecompras">
+                <img src="/images/carrinho.png"></a>
+        </div>
+        </div>
+
+        <div id="semi">
+            <div id="categorias-container" class="linksemform">
+                <p> <a href="categoria"> Masculino </a> </p>
+                <p> <a href="categoria"> Feminino </a> </p>
+                <p> <a href="categoria"> Infantil </a> </p>
+                <p> <a href="categoria"> Acessórios </a> </p>
+                <p> <a href="categoria"> Equipamentos </a> </p>
+                <p> <a href="categoria"> Bolas </a> </p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+	<form method="post">
+        <br>
+        <div class="selecionado1"></div>
+        <h3 class="minhaconta"> Minha conta </h3>
+        <div class="centralizarconta">
+            <div class="esqsec">
+                <a href="dados-pessoais" class="linkb">
+                    <p> Dados pessoais </p>
+                </a>
+                <a href="autenticacao" class="linkg">
+                    <p> Autenticação </p>
+                </a>
+                <a href="index - nologin" class="linkr">
+                    <p> ← Sair da conta </p>
+                </a>
+            </div>
+	
+            <div id="ddds34">
+                <label for="nome"> Nome </label> <br> <br>
+                <input id="nome" type="text" > <br> <br> <br>
+
+                <label for="cpf"> CPF </label> <br> <br>
+                <input id="cpf" type="text" > <br> <br> <br>
+
+                <label for="datnasc"> Data de nascimento </label> <br> <br>
+                <input id="datnasc" type="text" > <br> <br> <br>
+            </div>
+
+            <div>
+
+                <label for="email"> E-mail </label> <br> <br>
+                <input id="email" type="email" > <br> <br> <br>
+                
+                <label for="discprof"> Sexo </label> <br> <br>
+                <input list="sex" id="discprof" placeholder="Selecione seu sexo">
+                <datalist id="sex">
+                    <option value="Masculino">
+                    <option value="Feminino">
+                    <option value="Outro">
+                </datalist> <br> <br> <br>
+
+                <label for="telefone"> Telefone </label> <br> <br>
+                <input id="telefone" type="text" > <br> <br> <br> <br> <br> <br> <br> <br>
+                <br> <br> <br> <br> <br> <br>
+            </div>
+            <div class="buttcontdad">
+
+                <a href="#">
+                    <button class="buttonmcdp"> Aplicar </button>
+                </a>
+            </div>
+        </div> <br> <br> <br> <br>
+       </form>
+    </main>
+
+    <footer id="site-footer">
+        <div id="footer-container">
+            <div id="logof">
+                <a href="index">
+                    <img src="/images/logo.png"></a>
+            </div>
+            <p id="txtf"> <a href="faleconosco"> Fale conosco </a> </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

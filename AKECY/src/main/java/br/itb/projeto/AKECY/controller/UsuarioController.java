@@ -78,6 +78,12 @@ public class UsuarioController {
                 session.setAttribute("serverMessage", "Seu usuário está inativo.");
                 return "redirect:/AKECY/usuario/login";
             }
+            
+         // Extrair o primeiro nome do usuário
+            String primeiroNome = _usuario.getNome().split(" ")[0];
+            System.out.println("Primeiro Nome: " + primeiroNome);
+            // Armazenar o primeiro nome do usuário na sessão
+            session.setAttribute("loggedInUser", primeiroNome);
 
             if ("ADMIN".equals(_usuario.getNivelAcesso())) {
                 return "redirect:/AKECY/usuario/index-adm";
@@ -203,6 +209,11 @@ public class UsuarioController {
     @GetMapping("/index-adm")
     public String showIndexAdm(Model model) {
         return "index-adm";
+    }
+    
+    @GetMapping("/dados-pessoais")
+    public String showDadosPessoais(Model model) {
+        return "dados-pessoais";
     }
 
 

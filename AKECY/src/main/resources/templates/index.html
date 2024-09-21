@@ -23,7 +23,9 @@
                 <a href="dados-pessoais">
                     <img src="/images/user_avatar.png">
                     <div id="nome-usuario">
-                        <p> Olá, Alexandre <br> Minha conta </p>
+                        Olá, <span th:text="${session.loggedInUser}">Usuário</span>
+
+
                 </a>
             </div>
         </div>
