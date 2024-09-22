@@ -47,7 +47,7 @@
 
     <main>
 
-	<form method="post">
+	<form th:action="@{/AKECY/usuario/dados-pessoais}" th:object="${usuario}" method="post">
         <br>
         <div class="selecionado1"></div>
         <h3 class="minhaconta"> Minha conta </h3>
@@ -59,29 +59,29 @@
                 <a href="autenticacao" class="linkg">
                     <p> Autenticação </p>
                 </a>
-                <a href="index - nologin" class="linkr">
+                <a href="/AKECY/usuario/logout" class="linkr">
                     <p> ← Sair da conta </p>
                 </a>
             </div>
 	
             <div id="ddds34">
                 <label for="nome"> Nome </label> <br> <br>
-                <input id="nome" type="text" > <br> <br> <br>
+                <input id="nome" type="text" th:field="*{nome}" > <br> <br> <br>
 
                 <label for="cpf"> CPF </label> <br> <br>
-                <input id="cpf" type="text" > <br> <br> <br>
+                <input id="cpf" type="text" th:field="*{cpf}" > <br> <br> <br>
 
                 <label for="datnasc"> Data de nascimento </label> <br> <br>
-                <input id="datnasc" type="text" > <br> <br> <br>
+                <input id="datnasc" type="text" th:field="*{dataNasc}" > <br> <br> <br>
             </div>
 
             <div>
 
                 <label for="email"> E-mail </label> <br> <br>
-                <input id="email" type="email" > <br> <br> <br>
+                <input id="email" type="email" th:field="*{email}" > <br> <br> <br>
                 
                 <label for="discprof"> Sexo </label> <br> <br>
-                <input list="sex" id="discprof" placeholder="Selecione seu sexo">
+                <input list="sex" id="discprof" th:field="*{sexo}" placeholder="Selecione seu sexo">
                 <datalist id="sex">
                     <option value="Masculino">
                     <option value="Feminino">
@@ -89,14 +89,11 @@
                 </datalist> <br> <br> <br>
 
                 <label for="telefone"> Telefone </label> <br> <br>
-                <input id="telefone" type="text" > <br> <br> <br> <br> <br> <br> <br> <br>
+                <input id="telefone" type="text" th:field="*{telefone}"> <br> <br> <br> <br> <br> <br> <br> <br>
                 <br> <br> <br> <br> <br> <br>
             </div>
             <div class="buttcontdad">
-
-                <a href="#">
-                    <button class="buttonmcdp"> Aplicar </button>
-                </a>
+                    <button class="buttonmcdp" type="submit"> Aplicar </button>
             </div>
         </div> <br> <br> <br> <br>
        </form>

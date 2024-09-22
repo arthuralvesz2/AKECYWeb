@@ -46,7 +46,7 @@ public class UsuarioController {
 			if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
 				session.setAttribute("serverMessage", "Dados Incompletos!!!");
 			} else {
-				usuarioService.create(usuario); 
+				usuarioService.create(usuario);
 				session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
 			}
 		} else {
@@ -193,6 +193,70 @@ public class UsuarioController {
 			return "redirect:/AKECY/usuario/mudar-senha-confirmar";
 		}
 	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+	    session.removeAttribute("loggedInUser"); // Remove o atributo da sessão
+	    return "redirect:/AKECY/index"; // Redireciona para a página inicial
+	}
+
+
+	@GetMapping("/dados-pessoais")
+	public String showDadosPessoais(Model model, HttpSession session) {
+	    String loggedInUser = (String) session.getAttribute("loggedInUser");
+
+	    if (loggedInUser == null) {
+	        return "redirect:/AKECY/usuario/login";
+	    }
+
+	    Usuario usuario = usuarioService.findByEmail(loggedInUser);
+	    if (usuario == null) {
+	        // Adicionar uma mensagem de erro ou tratamento adequado se o usuário não for encontrado
+	        model.addAttribute("errorMessage", "Usuário não encontrado");
+	        return "dados-pessoais";
+	    } else {
+	        model.addAttribute("usuario", usuario); // Certifique-se que o nome é "usuario"
+	        return "dados-pessoais";
+	    }
+	}
+
+	@PostMapping("/dados-pessoais")
+	public String updateDadosPessoais(@ModelAttribute Usuario usuarioAtualizado, HttpSession session) {
+	    String loggedInUser = (String) session.getAttribute("loggedInUser");
+	    
+	    if (loggedInUser == null) {
+	        return "redirect:/AKECY/usuario/login";
+	    }
+
+	    // Buscar o usuário logado pelo email
+	    Usuario usuario = usuarioService.findByEmail(loggedInUser); 
+	    if (usuario != null) {
+	        // Atualizar os dados
+	        if (usuarioAtualizado.getNome() != null && !usuarioAtualizado.getNome().isEmpty()) {
+	            usuario.setNome(usuarioAtualizado.getNome());
+	        }
+	        if (usuarioAtualizado.getEmail() != null && !usuarioAtualizado.getEmail().isEmpty()) {
+	            usuario.setEmail(usuarioAtualizado.getEmail());
+	        }
+	        if (usuarioAtualizado.getDataNasc() != null) {
+	            usuario.setDataNasc(usuarioAtualizado.getDataNasc());
+	        }
+	        if (usuarioAtualizado.getCpf() != null && !usuarioAtualizado.getCpf().isEmpty()) {
+	            usuario.setCpf(usuarioAtualizado.getCpf());
+	        }
+	        if (usuarioAtualizado.getTelefone() != null && !usuarioAtualizado.getTelefone().isEmpty()) {
+	            usuario.setTelefone(usuarioAtualizado.getTelefone());
+	        }
+	        
+	        usuarioService.update(usuario); // Salva as alterações no banco de dados
+	    }
+
+	    return "redirect:/AKECY/dados-pessoais";
+	}
+
+	
+	
+	
 
 	@GetMapping("findAll")
 	public ResponseEntity<List<Usuario>> findAll() {
