@@ -30,178 +30,176 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/AKECY/usuario/")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
+	private final UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
+	public UsuarioController(UsuarioService usuarioService) {
+		this.usuarioService = usuarioService;
+	}
 
-    @GetMapping("/cadastro")
-    public String showFormCadastroUsuario(Usuario usuario, Model model, HttpSession session) {
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
-        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
-        return "cadastro";
-    }
+	@GetMapping("/cadastro")
+	public String showFormCadastroUsuario(Usuario usuario, Model model, HttpSession session) {
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+		session.removeAttribute("serverMessage");
+		return "cadastro";
+	}
 
-    @PostMapping("/salvar")
-    public String salvar(@ModelAttribute("usuario") Usuario usuario, HttpSession session) {
-        Usuario _usuario = usuarioService.findByEmail(usuario.getEmail());
+	@PostMapping("/salvar")
+	public String salvar(@ModelAttribute("usuario") Usuario usuario, HttpSession session) {
+		Usuario _usuario = usuarioService.findByEmail(usuario.getEmail());
 
-        if (_usuario == null) {
-            if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
-                session.setAttribute("serverMessage", "Dados Incompletos!!!");
-            } else {
-                usuarioService.create(usuario); // Senha será codificada no serviço
-                session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
-            }
-        } else {
-            session.setAttribute("serverMessage", "Usuário já cadastrado no sistema!");
-        }
+		if (_usuario == null) {
+			if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
+				session.setAttribute("serverMessage", "Dados Incompletos!!!");
+			} else {
+				usuarioService.create(usuario); 
+				session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
+			}
+		} else {
+			session.setAttribute("serverMessage", "Usuário já cadastrado no sistema!");
+		}
 
-        return "redirect:/AKECY/usuario/login";
-    }
+		return "redirect:/AKECY/usuario/login";
+	}
 
-    @GetMapping("/login")
-    public String showFormLogin(Model model, HttpSession session) {
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
-        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
-        return "login";
-    }
+	@GetMapping("/login")
+	public String showFormLogin(Model model, HttpSession session) {
+		model.addAttribute("usuario", new Usuario());
+		model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+		session.removeAttribute("serverMessage");
+		return "login";
+	}
 
-    @PostMapping("/verificar-login")
-    public String verificarLogin(@ModelAttribute("usuario") Usuario usuario, Model model, HttpSession session) {
-        Usuario _usuario = usuarioService.acessar(usuario.getEmail(), usuario.getSenha());
+	@PostMapping("/verificar-login")
+	public String verificarLogin(@ModelAttribute("usuario") Usuario usuario, Model model, HttpSession session) {
+		Usuario _usuario = usuarioService.acessar(usuario.getEmail(), usuario.getSenha());
 
-        if (_usuario != null) {
-            if ("INATIVO".equals(_usuario.getStatusUsuario())) {
-                session.setAttribute("serverMessage", "Seu usuário está inativo.");
-                return "redirect:/AKECY/usuario/login";
-            }
-            
-         // Extrair o primeiro nome do usuário
-            String primeiroNome = _usuario.getNome().split(" ")[0];
-            System.out.println("Primeiro Nome: " + primeiroNome);
-            // Armazenar o primeiro nome do usuário na sessão
-            session.setAttribute("loggedInUser", primeiroNome);
+		if (_usuario != null) {
+			if ("INATIVO".equals(_usuario.getStatusUsuario())) {
+				session.setAttribute("serverMessage", "Seu usuário está inativo.");
+				return "redirect:/AKECY/usuario/login";
+			}
 
-            if ("ADMIN".equals(_usuario.getNivelAcesso())) {
-                return "redirect:/AKECY/usuario/index-adm";
-            } else {
-                return "redirect:/AKECY/usuario/index";
-            }
-        } else {
-            session.setAttribute("serverMessage", "Email ou senha incorretos.");
-            return "redirect:/AKECY/usuario/login";
-        }
-    }
+			String primeiroNome = _usuario.getNome().split(" ")[0];
+			System.out.println("Primeiro Nome: " + primeiroNome);
+			session.setAttribute("loggedInUser", primeiroNome);
 
-    @GetMapping("/mudar-senha")
-    public String showFormMudarSenha(Model model, HttpSession session) {
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
-        model.addAttribute("codigoEnviado", session.getAttribute("codigoEnviado")); // Adiciona ao modelo
-        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
-        session.removeAttribute("codigoEnviado"); // Remover códigoEnviado após ser usado
-        return "mudar-senha";
-    }
+			if ("ADMIN".equals(_usuario.getNivelAcesso())) {
+				return "redirect:/AKECY/index-adm";
+			} else {
+				return "redirect:/AKECY/index";
+			}
+		} else {
+			session.setAttribute("serverMessage", "Email ou senha incorretos.");
+			return "redirect:/AKECY/usuario/login";
+		}
+	}
 
-    @PostMapping("/enviar-codigo")
-    public String enviarCodigo(@RequestParam(value = "email", required = false) String email,
-                               HttpSession session) {
-        if (email == null || email.isEmpty()) {
-            session.setAttribute("serverMessage", "Informe o e-mail.");
-            session.setAttribute("codigoEnviado", false); // Garante que não exibirá o campo de código
-            return "redirect:/AKECY/usuario/mudar-senha";
-        }
+	@GetMapping("/mudar-senha")
+	public String showFormMudarSenha(Model model, HttpSession session) {
+		model.addAttribute("usuario", new Usuario());
+		model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+		model.addAttribute("codigoEnviado", session.getAttribute("codigoEnviado"));
+		session.removeAttribute("serverMessage");
+		session.removeAttribute("codigoEnviado");
+		return "mudar-senha";
+	}
 
-        Usuario usuario = usuarioService.solicitarTrocaSenha(email);
+	@PostMapping("/enviar-codigo")
+	public String enviarCodigo(@RequestParam(value = "email", required = false) String email, HttpSession session) {
+		if (email == null || email.isEmpty()) {
+			session.setAttribute("serverMessage", "Informe o e-mail.");
+			session.setAttribute("codigoEnviado", false);
+			return "redirect:/AKECY/usuario/mudar-senha";
+		}
 
-        if (usuario == null) {
-            session.setAttribute("serverMessage", "Usuário não encontrado.");
-            session.setAttribute("codigoEnviado", false);
-        } else if ("INATIVO".equals(usuario.getStatusUsuario())) {
-            session.setAttribute("serverMessage", "Usuário inativo.");
-            session.setAttribute("codigoEnviado", false);
-        } else {
-            session.setAttribute("emailRecuperado", email);
-            session.setAttribute("serverMessage", "Código enviado para o e-mail informado.");
-            session.setAttribute("codigoEnviado", true); // Sinaliza que o código foi enviado com sucesso
-        }
+		Usuario usuario = usuarioService.solicitarTrocaSenha(email);
 
-        return "redirect:/AKECY/usuario/mudar-senha";
-    }
+		if (usuario == null) {
+			session.setAttribute("serverMessage", "Usuário não encontrado.");
+			session.setAttribute("codigoEnviado", false);
+		} else if ("INATIVO".equals(usuario.getStatusUsuario())) {
+			session.setAttribute("serverMessage", "Usuário inativo.");
+			session.setAttribute("codigoEnviado", false);
+		} else {
+			session.setAttribute("emailRecuperado", email);
+			session.setAttribute("serverMessage", "Código enviado para o e-mail informado.");
+			session.setAttribute("codigoEnviado", true);
+		}
 
-    @PostMapping("/verificar-codigo")
-    public String verificarCodigo(@RequestParam("codigo") String codigo, HttpSession session) {
-        if ("000000".equals(codigo)) { // Simulação de código
-            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
-        } else {
-            session.setAttribute("serverMessage", "Código inválido.");
-            return "redirect:/AKECY/usuario/mudar-senha";
-        }
-    }
+		return "redirect:/AKECY/usuario/mudar-senha";
+	}
 
-    @GetMapping("/mudar-senha-confirmar")
-    public String showMudarSenhaConfirmar(Model model, HttpSession session) {
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("serverMessage", session.getAttribute("serverMessage") != null ? session.getAttribute("serverMessage") : "");
-        session.removeAttribute("serverMessage"); // Remover a mensagem após ser adicionada ao modelo
-        return "mudar-senha-confirmar";
-    }
+	@PostMapping("/verificar-codigo")
+	public String verificarCodigo(@RequestParam("codigo") String codigo, HttpSession session) {
+		if ("000000".equals(codigo)) {
+			return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+		} else {
+			session.setAttribute("serverMessage", "Código inválido.");
+			return "redirect:/AKECY/usuario/mudar-senha";
+		}
+	}
 
-    @PostMapping("/mudar-senha-confirmar")
-    public String mudarSenhaConfirmar(@RequestParam("senha") String novaSenha, 
-                                      @RequestParam("novaSenhaConfirmacao") String novaSenhaConfirmacao, 
-                                      HttpSession session) {
-        System.out.println("Nova Senha: " + novaSenha);
-        System.out.println("Confirmação de Senha: " + novaSenhaConfirmacao);
-        String emailRecuperado = (String) session.getAttribute("emailRecuperado");
+	@GetMapping("/mudar-senha-confirmar")
+	public String showMudarSenhaConfirmar(Model model, HttpSession session) {
+		model.addAttribute("usuario", new Usuario());
+		model.addAttribute("serverMessage",
+				session.getAttribute("serverMessage") != null ? session.getAttribute("serverMessage") : "");
+		session.removeAttribute("serverMessage");
+		return "mudar-senha-confirmar";
+	}
 
-        if (emailRecuperado == null || emailRecuperado.isEmpty()) {
-            System.out.println("Email não encontrado.");
-            session.setAttribute("serverMessage", "Erro ao alterar a senha. Tente novamente.");
-            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
-        }
+	@PostMapping("/mudar-senha-confirmar")
+	public String mudarSenhaConfirmar(@RequestParam("senha") String novaSenha,
+			@RequestParam("novaSenhaConfirmacao") String novaSenhaConfirmacao, HttpSession session) {
+		System.out.println("Nova Senha: " + novaSenha);
+		System.out.println("Confirmação de Senha: " + novaSenhaConfirmacao);
+		String emailRecuperado = (String) session.getAttribute("emailRecuperado");
 
-        if (novaSenha == null || novaSenha.isEmpty() || novaSenhaConfirmacao == null || novaSenhaConfirmacao.isEmpty()) {
-            System.out.println("Senha ou confirmação de senha estão vazias.");
-            session.setAttribute("serverMessage", "Por favor, insira e confirme sua nova senha.");
-            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
-        }
+		if (emailRecuperado == null || emailRecuperado.isEmpty()) {
+			System.out.println("Email não encontrado.");
+			session.setAttribute("serverMessage", "Erro ao alterar a senha. Tente novamente.");
+			return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+		}
 
-        if (!novaSenha.equals(novaSenhaConfirmacao)) {
-            System.out.println("As senhas não coincidem.");
-            session.setAttribute("serverMessage", "As senhas não coincidem. Por favor, verifique.");
-            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
-        }
+		if (novaSenha == null || novaSenha.isEmpty() || novaSenhaConfirmacao == null
+				|| novaSenhaConfirmacao.isEmpty()) {
+			System.out.println("Senha ou confirmação de senha estão vazias.");
+			session.setAttribute("serverMessage", "Por favor, insira e confirme sua nova senha.");
+			return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+		}
 
-        Usuario usuario = usuarioService.findByEmail(emailRecuperado);
-        System.out.println("Usuário encontrado: " + usuario);
+		if (!novaSenha.equals(novaSenhaConfirmacao)) {
+			System.out.println("As senhas não coincidem.");
+			session.setAttribute("serverMessage", "As senhas não coincidem. Por favor, verifique.");
+			return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+		}
 
-        if (usuario != null && "TROCAR_SENHA".equals(usuario.getStatusUsuario())) {
-            usuario.setSenha(novaSenha); // O serviço irá codificar a senha
-            usuario.setStatusUsuario("ATIVO");
+		Usuario usuario = usuarioService.findByEmail(emailRecuperado);
+		System.out.println("Usuário encontrado: " + usuario);
 
-            Usuario usuarioAtualizado = usuarioService.update(usuario);
-            System.out.println("Usuário atualizado: " + usuarioAtualizado);
+		if (usuario != null && "TROCAR_SENHA".equals(usuario.getStatusUsuario())) {
+			usuario.setSenha(novaSenha);
+			usuario.setStatusUsuario("ATIVO");
 
-            if (usuarioAtualizado != null) {
-                session.setAttribute("serverMessage", "Senha alterada com sucesso!");
-                return "redirect:/AKECY/usuario/login";
-            } else {
-                System.out.println("Erro ao atualizar o usuário.");
-                session.setAttribute("serverMessage", "Erro ao atualizar a senha.");
-                return "redirect:/AKECY/usuario/mudar-senha-confirmar";
-            }
-        } else {
-            System.out.println("Usuário não encontrado ou não autorizado.");
-            session.setAttribute("serverMessage", "Usuário não encontrado ou não está autorizado a trocar a senha.");
-            return "redirect:/AKECY/usuario/mudar-senha-confirmar";
-        }
-    }
-	
+			Usuario usuarioAtualizado = usuarioService.update(usuario);
+			System.out.println("Usuário atualizado: " + usuarioAtualizado);
+
+			if (usuarioAtualizado != null) {
+				session.setAttribute("serverMessage", "Senha alterada com sucesso!");
+				return "redirect:/AKECY/usuario/login";
+			} else {
+				System.out.println("Erro ao atualizar o usuário.");
+				session.setAttribute("serverMessage", "Erro ao atualizar a senha.");
+				return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+			}
+		} else {
+			System.out.println("Usuário não encontrado ou não autorizado.");
+			session.setAttribute("serverMessage", "Usuário não encontrado ou não está autorizado a trocar a senha.");
+			return "redirect:/AKECY/usuario/mudar-senha-confirmar";
+		}
+	}
+
 	@GetMapping("findAll")
 	public ResponseEntity<List<Usuario>> findAll() {
 		List<Usuario> usuarios = usuarioService.findAll();
@@ -246,6 +244,7 @@ public class UsuarioController {
 		}
 		return ResponseEntity.ok().body(new MessageResponse("Usuário cadastrado com sucesso!"));
 	}
+
 	/*
 	 * @PostMapping("signin") public ResponseEntity<?> signin(
 	 * 
@@ -255,7 +254,6 @@ public class UsuarioController {
 	 * return ResponseEntity.ok().body(usuario); } return
 	 * ResponseEntity.badRequest().body("Dados incorretos!"); }
 	 */
-
 
 	@PutMapping("inativar/{id}")
 	public ResponseEntity<Usuario> inativar(@PathVariable long id) {
@@ -278,7 +276,6 @@ public class UsuarioController {
 
 		Usuario _usuario = usuarioService.alterarSenha(id, usuario);
 
-		// return new ResponseEntity<Usuario>(_usuario, HttpStatus.OK);
 		return ResponseEntity.ok().body(new MessageResponse("Senha alterada com sucesso!"));
 	}
 

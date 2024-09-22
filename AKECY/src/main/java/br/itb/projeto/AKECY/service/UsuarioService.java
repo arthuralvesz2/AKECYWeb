@@ -41,26 +41,6 @@ public class UsuarioService {
         return usuarioRepository.findByTelefone(telefone);
     }
 
-    // A CONTA DE USUÁRIO SERÁ CRIADA COM UMA SENHA PADRÃO
-    // ELE DEVE ALTERAR NO PRIMEIRO ACESSO
-    @Transactional
-    public Usuario createNew(Usuario usuario) {
-        Usuario _usuario = usuarioRepository.findByEmail(usuario.getEmail());
-
-        if (_usuario == null) {
-            String senhaPadrao = "12345678";
-            String senhaCodificada = Base64.getEncoder().encodeToString(senhaPadrao.getBytes());
-
-            usuario.setSenha(senhaCodificada);
-            usuario.setDataCadastro(LocalDateTime.now());
-            usuario.setStatusUsuario("TROCAR_SENHA");
-
-            return usuarioRepository.save(usuario);
-        }
-        return null;
-    }
-
-    // A CONTA DE USUÁRIO SERÁ CRIADA COM SENHA DEFINIDA POR ELE
     @Transactional
     public Usuario create(Usuario usuario) {
         String senhaCodificada = Base64.getEncoder().encodeToString(usuario.getSenha().getBytes());
@@ -72,7 +52,6 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    // Método para acessar (login) comparando senha com Base64
     @Transactional
     public Usuario acessar(String email, String senha) {
         Usuario usuario = usuarioRepository.findByEmail(email);
@@ -138,21 +117,17 @@ public class UsuarioService {
 
     @Transactional
     public Usuario solicitarTrocaSenha(String emailOuTelefone) {
-        // Procura o usuário pelo email
         Usuario usuario = usuarioRepository.findByEmail(emailOuTelefone);
 
-        // Se não encontrar pelo email, tenta encontrar pelo telefone
         if (usuario == null) {
             usuario = usuarioRepository.findByTelefone(emailOuTelefone);
         }
 
-        // Se o usuário for encontrado e não estiver inativo
         if (usuario != null && !"INATIVO".equals(usuario.getStatusUsuario())) {
             usuario.setStatusUsuario("TROCAR_SENHA");
             return usuarioRepository.save(usuario);
         }
 
-        // Se o usuário não for encontrado ou estiver inativo
         return null;
     }
 
@@ -163,19 +138,17 @@ public class UsuarioService {
         if (existingUser.isPresent()) {
             Usuario usuarioAtualizado = existingUser.get();
 
-            // Verifica se há uma nova senha e a criptografa
             if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
                 String senhaCriptografada = Base64.getEncoder().encodeToString(usuario.getSenha().getBytes());
                 usuarioAtualizado.setSenha(senhaCriptografada);
             }
 
-            // Atualiza o status do usuário
             usuarioAtualizado.setStatusUsuario("ATIVO");
 
             return usuarioRepository.save(usuarioAtualizado);
         }
 
-        return null; // Retorna null se o usuário não for encontrado
+        return null;
     }
 }
 
