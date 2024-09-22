@@ -2,10 +2,8 @@ package br.itb.projeto.AKECY.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.model.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;

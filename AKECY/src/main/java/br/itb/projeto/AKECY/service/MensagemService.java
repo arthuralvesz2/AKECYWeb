@@ -3,9 +3,7 @@ package br.itb.projeto.AKECY.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import br.itb.projeto.AKECY.model.entity.Mensagem;
 import br.itb.projeto.AKECY.model.repository.MensagemRepository;
 import jakarta.transaction.Transactional;

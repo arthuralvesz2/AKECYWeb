@@ -2,9 +2,7 @@ package br.itb.projeto.AKECY.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import br.itb.projeto.AKECY.model.entity.Cupom;
 import br.itb.projeto.AKECY.model.repository.CupomRepository;
 import jakarta.transaction.Transactional;
