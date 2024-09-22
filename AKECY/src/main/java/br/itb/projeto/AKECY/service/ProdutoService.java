@@ -3,6 +3,7 @@ package br.itb.projeto.AKECY.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.itb.projeto.AKECY.model.entity.Produto;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 @Service
 public class ProdutoService {
 
+	@Autowired
 	private ProdutoRepository produtoRepository;
 
 	public ProdutoService(ProdutoRepository produtoRepository) {
@@ -30,8 +32,8 @@ public class ProdutoService {
 		produto.setIdProduto(null);
 		produto.setNome(null);
 		produto.setDescricao(null);
-		produto.setDescricaoCompleta(null);
-		produto.setTamanhosDisponiveis(null);
+		produto.setDescricao_completa(null);
+		produto.setTamanhos_disponiveis(null);
 		produto.setFoto1(null);
 		produto.setFoto2(null);
 		produto.setFoto3(null);
@@ -43,6 +45,10 @@ public class ProdutoService {
 		
 		return produtoRepository.save(produto);
 	}
+	
+	public Optional<Produto> findById(Long id) {
+        return produtoRepository.findById(id);
+    }
 	
 	@Transactional
 	public Produto inativar(long id) {
@@ -87,6 +93,11 @@ public class ProdutoService {
 		return null;
 	}
 	
-	
-	
-}
+	    public List<Produto> getProdutosEmDestaque() {
+	        return produtoRepository.findRandom10Products(); 
+	    }
+	    
+	    public List<Produto> getProdutosRecentes() {
+	        return produtoRepository.findAllByOrderByIdProdutoDesc(); 
+	    }
+	}

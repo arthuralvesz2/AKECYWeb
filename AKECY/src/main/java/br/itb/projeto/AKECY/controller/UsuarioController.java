@@ -1,6 +1,7 @@
 package br.itb.projeto.AKECY.controller;
 
 import java.util.List;
+
 import java.io.IOException;
 import java.util.Base64;
 
@@ -200,34 +201,6 @@ public class UsuarioController {
             return "redirect:/AKECY/usuario/mudar-senha-confirmar";
         }
     }
-
-    @GetMapping("/index")
-    public String showIndex(Model model) {
-        return "index";
-    }
-
-    @GetMapping("/index-adm")
-    public String showIndexAdm(Model model) {
-        return "index-adm";
-    }
-    
-    @GetMapping("/dados-pessoais")
-    public String showDadosPessoais(Model model) {
-        return "dados-pessoais";
-    }
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@GetMapping("findAll")
 	public ResponseEntity<List<Usuario>> findAll() {

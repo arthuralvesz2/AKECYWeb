@@ -1,0 +1,23 @@
+footer {
+    margin: 40px;
+    color: #fafafa;
+    font-weight: 500;
+}
+
+hr {
+    margin-top: 50px;
+    color: #fafafa;
+}
+
+.img-footer {
+    width: 35px;
+}
+
+.fale-conosco {
+    text-decoration: none;
+    color: #ffa600;
+}
+
+body.dark footer {
+    color: #121212;
+}

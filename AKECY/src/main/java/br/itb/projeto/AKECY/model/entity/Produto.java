@@ -18,8 +18,8 @@ public class Produto {
     
     private String nome;
     private String descricao;
-    private String descricaoCompleta;
-    private String tamanhosDisponiveis;
+    private String descricao_completa;
+    private String tamanhos_disponiveis;
     private byte[] foto1; 
     private byte[] foto2;
     private byte[] foto3;
@@ -32,10 +32,11 @@ public class Produto {
     private Categoria categoria;
     
     private String statusProd;
+    private transient String base64Image;
 
-	// Getters and Setters 
+    // Getters and Setters 
     
-    public Long getIdProduto() {
+	public Long getIdProduto() {
 		return idProduto;
 	}
 
@@ -59,20 +60,20 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public String getDescricaoCompleta() {
-		return descricaoCompleta;
+	public String getDescricao_completa() {
+		return descricao_completa;
 	}
 
-	public void setDescricaoCompleta(String descricaoCompleta) {
-		this.descricaoCompleta = descricaoCompleta;
+	public void setDescricao_completa(String descricao_Completa) {
+		this.descricao_completa = descricao_Completa;
 	}
 
-	public String getTamanhosDisponiveis() {
-		return tamanhosDisponiveis;
+	public String getTamanhos_disponiveis() {
+		return tamanhos_disponiveis;
 	}
 
-	public void setTamanhosDisponiveis(String tamanhosDisponiveis) {
-		this.tamanhosDisponiveis = tamanhosDisponiveis;
+	public void setTamanhos_disponiveis(String tamanhos_disponiveis) {
+		this.tamanhos_disponiveis = tamanhos_disponiveis;
 	}
 
 	public byte[] getFoto1() {
@@ -138,5 +139,14 @@ public class Produto {
 	public void setStatusProd(String statusProd) {
 		this.statusProd = statusProd;
 	}
+
+	public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+
+    }
     
 }
