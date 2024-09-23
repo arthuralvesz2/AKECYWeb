@@ -1,23 +1,13 @@
 package br.itb.projeto.AKECY.controller;
 
-import java.util.List;
-
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import br.itb.projeto.AKECY.model.entity.Usuario;
-import br.itb.projeto.AKECY.rest.exception.ResourceNotFoundException;
-import br.itb.projeto.AKECY.rest.response.MessageResponse;
 import br.itb.projeto.AKECY.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 
@@ -203,7 +193,7 @@ public class UsuarioController {
 	}
 
 
-	@GetMapping("/dados-pessoais")
+	@GetMapping("/minha-conta")
 	public String showDadosPessoais(Model model, HttpSession session) {
 	    String loggedInUser = (String) session.getAttribute("loggedInUser");
 
@@ -215,14 +205,14 @@ public class UsuarioController {
 	    if (usuario == null) {
 	        // Adicionar uma mensagem de erro ou tratamento adequado se o usuário não for encontrado
 	        model.addAttribute("errorMessage", "Usuário não encontrado");
-	        return "/AKECY/dados-pessoais";
+	        return "/AKECY/minha-conta";
 	    } else {
 	        model.addAttribute("usuario", usuario); // Certifique-se que o nome é "usuario"
-	        return "/AKECY/dados-pessoais";
+	        return "/AKECY/minha-conta";
 	    }
 	}
 
-	@PostMapping("/dados-pessoais")
+	@PostMapping("/minha-conta")
 	public String updateDadosPessoais(@ModelAttribute Usuario usuarioAtualizado, HttpSession session) {
 	    String loggedInUser = (String) session.getAttribute("loggedInUser");
 	    
@@ -253,7 +243,7 @@ public class UsuarioController {
 	        usuarioService.update(usuario); // Salva as alterações no banco de dados
 	    }
 
-	    return "redirect:/AKECY/dados-pessoais";
+	    return "redirect:/AKECY/minha-conta";
 	}
 
 

@@ -1,32 +1,27 @@
-.login-box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 400px;
-	padding: 40px;
-	transform: translate(-50%, -50%);
+.box {
+	margin-top: 8%;
+	margin-bottom: 7%;
+	margin-left: 25%;
+	width: 1000px;
+	padding: 70px;
 	background: rgb(29, 29, 29);
 	box-sizing: border-box;
 	box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
 	border-radius: 10px;
 }
 
-.cadastro {
-	top: 55%;
-}
-
-.login-box h2 {
+.box h2 {
 	margin: 0 0 30px;
 	padding: 0;
 	color: #fafafa;
 	text-align: center;
 }
 
-.login-box .user-box {
+.box .user-box {
 	position: relative;
 }
 
-.login-box .user-box input {
+.box .user-box input {
 	width: 100%;
 	padding: 10px 0;
 	font-size: 16px;
@@ -38,18 +33,19 @@
 	background: transparent;
 }
 
-.login-box .user-box label {
+.box .user-box label {
 	position: absolute;
 	top: 0;
 	left: 0;
 	padding: 10px 0;
+	margin-left: 10px;
 	font-size: 16px;
 	color: #fafafa;
 	pointer-events: none;
 	transition: .5s;
 }
 
-.login-box .user-box input:not(:placeholder-shown)~label {
+.box .user-box input:not(:placeholder-shown)~label {
 	top: -20px;
 	left: 0;
 	color: #ffa600;
@@ -60,8 +56,9 @@ input[type=submit] {
 	background-color: #ffa600;
 	border: none;
 	color: white;
-	padding: 10px 90px;
+	padding: 10px 50px;
 	text-align: center;
+	margin-left: 10px;
 	text-decoration: none;
 	display: inline-block;
 	text-transform: uppercase;
@@ -70,7 +67,7 @@ input[type=submit] {
 	box-shadow: 0 10px 30px 0 rgba(255, 166, 0, 0.2);
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
-	margin: 25px 20px 40px 30px;
+	margin: 5px 10px 40px 585px;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -90,65 +87,19 @@ input[type=submit]:active {
 	transform: scale(0.95);
 }
 
-#cadastrar {
-	padding: 10px 76px;
-}
-
-#enviar-codigo {
-	padding: 10px 59px;
-}
-
-#confirmar {
-	padding: 10px 76px;
-}
-
-.mensagem {
-	color: rgb(255, 181, 43);
-	text-align: center;
-}
-
-p {
-	color: rgb(215, 215, 215)
-}
-
-.baixo-botao {
-	position: absolute;
-	margin-top: -26px;
-	padding-left: 60px;
-}
-
-.login {
-	padding-left: 72px;
-}
-
-.esqueceu-senha {
-	position: absolute;
-	margin-top: -23px;
-	padding-left: 135px;
-}
-
-.link {
-	color: #fafafa;
-	text-decoration: none;
-}
-
-.compensar-barra-de-rolagem {
-	padding-right: 15px;
-}
-
 body.dark {
 	background-color: #fafafa;
 	color: #121212;
 }
 
-body.dark .login-box {
+body.dark .box {
 	background-color: #fafafa;
 	color: #121212;
 }
 
-body.dark .login-box h2,
-body.dark .login-box .user-box input,
-body.dark .login-box .user-box label,
+body.dark .box h2,
+body.dark .box .user-box input,
+body.dark .box .user-box label,
 body.dark .link,
 body.dark p {
 	color: #121212;
@@ -163,10 +114,10 @@ body.dark input[type=submit]:hover {
 	background-color: rgb(255, 181, 43);
 }
 
-body.dark .login-box .user-box input {
+body.dark .box .user-box input {
 	border-bottom: 1px solid #121212;
 }
 
-body.dark .login-box .user-box input:valid~label {
+body.dark .box .user-box input:not(:placeholder-shown)~label {
 	color: #ffa600;
 }

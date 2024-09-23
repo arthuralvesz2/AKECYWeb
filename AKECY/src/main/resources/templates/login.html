@@ -11,7 +11,6 @@
 	<link rel="stylesheet" href="/css/body.css" />
 	<link rel="stylesheet" href="/css/header.css" />
 	<link rel="stylesheet" href="/css/header-usuario.css" />
-	<link rel="stylesheet" href="/css/footer.css" />
 	<link rel="stylesheet" href="/css/box.css" />
 </head>
 
@@ -111,7 +110,7 @@
 				</div>
 
 				<p class="esqueceu-senha"> Esqueceu sua senha? <a class="link" href="recuperar-senha">Mude aqui </a></p>
-				
+
 				<p class="mensagem" th:if="${session.serverMessage}" th:text="${session.serverMessage}"></p>
 				<p class="mensagem" th:if="${serverMessage != null}" th:text="${serverMessage}"></p>
 

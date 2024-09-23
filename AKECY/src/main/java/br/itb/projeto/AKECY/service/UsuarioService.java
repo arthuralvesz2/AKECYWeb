@@ -26,9 +26,20 @@ public class UsuarioService {
         return usuarios;
     }
 
-    public Usuario findById(long id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        return usuario.orElse(null);
+    public void disable(long id) {
+    	Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario != null) {
+            usuario.setStatusUsuario("INATIVO");
+            usuarioRepository.save(usuario);
+        }
+    }
+
+    public void enable(long id) {
+    	Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario != null) {
+            usuario.setStatusUsuario("ATIVO");
+            usuarioRepository.save(usuario);
+        }
     }
 
     public Usuario findByEmail(String email) {
