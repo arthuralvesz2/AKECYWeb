@@ -100,13 +100,15 @@ input[type=reset]:active {
 	padding: 10px 76px;
 }
 
-#mensagemSenha {
-	color: rgb(255, 181, 43);
-	text-align: center;
-	
+#enviar-codigo {
+	padding: 10px 59px;
 }
 
-.mensagemLogin {
+#confirmar {
+	padding: 10px 76px;
+}
+
+.mensagem {
 	color: rgb(255, 181, 43);
 	text-align: center;
 }
@@ -173,7 +175,6 @@ body.dark .login-box .user-box input {
 	border-bottom: 1px solid #121212;
 }
 
-body.dark .login-box .user-box input:focus~label,
 body.dark .login-box .user-box input:valid~label {
 	color: #ffa600;
 }

@@ -110,10 +110,10 @@
 					<label> Senha </label>
 				</div>
 
-				<p class="esqueceu-senha"> Esqueceu sua senha? <a class="link" href="mudar-senha">Mude aqui </a></p>
+				<p class="esqueceu-senha"> Esqueceu sua senha? <a class="link" href="recuperar-senha">Mude aqui </a></p>
 				
-				<p class="mensagemLogin" th:if="${session.serverMessage}" th:text="${session.serverMessage}"></p>
-				<p class="mensagemLogin" th:if="${serverMessage != null}" th:text="${serverMessage}"></p>
+				<p class="mensagem" th:if="${session.serverMessage}" th:text="${session.serverMessage}"></p>
+				<p class="mensagem" th:if="${serverMessage != null}" th:text="${serverMessage}"></p>
 
 				<input type="submit" value="Entrar">
 
