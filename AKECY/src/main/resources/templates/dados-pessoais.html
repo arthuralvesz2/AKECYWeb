@@ -47,7 +47,7 @@
 
     <main>
 
-	<form th:action="@{/AKECY/usuario/dados-pessoais}" th:object="${usuario}" method="post">
+	<form  method="post">
         <br>
         <div class="selecionado1"></div>
         <h3 class="minhaconta"> Minha conta </h3>
@@ -66,22 +66,22 @@
 	
             <div id="ddds34">
                 <label for="nome"> Nome </label> <br> <br>
-                <input id="nome" type="text" th:field="*{nome}" > <br> <br> <br>
+                <input id="nome" type="text"  > <br> <br> <br>
 
                 <label for="cpf"> CPF </label> <br> <br>
-                <input id="cpf" type="text" th:field="*{cpf}" > <br> <br> <br>
+                <input id="cpf" type="text"  > <br> <br> <br>
 
                 <label for="datnasc"> Data de nascimento </label> <br> <br>
-                <input id="datnasc" type="text" th:field="*{dataNasc}" > <br> <br> <br>
+                <input id="datnasc" type="text"  > <br> <br> <br>
             </div>
 
             <div>
 
                 <label for="email"> E-mail </label> <br> <br>
-                <input id="email" type="email" th:field="*{email}" > <br> <br> <br>
+                <input id="email" type="email"  > <br> <br> <br>
                 
                 <label for="discprof"> Sexo </label> <br> <br>
-                <input list="sex" id="discprof" th:field="*{sexo}" placeholder="Selecione seu sexo">
+                <input list="sex" id="discprof"  placeholder="Selecione seu sexo">
                 <datalist id="sex">
                     <option value="Masculino">
                     <option value="Feminino">
@@ -89,7 +89,7 @@
                 </datalist> <br> <br> <br>
 
                 <label for="telefone"> Telefone </label> <br> <br>
-                <input id="telefone" type="text" th:field="*{telefone}"> <br> <br> <br> <br> <br> <br> <br> <br>
+                <input id="telefone" type="text" > <br> <br> <br> <br> <br> <br> <br> <br>
                 <br> <br> <br> <br> <br> <br>
             </div>
             <div class="buttcontdad">
