@@ -40,20 +40,21 @@ public class UsuarioController {
 
 	@PostMapping("/salvar")
 	public String salvar(@ModelAttribute("usuario") Usuario usuario, HttpSession session) {
-		Usuario _usuario = usuarioService.findByEmail(usuario.getEmail());
+	    Usuario _usuario = usuarioService.findByEmail(usuario.getEmail());
 
-		if (_usuario == null) {
-			if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
-				session.setAttribute("serverMessage", "Dados Incompletos!!!");
-			} else {
-				usuarioService.create(usuario);
-				session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
-			}
-		} else {
-			session.setAttribute("serverMessage", "Usuário já cadastrado no sistema!");
-		}
+	    if (_usuario == null) {
+	        if (usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()) {
+	            session.setAttribute("serverMessage", "Dados Incompletos!!!");
+	        } else {
+	            usuario.setNivelAcesso("USER"); 
+	            usuarioService.create(usuario);
+	            session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
+	        }
+	    } else {
+	        session.setAttribute("serverMessage", "Usuário já cadastrado no sistema!");
+	    }
 
-		return "redirect:/AKECY/usuario/login";
+	    return "redirect:/AKECY/usuario/login";
 	}
 
 	@GetMapping("/login")

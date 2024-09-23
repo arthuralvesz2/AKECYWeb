@@ -96,33 +96,55 @@
 
 	<main>
 
-		<div class="login-box">
+		<div class="login-box cadastro">
 			<h2>Cadastro</h2>
 			<form th:action="@{/AKECY/usuario/salvar}" th:object="${usuario}" method="post">
 
 				<div class="user-box">
-					<input th:field="*{nome}" type="text" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]+" required
+					<input th:field="*{nome}" placeholder="ㅤ" type="text" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]+" required
 						title="Por favor, Digite apenas letras!">
 					<label> Nome Completo </label>
 				</div>
 
 				<div class="user-box">
-					<input th:field="*{email}" type="email" required
-						pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
-					<label> Email </label>
+				    <input th:field="*{email}" placeholder="ㅤ" type="email" required
+				           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}"> 
+				    <label> Email </label>
 				</div>
 
 				<div class="user-box">
-					<input id="senha1" th:field="*{senha}"  type="password" minlength="7" required>
+					<input id="senha1" th:field="*{senha}" placeholder="ㅤ" type="password" minlength="7"
+						pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$" required>
 					<label> Senha </label>
 				</div>
-				
+
 				<div class="user-box">
-					<input id="senha2"  type="password" minlength="7" 
-					oninput="verificarSenhas()" required>
+					<input id="senha2" placeholder="ㅤ" type="password" minlength="7" oninput="verificarSenhas()"
+						required>
 					<label> Repita a Senha </label>
-					<p id="mensagemSenha" style="color: #ffa600;"></p>
 				</div>
+
+				<div class="user-box">
+					<input id="dataNasc" th:field="*{dataNasc}" placeholder="ㅤ" type="text" oninput="formatarData()"
+						required>
+					<label> Data de nascimento </label>
+				</div>
+
+				<div class="user-box">
+					<input id="cpf" th:field="*{cpf}" placeholder="ㅤ" type="text" maxlength="14"
+						pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
+						oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarCPF()" required>
+					<label> CPF </label>
+				</div>
+
+				<div class="user-box">
+					<input id="telefone" type="text" th:field="*{telefone}" placeholder="ㅤ"
+						pattern="\(\d{2}\) \d \d{4}-\d{4}" maxlength="16" minlength="16"
+						oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarTelefone()" required>
+					<label> Telefone </label>
+				</div>
+
+				<p id="mensagemSenha"></p>
 
 
 				<input type="submit" value="Cadastrar" id="cadastrar">
@@ -133,7 +155,7 @@
 	</main>
 
 	<script src="/js/header.js"></script>
-	<script src="/js/cadastrp.js"></script>
+	<script src="/js/cadastro.js"></script>
 </body>
 
 </html>

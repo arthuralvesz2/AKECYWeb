@@ -101,22 +101,19 @@
 			<form th:action="@{/AKECY/usuario/verificar-login}" name="" th:object="${usuario}" method="post">
 
 				<div class="user-box">
-					<input th:field="*{email}" type="text" required>
+					<input th:field="*{email}" placeholder="ㅤ" type="text" required>
 					<label> Email </label>
 				</div>
 
 				<div class="user-box">
-					<input th:field="*{senha}" type="password" minlength="7" required>
+					<input th:field="*{senha}" placeholder="ㅤ" type="password" minlength="7" required>
 					<label> Senha </label>
 				</div>
 
 				<p class="esqueceu-senha"> Esqueceu sua senha? <a class="link" href="mudar-senha">Mude aqui </a></p>
-				<p th:if="${session.serverMessage}" th:text="${session.serverMessage}"
-					style="color: #ffa600; font-size: 1.2em; text-align: center;">
-				</p>
-				<p th:if="${serverMessage != null}" th:text="${serverMessage}"
-					style="color: #ffa600; font-size: 1.2em; text-align: center; display: block;">
-				</p>
+				
+				<p class="mensagemLogin" th:if="${session.serverMessage}" th:text="${session.serverMessage}"></p>
+				<p class="mensagemLogin" th:if="${serverMessage != null}" th:text="${serverMessage}"></p>
 
 				<input type="submit" value="Entrar">
 
