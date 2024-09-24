@@ -15,9 +15,8 @@
 </head>
 
 <body>
-
+	<div th:replace="~{fragments/header :: header}"></div>
 	<main>
-
 		<div class="login-box cadastro">
 			<h2>Cadastro</h2>
 			<form th:action="@{/AKECY/usuario/salvar}" th:object="${usuario}" onsubmit="return verificarSenhas()"
@@ -73,9 +72,7 @@
 				<p class="baixo-botao login"> Já tem conta? <a class="link" href="login">Faça login aqui</a></p>
 			</form>
 		</div>
-
 	</main>
-
 	<script src="/js/header.js"></script>
 	<script src="/js/cadastro.js"></script>
 	<script src="/js/verificar-senhas.js"></script>
