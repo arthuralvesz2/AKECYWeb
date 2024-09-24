@@ -113,34 +113,36 @@
 					<div class="row gx-3 mb-3">
 						<div class="col-md-6 user-box">
 							<input type="text" placeholder="ㅤ" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]+" required
-								title="Por favor, Digite apenas letras!">
+								title="Por favor, Digite apenas letras!" th:field="*{nome}">
 							<label> Nome </label>
 						</div>
 
 						<div class="col-md-6 user-box">
 							<input id="cpf" type="text" placeholder="ㅤ" maxlength="14"
-								pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"  
-								oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarCPF()" required>
+								pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
+								oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarCPF()" required
+								th:field="*{cpf}">
 							<label> CPF </label>
 						</div>
 					</div>
 
 					<div class="row gx-3 mb-3">
 						<div class="col-md-6 user-box">
-							<input id="dataNasc" type="text" placeholder="ㅤ" oninput="formatarData()" required>
+							<input id="dataNasc" type="text" placeholder="ㅤ" oninput="formatarData()" required
+								th:field="*{dataNasc}">
 							<label> Data de Nascimento </label>
 						</div>
 
 						<div class="col-md-6 user-box">
 							<input type="text" placeholder="ㅤ" required
-								pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">   
+								pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" th:field="*{email}">
 							<label> Email </label>
 						</div>
 					</div>
 					<div class="row gx-3 mb-3">
 						<div class="col-md-6 user-box">
 							<input list="sex" type="text" placeholder="ㅤ"
-								pattern="Masculino|Feminino|Prefiro não informar">
+								pattern="Masculino|Feminino|Prefiro não informar" th:field="*{sexo}">
 							<label> Sexo </label>
 							<datalist id="sex">
 								<option value="Masculino">
@@ -152,15 +154,16 @@
 						<div class="col-md-6 user-box">
 							<input id="telefone" type="text" placeholder="ㅤ" pattern="\(\d{2}\) \d \d{4}-\d{4}"
 								maxlength="16" minlength="16"
-								oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarTelefone()" required>
+								oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarTelefone()" required
+								th:field="*{telefone}">
 							<label> Telefone </label>
 						</div>
 					</div>
 			</div>
-				<a class="trocar-senha" href="/AKECY/usuario/trocar-senha">
-					<i class="fas fa-key" aria-label="Trocar senha"></i> Trocar senha
-				</a>
-				<input type="submit" value="Salvar mudanças">
+			<a class="trocar-senha" href="/AKECY/usuario/trocar-senha">
+				<i class="fas fa-key" aria-label="Trocar senha"></i> Trocar senha
+			</a>
+			<input type="submit" value="Salvar mudanças">
 			</form>
 
 

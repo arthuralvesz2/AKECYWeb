@@ -57,10 +57,5 @@ public class AKECYController {
 
         return "index";
     }
-
-    @GetMapping("/minha-conta")
-    public String showDadosPessoais(Model model) {
-        return "minha-conta";
-    }
     
 }
