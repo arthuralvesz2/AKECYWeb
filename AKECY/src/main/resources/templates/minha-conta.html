@@ -129,7 +129,8 @@
 					</div>
 					<div class="row gx-3 mb-3">
 						<div class="col-md-6 user-box">
-							<input list="sex" type="text" placeholder="ㅤ" pattern="Masculino|Feminino|Prefiro não informar">
+							<input list="sex" type="text" placeholder="ㅤ"
+								pattern="Masculino|Feminino|Prefiro não informar">
 							<label> Sexo </label>
 							<datalist id="sex">
 								<option value="Masculino">
@@ -146,13 +147,22 @@
 						</div>
 					</div>
 			</div>
-
+			<a class="sair" href="/AKECY/usuario/logout">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+					class="feather feather-log-out">
+					<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+					<polyline points="16 17 21 12 16 7"></polyline>
+					<line x1="21" y1="12" x2="9" y2="12"></line>
+				</svg> Sair da conta
+			</a>
+			<a class="trocar-senha" href="/AKECY/usuario/trocar-senha">
+				<i class="fas fa-key" aria-label="Trocar senha"></i> Trocar senha
+			</a>
 			<input type="submit" value="Salvar mudanças">
 			</form>
 
-			<a href="/AKECY/usuario/logout">
-				<p> ← Sair da conta </p>
-			</a>
+
 		</div>
 	</main>
 

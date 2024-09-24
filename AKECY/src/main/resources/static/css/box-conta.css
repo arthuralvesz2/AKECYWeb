@@ -52,6 +52,22 @@
 	font-size: 12px;
 }
 
+.sair {
+	text-decoration: none;
+	color: #ffa600;
+	position: absolute;
+	right: 500px;
+	bottom: 358px;
+}
+
+trocar-senha {
+	text-decoration: none;
+	color: #ffa600;
+	position: absolute;
+	right: 900px;
+	bottom: 358px;
+}
+
 input[type=submit] {
 	background-color: #ffa600;
 	border: none;
