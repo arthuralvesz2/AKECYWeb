@@ -147,11 +147,6 @@ public class UsuarioService {
         if (existingUser.isPresent()) {
             Usuario usuarioAtualizado = existingUser.get();
 
-            if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
-                String senhaCriptografada = Base64.getEncoder().encodeToString(usuario.getSenha().getBytes());
-                usuarioAtualizado.setSenha(senhaCriptografada);
-            }
-
             usuarioAtualizado.setStatusUsuario("ATIVO");
 
             return usuarioRepository.save(usuarioAtualizado);

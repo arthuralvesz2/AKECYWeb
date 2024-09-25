@@ -16,7 +16,7 @@
 </head>
 
 <body>
-	<div th:replace="~{fragments/header :: header}"></div> 
+	<div th:replace="~{fragments/header :: header}"></div>
 	<main>
 		<div class="col-xl-8 box">
 			<div class="mb-4">
@@ -51,7 +51,7 @@
 
 					<div class="row gx-3 mb-3">
 						<div class="col-md-6 user-box">
-							<input id="dataNasc" type="text" placeholder="ㅤ" oninput="formatarData()" required
+							<input oninput="formatarData()" id="dataNasc" type="text" placeholder="ㅤ" required
 								th:field="*{dataNasc}">
 							<label> Data de Nascimento </label>
 						</div>

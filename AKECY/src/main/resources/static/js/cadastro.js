@@ -39,19 +39,21 @@ function formatarCPF() {
 
 function formatarTelefone() {
 	const telefoneInput = document.getElementById('telefone');
-	let telefone = telefoneInput.value.replace(/\D/g, '');
+	let telefone = telefoneInput.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+
+	if (telefone.length > 11) {
+		telefone = telefone.slice(0, 11); // Limita o telefone a 11 dígitos
+	}
 
 	if (telefone.length >= 2) {
-		telefone = `(${telefone.slice(0, 2)}) ${telefone.slice(2)}`;
+		telefone = `(${telefone.slice(0, 2)}) ${telefone.slice(2)}`; // Adiciona o DDD entre parênteses
 	}
-	if (telefone.length >= 6) {
-		telefone = telefone.slice(0, 6) + ' ' + telefone.slice(6);
+	if (telefone.length >= 7) {
+		telefone = telefone.slice(0, 7) + ' ' + telefone.slice(7); // Adiciona um espaço após o primeiro dígito
 	}
-	if (telefone.length >= 11) {
-		telefone = telefone.slice(0, 11) + '-' + telefone.slice(11);
+	if (telefone.length >= 12) {
+		telefone = telefone.slice(0, 12) + '-' + telefone.slice(12, 15); // Adiciona o hífen 
 	}
-
-	telefoneInput.value = telefone;
 }
 
 function formatarData() {

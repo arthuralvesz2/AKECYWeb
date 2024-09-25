@@ -198,15 +198,12 @@ public class UsuarioController {
     @GetMapping("/minha-conta")
     public String showDadosPessoais(Model model, HttpSession session) {
         String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail"); // Recupera o email da sessão
-        System.out.println("loggedInUserEmail no início de showDadosPessoais: " + loggedInUserEmail);
 
         if (loggedInUserEmail == null) {
             return "redirect:/AKECY/usuario/login";
         }
 
         Usuario usuario = usuarioService.findByEmail(loggedInUserEmail); // Busca pelo email completo
-        System.out.println("loggedInUserEmail antes da busca: " + loggedInUserEmail);
-        System.out.println("Usuário encontrado: " + usuario);
 
         if (usuario == null) {
             // Lidar com o caso em que o usuário não é encontrado (exibir uma mensagem de erro)
@@ -226,6 +223,7 @@ public class UsuarioController {
             return "redirect:/AKECY/usuario/login"; 
         }
 
+        
         // Buscar o usuário logado pelo email
         Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
         if (usuario != null) {
