@@ -2,21 +2,24 @@ package br.itb.projeto.AKECY.controller;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.rest.response.MessageResponse;
 import br.itb.projeto.AKECY.service.ProdutoService;
 
-@RestController
-@RequestMapping("/produto/")
+@Controller
+@RequestMapping("/AKECY/produto/")
 public class ProdutoController {
 
     @Autowired
@@ -55,7 +58,7 @@ public class ProdutoController {
         return new ResponseEntity<Produto>(_produto, HttpStatus.OK);
     }
 
-    @GetMapping("produto/{id}")
+    @GetMapping("fonte/{id}")
     public ResponseEntity<Produto> findById(@PathVariable Long id) {
         Produto produto = produtoService.findById(id).get();
 
@@ -64,4 +67,44 @@ public class ProdutoController {
 
         return new ResponseEntity<Produto>(produto, HttpStatus.OK);
     }
+    
+    @GetMapping("/{id}")
+    public String findById(@PathVariable Long id, Model model) {
+        Optional<Produto> optionalProduto = produtoService.findById(id);
+
+        if (optionalProduto.isPresent()) {
+            Produto produto = optionalProduto.get();
+
+            if (produto.getFoto1() != null) {
+                String base64Image = Base64.getEncoder().encodeToString(produto.getFoto1());
+                produto.setBase64Image(base64Image);
+            }
+
+            if (produto.getFoto2() != null) {
+                String base64Image2 = Base64.getEncoder().encodeToString(produto.getFoto2());
+                produto.setBase64Image2(base64Image2);
+            }
+
+            if (produto.getFoto3() != null) {
+                String base64Image3 = Base64.getEncoder().encodeToString(produto.getFoto3());
+                produto.setBase64Image3(base64Image3);
+            }
+
+            if (produto.getFoto4() != null) {
+                String base64Image4 = Base64.getEncoder().encodeToString(produto.getFoto4());
+                produto.setBase64Image4(base64Image4);
+            }
+
+            if (produto.getFoto5() != null) {
+                String base64Image5 = Base64.getEncoder().encodeToString(produto.getFoto5());
+                produto.setBase64Image5(base64Image5);
+            }
+
+            model.addAttribute("produto", produto);
+            return "produto"; 
+        } else {
+            return "error"; 
+        }
+    }
+    
 }

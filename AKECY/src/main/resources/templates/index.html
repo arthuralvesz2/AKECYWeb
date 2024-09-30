@@ -25,7 +25,7 @@
 
 		<div class="produtos">
 			<div th:each="produto : ${produtosEmDestaque}" class="item">
-				<a th:href="@{/produto/{id}(id=${produto.idProduto})}">
+				<a th:href="@{/AKECY/produto/{id}(id=${produto.idProduto})}">
 					<img class="itemimg" th:if="${produto.base64Image != null}"
 						th:src="@{'data:image/png;base64,' + ${produto.base64Image}}">
 					<p class="n1" th:text="${produto.nome}"></p>
@@ -44,7 +44,7 @@
 
 		<div class="produtos">
 			<div th:each="produto : ${produtosRecentes}" class="item">
-				<a th:href="@{/produto/{id}(id=${produto.idProduto})}">
+				<a th:href="@{/AKECY/produto/{id}(id=${produto.idProduto})}">
 					<img class="itemimg" th:if="${produto.base64Image != null}"
 						th:src="@{'data:image/png;base64,' + ${produto.base64Image}}">
 					<p class="n1" th:text="${produto.nome}"></p>

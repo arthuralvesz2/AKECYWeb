@@ -30,7 +30,7 @@ public class AKECYController {
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
 
         for (Produto produto : produtosEmDestaque) {
-            String url = baseUrl + "/produto/" + produto.getIdProduto();
+            String url = baseUrl + "/AKECY/produto/fonte/" + produto.getIdProduto();
             ResponseEntity<Produto> response = restTemplate.getForEntity(url, Produto.class);
 
             if (response.getStatusCode() == HttpStatus.OK) {
@@ -44,7 +44,7 @@ public class AKECYController {
         List<Produto> produtosRecentes = produtoService.getProdutosRecentes();
 
         for (Produto produto : produtosRecentes) {
-            String url = baseUrl + "/produto/" + produto.getIdProduto();
+            String url = baseUrl + "/AKECY/produto/fonte/" + produto.getIdProduto();
             ResponseEntity<Produto> response = restTemplate.getForEntity(url, Produto.class);
 
             if (response.getStatusCode() == HttpStatus.OK) {
