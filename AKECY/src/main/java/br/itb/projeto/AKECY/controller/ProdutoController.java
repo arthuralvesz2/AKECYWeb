@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -106,5 +108,36 @@ public class ProdutoController {
             return "error"; 
         }
     }
+    
+    @GetMapping("imagem/{id}/{foto}")
+    public ResponseEntity<String> getImagemProduto(@PathVariable Long id, @PathVariable int foto) {
+        Optional<Produto> optionalProduto = produtoService.findById(id);
+        if (optionalProduto.isPresent()) {
+            Produto produto = optionalProduto.get();
+            String base64Image = null;
+            switch (foto) {
+                case 1:
+                    base64Image = produto.getBase64Image();
+                    break;
+                case 2:
+                    base64Image = produto.getBase64Image2();
+                    break;
+                case 3:
+                    base64Image = produto.getBase64Image3();
+                    break;
+                case 4:
+                    base64Image = produto.getBase64Image4();
+                    break;
+                case 5:
+                    base64Image = produto.getBase64Image5();
+                    break;
+            }
+            if (base64Image != null) {
+                return new ResponseEntity<>(base64Image, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    
     
 }
