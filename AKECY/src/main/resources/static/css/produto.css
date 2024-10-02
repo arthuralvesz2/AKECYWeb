@@ -28,7 +28,7 @@ main .container {
 
 .window {
 	background: #121212;
-	width: 470px;
+	width: 570px;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -68,8 +68,7 @@ main .container {
 main h1 {
 	letter-spacing: 0px;
 	letter-spacing: .02rem;
-	font-size: 48px;
-	font-size: 3rem;
+	font-size: 35px;
 }
 
 main h3 {
@@ -81,6 +80,7 @@ main h3 {
 .description {
 	margin-top: 20px;
 	width: 100%;
+	font-size: 15px;
 }
 
 .color {
@@ -98,8 +98,8 @@ main h3 {
 }
 
 .image-picker img {
-    width: 50px;
-    height: 50px;
+    width: 65px;
+    height: 65px;
     object-fit: cover;
     cursor: pointer;
     border: 1px solid #121212;
@@ -178,6 +178,7 @@ main .size-picker {
 	-webkit-flex-flow: column;
 	-ms-flex-flow: column;
 	flex-flow: column;
+	font-size: 15px;
 }
 
 main .align-right {
@@ -201,6 +202,10 @@ main .purchase-info {
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flex;
+}
+
+main .text-more {
+	font-size: 14px;
 }
 
 main .price {
