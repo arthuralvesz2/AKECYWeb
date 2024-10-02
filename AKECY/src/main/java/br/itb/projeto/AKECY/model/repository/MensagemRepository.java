@@ -6,5 +6,4 @@ import br.itb.projeto.AKECY.model.entity.Mensagem;
 
 @Repository
 public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
-
 }

@@ -13,6 +13,10 @@
     align-items: center; 
 }
 
+hr {
+	border-color: #fafafa;
+}
+
 .navbar-nav:last-of-type {
     margin-right: 30px;
     margin-left: 40px;
@@ -183,4 +187,8 @@ body.dark .nav-item svg {
 
 body.dark .form-control-line {
     background-color: #333;
+}
+
+hr {
+	border-color: #121212
 }

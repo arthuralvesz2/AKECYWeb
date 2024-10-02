@@ -223,27 +223,44 @@ public class UsuarioController {
 
 	@PostMapping("/minha-conta")
 	public String updateDadosPessoais(Usuario usuarioAtualizado, HttpSession session) {
-		String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
+	    String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
 
-		if (loggedInUserEmail == null) {
-			return "redirect:/AKECY/usuario/login";
-		}
+	    if (loggedInUserEmail == null) {
+	        return "redirect:/AKECY/usuario/login";
+	    }
 
-		// Buscar o usuário logado pelo email
-		Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
-		if (usuario != null) {
-			// Atualizar os dados do usuário existente
-			usuario.setNome(usuarioAtualizado.getNome());
-			usuario.setEmail(usuarioAtualizado.getEmail());
-			usuario.setDataNasc(usuarioAtualizado.getDataNasc());
-			usuario.setCpf(usuarioAtualizado.getCpf());
-			usuario.setSexo(usuarioAtualizado.getSexo());
-			usuario.setTelefone(usuarioAtualizado.getTelefone());
+	    // Buscar o usuário logado pelo email
+	    Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
+	    if (usuario != null) {
+	        // Atualizar os dados do usuário existente
+	        usuario.setNome(usuarioAtualizado.getNome());
+	        
+	        // Verificar se o email foi alterado
+	        if (!usuarioAtualizado.getEmail().equals(loggedInUserEmail)) {
+	            usuario.setEmail(usuarioAtualizado.getEmail());
+	            usuario.setDataNasc(usuarioAtualizado.getDataNasc());
+	            usuario.setCpf(usuarioAtualizado.getCpf());
+	            usuario.setSexo(usuarioAtualizado.getSexo());
+	            usuario.setTelefone(usuarioAtualizado.getTelefone());
 
-			usuarioService.update(usuario);
-		}
+	            usuarioService.update(usuario);
 
-		return "redirect:/AKECY/usuario/minha-conta";
+	            // Invalida a sessão atual
+	            session.invalidate();
+
+	            // Redireciona para a página de login
+	            return "redirect:/AKECY/usuario/login"; 
+	        } else {
+	            usuario.setDataNasc(usuarioAtualizado.getDataNasc());
+	            usuario.setCpf(usuarioAtualizado.getCpf());
+	            usuario.setSexo(usuarioAtualizado.getSexo());
+	            usuario.setTelefone(usuarioAtualizado.getTelefone());
+
+	            usuarioService.update(usuario);
+	        }
+	    }
+
+	    return "redirect:/AKECY/usuario/minha-conta";
 	}
 
 	@GetMapping("/trocar-senha")
