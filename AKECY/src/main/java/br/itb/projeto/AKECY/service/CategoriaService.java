@@ -1,42 +1,26 @@
 package br.itb.projeto.AKECY.service;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import br.itb.projeto.AKECY.model.entity.Categoria;
+import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.model.repository.CategoriaRepository;
-import jakarta.transaction.Transactional;
+import br.itb.projeto.AKECY.model.repository.ProdutoRepository;
 
 @Service
 public class CategoriaService {
 
-	private CategoriaRepository categoriaRepository;
+    private CategoriaRepository categoriaRepository;
+    private ProdutoRepository produtoRepository; // Adicione esta linha
 
-	public CategoriaService(CategoriaRepository categoriaRepository) {
-		super();
-		this.categoriaRepository = categoriaRepository;
-	}
-	
-	public List<Categoria> findAll(){
-		List<Categoria> categorias = categoriaRepository.findAll();
-		return categorias;
-	}
-	
-	@Transactional
-	public Categoria create(Categoria categoria) {
-		
-		return categoriaRepository.save(categoria);
-	}
-	
-	public Categoria findById(long id) {
-		
-		Optional<Categoria> categoria = categoriaRepository.findById(id);
-		
-		if(categoria.isPresent()) {
-			return categoria.get();
-		}
-	   
-		return null;	
-	}
-	
+    public CategoriaService(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository) { // Modifique esta linha
+        super();
+        this.categoriaRepository = categoriaRepository;
+        this.produtoRepository = produtoRepository; // Adicione esta linha
+    }
+
+    public List<Produto> findProdutosByNomeCategoria(String nomeCategoria) {
+        Categoria categoria = categoriaRepository.findByNome(nomeCategoria);
+        return produtoRepository.findByCategoria(categoria);
+    }
 }
