@@ -137,7 +137,6 @@ hr {
 .toggle-theme i {
     font-size: 1.5rem;
     position: absolute;
-    transition: transform 0.5s ease, opacity 0.5s ease, color 0.5s ease;
 }
 
 .fa-sun {
