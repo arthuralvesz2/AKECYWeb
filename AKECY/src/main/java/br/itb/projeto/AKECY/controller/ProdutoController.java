@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.rest.response.MessageResponse;
 import br.itb.projeto.AKECY.service.ProdutoService;
@@ -139,5 +141,19 @@ public class ProdutoController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
+    @GetMapping("buscar")
+    public String buscarProdutos(@RequestParam("q") String query, Model model) {
+        List<Produto> produtos = produtoService.findByNomeContainingIgnoreCase(query);
+
+        for (Produto produto : produtos) {
+            if (produto.getFoto1() != null) {
+                String base64Image = Base64.getEncoder().encodeToString(produto.getFoto1());
+                produto.setBase64Image(base64Image);
+            }
+        }
+
+        model.addAttribute("produtos", produtos);
+        return "buscar";
+    }
     
 }

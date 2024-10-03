@@ -9,10 +9,12 @@ import br.itb.projeto.AKECY.model.entity.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-    @Query(value = "SELECT * FROM Produto ORDER BY NEWID() OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY", nativeQuery = true)
-    List<Produto> findRandom10Products();
-    
-    List<Produto> findAllByOrderByIdProdutoDesc();
-    
-    List<Produto> findByCategoria(Categoria categoria);
-}
+	@Query(value = "SELECT * FROM Produto ORDER BY NEWID() OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY", nativeQuery = true)
+	List<Produto> findRandom10Products();
+
+	List<Produto> findAllByOrderByIdProdutoDesc();
+
+	List<Produto> findByCategoria(Categoria categoria);
+
+	List<Produto> findByNomeContainingIgnoreCase(String nome);
+}	

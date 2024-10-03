@@ -18,15 +18,15 @@ public class ProdutoService {
 		super();
 		this.produtoRepository = produtoRepository;
 	}
-	
-	public List<Produto> findAll(){
+
+	public List<Produto> findAll() {
 		List<Produto> produtos = produtoRepository.findAll();
 		return produtos;
 	}
-	
+
 	@Transactional
 	public Produto create(Produto produto) {
-		
+
 		produto.setIdProduto(null);
 		produto.setNome(null);
 		produto.setDescricao(null);
@@ -40,62 +40,63 @@ public class ProdutoService {
 		produto.setPreco(null);
 		produto.setCategoria(null);
 		produto.setStatusProd("ATIVO");
-		
+
 		return produtoRepository.save(produto);
 	}
-	
+
 	public Optional<Produto> findById(Long id) {
-        return produtoRepository.findById(id);
-    }
-	
+		return produtoRepository.findById(id);
+	}
+
 	@Transactional
 	public Produto inativar(long id) {
-		Optional<Produto> _produto = 
-				produtoRepository.findById(id);
-		
+		Optional<Produto> _produto = produtoRepository.findById(id);
+
 		if (_produto.isPresent()) {
 			Produto produtoAtualizado = _produto.get();
 			produtoAtualizado.setStatusProd("INATIVO");
-			
+
 			return produtoRepository.save(produtoAtualizado);
 		}
 		return null;
 	}
-	
+
 	@Transactional
 	public Produto alterar(long id, Produto produto) {
-		Optional<Produto> _produto = 
-				produtoRepository.findById(id);
-		
+		Optional<Produto> _produto = produtoRepository.findById(id);
+
 		if (_produto.isPresent()) {
 			Produto produtoAtualizado = _produto.get();
-			
+
 			produtoAtualizado.setPreco(produto.getPreco());
-			
+
 			return produtoRepository.save(produtoAtualizado);
 		}
 		return null;
 	}
-	
+
 	@Transactional
 	public Produto reativar(long id) {
-		Optional<Produto> _produto = 
-				produtoRepository.findById(id);
-		
-		if(_produto.isPresent()) {
+		Optional<Produto> _produto = produtoRepository.findById(id);
+
+		if (_produto.isPresent()) {
 			Produto produtoAtualizado = _produto.get();
 			produtoAtualizado.setStatusProd("ATIVO");
-			
+
 			return produtoRepository.save(produtoAtualizado);
 		}
 		return null;
 	}
-	
-	    public List<Produto> getProdutosEmDestaque() {
-	        return produtoRepository.findRandom10Products(); 
-	    }
-	    
-	    public List<Produto> getProdutosRecentes() {
-	        return produtoRepository.findAllByOrderByIdProdutoDesc(); 
-	    }
+
+	public List<Produto> getProdutosEmDestaque() {
+		return produtoRepository.findRandom10Products();
 	}
+
+	public List<Produto> getProdutosRecentes() {
+		return produtoRepository.findAllByOrderByIdProdutoDesc();
+	}
+
+	public List<Produto> findByNomeContainingIgnoreCase(String query) {
+		return produtoRepository.findByNomeContainingIgnoreCase(query);
+	}
+}
