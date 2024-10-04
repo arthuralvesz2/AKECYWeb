@@ -81,7 +81,6 @@ public class AKECYController {
 	public String salvarMensagem(@ModelAttribute Mensagem mensagem, 
 	                             BindingResult result, RedirectAttributes attributes) {
 	    if (result.hasErrors()) {
-	        // Verifica erros em campos específicos
 	        if (result.hasFieldErrors("nome")) {
 	            attributes.addFlashAttribute("erroNome", 
 	                                         "Por favor, insira um nome válido (apenas letras).");
@@ -94,9 +93,6 @@ public class AKECYController {
 	            attributes.addFlashAttribute("erroTelefone", 
 	                                         "Por favor, insira um telefone válido.");
 	        }
-	        // Adicione mais verificações para outros campos, se necessário
-
-	        // Retorna para o formulário com as mensagens de erro
 	        return "fale-conosco"; 
 	    }
 

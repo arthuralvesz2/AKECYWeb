@@ -16,6 +16,15 @@ main {
     text-align: center;
 }
 
+.destacado {
+    color: #FAF8F5;
+    text-transform: uppercase;
+    font-size: 30px;
+    text-align: center;
+	margin-top: 20%;
+	margin-bottom: 11%;
+}
+
 .item a {
 	text-decoration: none;
 }

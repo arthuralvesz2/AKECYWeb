@@ -15,9 +15,3 @@ window.addEventListener("load", () => {
         document.querySelector("#theme-checkbox").checked = true;
     }
 });
-
-function performSearch(event) {
-  event.preventDefault();
-  const searchTerm = document.getElementById('searchInput').value;
-  window.location.href = `/AKECY/produto/buscar?q=${searchTerm}`;
-}

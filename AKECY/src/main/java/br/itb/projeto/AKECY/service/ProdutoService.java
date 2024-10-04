@@ -95,8 +95,8 @@ public class ProdutoService {
 	public List<Produto> getProdutosRecentes() {
 		return produtoRepository.findAllByOrderByIdProdutoDesc();
 	}
-
-	public List<Produto> findByNomeContainingIgnoreCase(String query) {
-		return produtoRepository.findByNomeContainingIgnoreCase(query);
-	}
+	
+    public List<Produto> buscarProdutosPorPalavraChave(String palavraChave) {
+        return produtoRepository.findByNomeContainingIgnoreCaseOrDescricaoContainingIgnoreCase(palavraChave, palavraChave);
+    }
 }

@@ -143,17 +143,18 @@ public class ProdutoController {
     
     @GetMapping("buscar")
     public String buscarProdutos(@RequestParam("q") String query, Model model) {
-        List<Produto> produtos = produtoService.findByNomeContainingIgnoreCase(query);
-
+        List<Produto> produtos = produtoService.buscarProdutosPorPalavraChave(query);
+        
         for (Produto produto : produtos) {
             if (produto.getFoto1() != null) {
                 String base64Image = Base64.getEncoder().encodeToString(produto.getFoto1());
                 produto.setBase64Image(base64Image);
             }
         }
-
+        
         model.addAttribute("produtos", produtos);
-        return "buscar";
+        model.addAttribute("termoPesquisa", query);
+        return "buscar"; 
     }
     
 }
