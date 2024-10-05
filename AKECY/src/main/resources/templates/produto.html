@@ -61,10 +61,17 @@
 					<div class='divider'></div>
 
 					<div class='purchase-info'>
-						<div class='price'> R$ <span id="product-price" th:text="${produto.preco}"></span> </div>
+						<div class='price'>
+							R$ <span id="product-price" th:text="${produto.preco}"></span>
+						</div>
+						<div class="favoritar">
+						    <i id="favorito-icon" class="fa-regular fa-star" 
+						       th:onclick="'favoritarProduto(' + ${produto.idProduto} + ');'"></i> 
+						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 	</main>
 

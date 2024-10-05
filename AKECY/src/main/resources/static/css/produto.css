@@ -206,6 +206,13 @@ main .price {
 	color: #ffa600;
 }
 
+.favoritar {
+	position: absolute;
+	font-size: 35px;
+	margin-left: 465px;
+	cursor: pointer;
+}
+
 body.dark main .container {
 	background: #fafafa;
 }
