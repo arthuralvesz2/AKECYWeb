@@ -1,0 +1,139 @@
+.box {
+	margin-top: 8%;
+	margin-bottom: 12%;
+	margin-left: 25%;
+	width: 1000px;
+	padding: 70px;
+	background: rgb(29, 29, 29);
+	box-sizing: border-box;
+	box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+	border-radius: 10px;
+}
+
+.box h2 {
+	margin: 0 0 30px;
+	padding: 0;
+	color: #fafafa;
+	text-align: center;
+}
+
+.box .user-box {
+	position: relative;
+}
+
+.box .user-box input {
+	width: 100%;
+	padding: 10px 0;
+	font-size: 16px;
+	color: #fafafa;
+	margin-bottom: 30px;
+	border: none;
+	border-bottom: 1px solid #fafafa;
+	outline: none;
+	background: transparent;
+}
+
+.box .user-box label {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px 0;
+	margin-left: 10px;
+	font-size: 16px;
+	color: #fafafa;
+	pointer-events: none;
+	transition: .5s;
+}
+
+.box .user-box input:not(:placeholder-shown)~label, .box .user-box input:focus ~ label {
+	top: -20px;
+	left: 0;
+	color: #ffa600;
+	font-size: 12px;
+}
+
+.sair {
+	text-decoration: none;
+	color: #ffa600;
+	position: absolute;
+	right: 495px;
+	font-size: 18px;
+}
+
+.trocar-senha {
+	text-decoration: none;
+	color: #ffa600;
+	position: relative;
+	font-size: 18px;
+	bottom: -51px;
+}
+
+input[type=submit] {
+	background-color: #ffa600;
+	border: none;
+	color: white;
+	padding: 10px 50px;
+	text-align: center;
+	margin-left: 10px;
+	text-decoration: none;
+	display: inline-block;
+	text-transform: uppercase;
+	font-size: 18px;
+	-webkit-box-shadow: 0 10px 30px 0 rgba(255, 166, 0, 0.1);
+	box-shadow: 0 10px 30px 0 rgba(255, 166, 0, 0.2);
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+	margin: 5px 10px 40px 585px;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+input[type=submit]:hover {
+	background-color: rgb(210, 137, 0);
+}
+
+input[type=submit]:active {
+	-moz-transform: scale(0.95);
+	-webkit-transform: scale(0.95);
+	-o-transform: scale(0.95);
+	-ms-transform: scale(0.95);
+	transform: scale(0.95);
+}
+
+body.dark {
+	background-color: #fafafa;
+	color: #121212;
+}
+
+body.dark .box {
+	background-color: #fafafa;
+	color: #121212;
+}
+
+body.dark .box h2,
+body.dark .box .user-box input,
+body.dark .box .user-box label,
+body.dark .link,
+body.dark p {
+	color: #121212;
+}
+
+body.dark .mensagemSenha,
+body.dark .mensagemLogin {
+	color: rgb(232, 151, 0)
+}
+
+body.dark input[type=submit]:hover {
+	background-color: rgb(255, 181, 43);
+}
+
+body.dark .box .user-box input {
+	border-bottom: 1px solid #121212;
+}
+
+body.dark .box .user-box input:not(:placeholder-shown)~label {
+	color: #ffa600;
+}
