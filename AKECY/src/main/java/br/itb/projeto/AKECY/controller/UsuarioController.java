@@ -1,7 +1,9 @@
 package br.itb.projeto.AKECY.controller;
 
 import java.util.Base64;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.itb.projeto.AKECY.service.FavoritoService;
+import br.itb.projeto.AKECY.model.entity.Favorito;
+import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.model.entity.Usuario; 
 
 import br.itb.projeto.AKECY.service.UsuarioService;
@@ -22,6 +27,9 @@ import jakarta.servlet.http.HttpSession;
 public class UsuarioController {
 
 	private final UsuarioService usuarioService;
+	
+    @Autowired
+    private FavoritoService favoritoService;
 
 	public UsuarioController(UsuarioService usuarioService) {
 		this.usuarioService = usuarioService;
@@ -343,5 +351,29 @@ public class UsuarioController {
 		}
 		return "false";
 	}
+	
+    @GetMapping("/favoritos")
+    public String listarFavoritos(Model model, HttpSession session) {
+        String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
+
+        if (loggedInUserEmail != null) {
+            Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
+            List<Favorito> favoritos = favoritoService.findByUsuario(usuario);
+
+            List<Produto> produtos = favoritos.stream()
+                    .map(Favorito::getProduto)
+                    .toList();
+
+            for (Produto produto : produtos) {
+                if (produto.getFoto1() != null) {
+                    String base64Image = Base64.getEncoder().encodeToString(produto.getFoto1());
+                    produto.setBase64Image(base64Image);
+                }
+            }
+
+            model.addAttribute("produtos", produtos);
+        }
+        return "favoritos"; 
+    }
 
 }

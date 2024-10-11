@@ -68,11 +68,10 @@
 									</span>
 								</div>
 							</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<ul th:if="${session.loggedInUser != null}" class="dropdown-menu"
+								aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item" href="/AKECY/usuario/favoritos">Favoritos</a></li>
-								<li><a class="dropdown-item"
-										th:href="${session.loggedInUser != null} ? '/AKECY/usuario/minha-conta' : '/AKECY/usuario/login'">Minha
-										Conta</a></li>
+								<li><a class="dropdown-item" href="/AKECY/usuario/minha-conta">Minha Conta</a></li>
 								<li><a class="dropdown-item" href="/AKECY/usuario/logout">Sair</a></li>
 							</ul>
 						</li>
