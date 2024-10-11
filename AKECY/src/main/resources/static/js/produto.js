@@ -1,28 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() { 
-
   const mainImage = document.getElementById('main-product-image'); 
-  mainImage.src = document.getElementById('foto-1').src;
+  
+  const firstImage = document.getElementById('foto-1');
+  if (firstImage) {
+    mainImage.src = firstImage.src;
+  }
 
-  document.getElementById('foto-1').addEventListener('click', function() {
-    mainImage.src = this.src;
-  });
+  for (let i = 1; i <= 5; i++) {
+    const img = document.getElementById('foto-' + i);
+    if (img) {
+      img.addEventListener('click', function() {
+        mainImage.src = this.src;
+      });
+    }
+  }
 
-
-  document.getElementById('foto-2').addEventListener('click', function() {
-    mainImage.src = this.src;
-  });
-
-  document.getElementById('foto-3').addEventListener('click', function() {
-    mainImage.src = this.src;
-  });
-
-  document.getElementById('foto-4').addEventListener('click', function() {
-    mainImage.src = this.src;
-  });
-
-  document.getElementById('foto-5').addEventListener('click', function() {
-    mainImage.src = this.src;
-  });
+  const favoritoIcon = document.getElementById('favorito-icon');
+  if (favoritoIcon) {
+    const isFavorite = favoritoIcon.classList.contains('fa-solid');
+    if (isFavorite) {
+      favoritoIcon.style.color = 'orange';
+    }
+  }
 });
 
 function favoritarProduto(idProduto) {
