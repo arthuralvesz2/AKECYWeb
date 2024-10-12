@@ -97,7 +97,7 @@ public class AKECYController {
 	    }
 
 	    mensagem.setDataMensagem(LocalDateTime.now());
-	    mensagem.setStatusMensagem("pendente"); 
+	    mensagem.setStatusMensagem("PENDENTE"); 
 	    mensagemService.salvarMensagem(mensagem);
 
 	    attributes.addFlashAttribute("sucesso", "Mensagem enviada com sucesso!");
