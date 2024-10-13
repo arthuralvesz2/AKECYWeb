@@ -21,18 +21,22 @@ senhaInput.addEventListener('input', () => {
 });
 
 function formatarCPF(event) {
-	const input = document.getElementById('cpf');
-    let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-
-    value = value.replace(/^(\d{3})(\d)/, '$1.$2');
-    value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
-    value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
-
-    input.value = value;
+    var input =  document.getElementById('cpf');
+    var value = input.value.replace(/\D/g, '');
+    if (value.length > 11) value = value.slice(0, 11);
+    if (value.length <= 3) {
+        input.value = value;
+    } else if (value.length <= 6) {
+        input.value = value.replace(/(\d{3})(\d+)/, '$1.$2');
+    } else if (value.length <= 9) { 
+        input.value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2-$3');
+    } else {
+        input.value = value.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4');
+    }
 }
 
 function formatarTelefone(event) {
-    var input = event.target;
+    var input =  document.getElementById('telefone');
     var value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
     if (value.length > 11) value = value.slice(0, 11); // Limita o número de dígitos a 11
     
@@ -45,18 +49,19 @@ function formatarTelefone(event) {
     }
 }
 
-function formatarData(event) {
-	var input = event.target;
-	var value = input.value.replace(/\D/g, '');
-	if (value.length > 8) value = value.slice(0, 8);
-	if (value.length <= 2) {
-	    input.value = value;
-	} else if (value.length <= 4) {
-	    input.value = value.replace(/(\d{2})(\d+)/, '$1/$2');
-	} else {
-	    input.value = value.replace(/(\d{2})(\d{2})(\d+)/, '$1/$2/$3');
-	}
 
+function formatarData(event) {
+    var input =  document.getElementById('dataNasc');
+    var value = input.value.replace(/\D/g, '');
+    if (value.length > 8) value = value.slice(0, 8);
+    if (value.length <= 2) {
+        input.value = value;
+    } else if (value.length <= 4) {
+        input.value = value.replace(/(\d{2})(\d+)/, '$1/$2');
+    } else {
+        input.value = value.replace(/(\d{2})(\d{2})(\d+)/, '$1/$2/$3');
+    }
+	
     if (value.length === 10) {
         const [dia, mes, ano] = value.split('/');
         const hoje = new Date();

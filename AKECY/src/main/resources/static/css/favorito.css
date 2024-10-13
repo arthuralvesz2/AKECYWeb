@@ -1,0 +1,10 @@
+h2 {
+	color: #fafafa;
+	font-size: 30px;
+	position: absolute;
+	right: 772px;
+}
+
+body.dark h2 {
+	color: #121212;
+}

@@ -7,13 +7,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.model.entity.Usuario;
 import jakarta.servlet.http.HttpSession;
 
@@ -23,12 +31,62 @@ public class ADMController {
 
 	@Autowired
 	private br.itb.projeto.AKECY.service.UsuarioService usuarioService;
+	
+	@Autowired
+	private br.itb.projeto.AKECY.service.ProdutoService produtoService;
 
-	@GetMapping("/adicionar-produto")
-	public String adicionar(Model model) {
-
-		return "adm-adicionar-produto";
+	@GetMapping("/cadastrar-produto")
+	public String mostrarFormularioCadastroProduto(Model model) {
+	    // Adiciona um novo objeto Produto ao modelo, se necessário
+	    model.addAttribute("produto", new Produto());
+	    
+	    return "adm-cadastrar-produto"; // Retorna a view que contém o formulário de cadastro
 	}
+
+	
+	@PostMapping("/ADM/cadastrar-produto")
+	public String cadastrarProduto(@ModelAttribute Produto produto, 
+	                               @RequestParam("foto1") MultipartFile foto1,
+	                               @RequestParam("foto2") MultipartFile foto2,
+	                               @RequestParam("foto3") MultipartFile foto3,
+	                               @RequestParam("foto4") MultipartFile foto4,
+	                               @RequestParam("foto5") MultipartFile foto5,
+	                               BindingResult result, 
+	                               RedirectAttributes attributes) {
+	    if (result.hasErrors()) {
+	        return "adm-cadastrar-produto"; // Retorna à página de cadastro em caso de erro
+	    }
+
+	    // Converte as imagens de MultipartFile para byte[]
+	    try {
+	        if (!foto1.isEmpty()) {
+	            produto.setFoto1(foto1.getBytes());
+	        }
+	        if (!foto2.isEmpty()) {
+	            produto.setFoto2(foto2.getBytes());
+	        }
+	        if (!foto3.isEmpty()) {
+	            produto.setFoto3(foto3.getBytes());
+	        }
+	        if (!foto4.isEmpty()) {
+	            produto.setFoto4(foto4.getBytes());
+	        }
+	        if (!foto5.isEmpty()) {
+	            produto.setFoto5(foto5.getBytes());
+	        }
+	    } catch (IOException e) {
+	        attributes.addFlashAttribute("erro", "Erro ao processar as imagens.");
+	        return "adm-cadastrar-produto"; // Retorna à página de cadastro em caso de erro
+	    }
+
+	    // Use o método create (ou save) para persistir o produto
+	    produtoService.create(produto); // ou produtoService.save(produto);
+	    
+	    attributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
+	    return "redirect:/AKECY/ADM/cadastrar-produto"; // Redirecionar após sucesso
+	}
+
+
 
 	@GetMapping("/editar-produtos")
 	public String editarProdutos(Model model) {

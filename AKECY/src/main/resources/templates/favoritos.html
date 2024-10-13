@@ -11,17 +11,21 @@
 	<link rel="stylesheet" href="/css/body.css" />
 	<link rel="stylesheet" href="/css/header.css" />
 	<link rel="stylesheet" href="/css/footer.css" />
+	<link rel="stylesheet" href="/css/favorito.css" />
 	<link rel="stylesheet" href="/css/produtos-grid.css" />
 </head>
 
 <body>
 	<div th:replace="~{fragments/header :: header}"></div> 
 	<main>
-	  <div class="produtos"> 
+	  <div class="produtos">
+	    <div th:if="${#lists.isEmpty(produtos)}">
+	      <h2 class="nenhum"> Nenhum produto favoritado </h2>
+	    </div>
 	    <div th:each="produto : ${produtos}" class="item"> 
 	      <a th:href="@{/AKECY/produto/{id}(id=${produto.idProduto})}">
-	        <img class="itemimg" th:if="${produto.base64Image != null}"
-	          th:src="@{'data:image/png;base64,' + ${produto.base64Image}}">
+	        <img class="itemimg" th:if="${produto.base64Image != null}" 
+	             th:src="@{'data:image/png;base64,' + ${produto.base64Image}}"/>
 	        <p class="n1" th:text="${produto.nome}"></p>
 	        <p class="n2" th:text="${produto.descricao}"></p>
 	        <p class="n3" th:text="'R$ ' + ${produto.preco}"></p>

@@ -64,16 +64,14 @@
 					</div>
 					<div class="row gx-3 mb-3">
 						<div class="col-md-6 user-box">
-							<input list="sex" type="text" placeholder="ㅤ"
-								pattern="Masculino|Feminino|Prefiro não informar" th:field="*{sexo}">
+							<input list="sexoSelecionar" placeholder="ㅤ" th:field="*{sexo}" th:value="${usuario.sexo}">
 							<label> Sexo </label>
-							<datalist id="sex">
-								<option value="Masculino">
-								<option value="Feminino">
-								<option value="Prefiro não informar">
+							<datalist id="sexoSelecionar">
+								<option value="Masculino"></option>
+								<option value="Feminino"></option>
+								<option value="Prefiro não informar"></option>
 							</datalist>
 						</div>
-
 						<div class="col-md-6 user-box">
 							<input id="telefone" type="text" placeholder="ㅤ" pattern="\(\d{2}\) \d \d{4}-\d{4}"
 								maxlength="16" minlength="16"

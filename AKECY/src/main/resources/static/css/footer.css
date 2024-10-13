@@ -6,7 +6,7 @@ footer {
 
 hr {
     margin-top: 50px;
-    color: #fafafa;
+    border-color: #fafafa;
 }
 
 .img-footer {
@@ -20,4 +20,22 @@ hr {
 
 body.dark footer {
     color: #121212;
+}
+
+body.dark hr {
+	border-color: #121212;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
