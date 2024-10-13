@@ -46,7 +46,7 @@
 				</div>
 
 				<div class="user-box">
-					<input id="dataNasc" th:field="*{dataNasc}" placeholder="ㅤ" type="text" oninput="formatarData()"
+					<input id="dataNasc" th:field="*{dataNasc}" placeholder="ㅤ" type="text" oninput="formatarData(event)"
 						required>
 					<label> Data de nascimento </label>
 				</div>
@@ -54,19 +54,18 @@
 				<div class="user-box">
 					<input id="cpf" th:field="*{cpf}" placeholder="ㅤ" type="text" maxlength="14"
 						pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
-						oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarCPF()" required>
+						oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarCPF(event)" required>
 					<label> CPF </label>
 				</div>
 
 				<div class="user-box">
 					<input id="telefone" type="text" th:field="*{telefone}" placeholder="ㅤ"
 						pattern="\(\d{2}\) \d \d{4}-\d{4}" maxlength="16" minlength="16"
-						oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarTelefone()" required>
+						oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatarTelefone(event)" required>
 					<label> Telefone </label>
 				</div>
 
 				<p id="mensagemSenha" class="mensagem"></p>
-
 
 				<input type="submit" value="Cadastrar" id="cadastrar">
 				<p class="baixo-botao login"> Já tem conta? <a class="link" href="login">Faça login aqui</a></p>

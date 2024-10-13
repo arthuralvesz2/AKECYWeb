@@ -131,15 +131,15 @@ function salvarLinha(link, idUsuario) {
         data[input.name] = input.value;
     }
 
-	var sexoCell = row.querySelector('.sexo-cell');
-	data.sexo = sexoCell.querySelector('button').getAttribute('data-sexo');
-	
-	// Atualiza status e nível
-	var statusAtual = row.querySelector('.status-cell .status-btn').getAttribute('data-status');
-	data.statusUsuario = statusAtual === 'ATIVO' ? 'ATIVO' : 'INATIVO'; // Certifique-se que a lógica aqui está correta
+    var sexoCell = row.querySelector('.sexo-cell');
+    data.sexo = sexoCell.querySelector('button').getAttribute('data-sexo');
+    
+    // Atualiza status e nível
+    var statusAtual = row.querySelector('.status-cell .status-btn').getAttribute('data-status');
+    data.statusUsuario = statusAtual === 'ATIVO' ? 'ATIVO' : 'INATIVO'; // Certifique-se que a lógica aqui está correta
 
-	var nivelAtual = row.querySelector('.nivel-cell .nivel-btn').getAttribute('data-nivel');
-	data.nivelAcesso = nivelAtual;
+    var nivelAtual = row.querySelector('.nivel-cell .nivel-btn').getAttribute('data-nivel');
+    data.nivelAcesso = nivelAtual;
 
     fetch('/AKECY/ADM/salvar-usuario/' + idUsuario, {
         method: 'POST',
@@ -175,6 +175,9 @@ function salvarLinha(link, idUsuario) {
 
             linhaEditando = null;
             delete dadosTemporarios[idUsuario];
+
+            // Recarrega a página
+            location.reload(); // Adiciona esta linha para recarregar a página
         } else {
             console.error('Erro ao salvar os dados.');
         }
@@ -239,19 +242,18 @@ function formatarCPF(event) {
     }
 }
 
-function formatarTelefone() {
-    const telefoneInput = document.getElementById('telefone');
-    let telefone = telefoneInput.value.replace(/\D/g, '');
-    if (telefone.length >= 2) {
-        telefone = `(${telefone.slice(0, 2)}) ${telefone.slice(2)}`;
+function formatarTelefone(event) {
+    var input = event.target;
+    var value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    if (value.length > 11) value = value.slice(0, 11); // Limita o número de dígitos a 11
+    
+    if (value.length <= 2) {
+        input.value = value.replace(/(\d{2})/, '($1'); // Adiciona o parêntese no DDD
+    } else if (value.length <= 7) {
+        input.value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2'); // Formato para até o quinto dígito
+    } else {
+        input.value = value.replace(/(\d{2})(\d{1})(\d{4})(\d{0,4})/, '($1) $2 $3-$4'); // Formato completo
     }
-    if (telefone.length >= 6) {
-        telefone = telefone.slice(0, 6) + ' ' + telefone.slice(6);
-    }
-    if (telefone.length >= 11) {
-        telefone = telefone.slice(0, 11) + '-' + telefone.slice(11);
-    }
-    telefoneInput.value = telefone;
 }
 
 function formatarData(event) {
