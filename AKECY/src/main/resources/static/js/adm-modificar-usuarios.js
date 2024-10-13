@@ -1,10 +1,19 @@
+var linhaEditando = null; // Variável global para controlar a linha em edição
+
 function editarLinha(link) {
+    if (linhaEditando) {
+        // Impede editar outra linha se já houver uma em edição
+        return;
+    }
+
     var row = link.parentNode.parentNode;
+    linhaEditando = row; // Define a linha atual como a linha em edição
+
     var cells = row.querySelectorAll('.cell');
     var idUsuario = row.querySelector('.status-cell').getAttribute('data-id');
 
     // Transformar células em inputs com classes (exceto a célula do sexo)
-    for (var i = 0; i < 4; i++) { // Alterado de 6 para 4
+    for (var i = 0; i < 5; i++) { // Alterado de 4 para 5 para incluir a data de nascimento
         var cell = cells[i];
         var originalText = cell.innerText;
         var field = cell.getAttribute('data-field');
@@ -24,7 +33,7 @@ function editarLinha(link) {
     var statusCell = row.querySelector('.status-cell');
     var nivelCell = row.querySelector('.nivel-cell');
 
-    var statusAtual = statusCell.innerText === 'Ativo' ? 'Ativo' : 'Inativo';
+    var statusAtual = statusCell.innerText === 'Ativo' ? 'ATIVO' : 'INATIVO';
     statusCell.innerHTML = '<button class="status-btn" data-status="' + statusAtual + '" data-id="' + idUsuario + '" onclick="toggleStatus(this)">' + statusAtual + '</button>';
 
     var nivelAtual = nivelCell.innerText === 'Usuário' ? 'USER' : 'ADMIN';
@@ -51,12 +60,18 @@ function salvarLinha(link, idUsuario) {
         .then(response => {
             if (response.ok) {
                 // Atualizar a linha com os novos valores
-                for (var i = 0; i < 6; i++) {
+                for (var i = 0; i < inputs.length; i++) {
                     var cell = row.cells[i];
-                    cell.innerHTML = data[cell.getAttribute('data-field')];
+                    if (cell.getAttribute('data-field')) { // Verifica se a célula possui o atributo data-field
+                        cell.innerHTML = data[cell.getAttribute('data-field')];
+                    }
                 }
+
+                // Reverter o link para "Editar"
                 link.innerText = 'Editar';
-                link.onclick = function () { editarLinha(this); };
+                link.onclick = function() { editarLinha(this); };
+
+                linhaEditando = null; // Libera a edição de outras linhas
             } else {
                 console.error('Erro ao salvar os dados.');
             }
