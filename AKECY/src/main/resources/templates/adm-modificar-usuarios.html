@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title> ADM:AKECY - Modificar Usuários </title>
+	<link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/css/adm-body.css" />
+	<link rel="stylesheet" href="/css/adm-modificar-usuarios.css" />
+</head>
+
+<body>
+	<div th:replace="~{fragments/adm :: div}"></div>
+	<main>
+		<div class="wrapper">
+			<div class="table">
+				<div class="row header">
+					<div class="cell"> Nome completo </div>
+					<div class="cell"> Email </div>
+					<div class="cell"> Telefone </div>
+					<div class="cell"> CPF </div>
+					<div class="cell"> Sexo </div>
+					<div class="cell"> Nascimento </div>
+					<div class="cell"> Data de Cadastro </div>
+					<div class="cell"> Status </div>
+					<div class="cell"> Nivel</div>
+					<div class="cell"> </div>
+				</div>
+				<div class="row" th:each="usuario : ${usuarios}">
+					<div class="cell" th:text="${usuario.nome}" data-field="nome"></div>
+					<div class="cell" th:text="${usuario.email}" data-field="email"></div>
+					<div class="cell" th:text="${usuario.telefone}" data-field="telefone"></div>
+					<div class="cell" th:text="${usuario.cpf}" data-field="cpf"></div>
+					<div class="cell sexo-cell" th:data-id="${usuario.idUsuario}">
+					    <span th:text="${usuario.sexo != null} ? ${usuario.sexo} : 'Não definido'"></span>
+					</div>
+					<div class="cell" th:text="${usuario.dataNascFormatada}"></div>
+					<div class="cell" th:text="${usuario.dataCadastroFormatada}"></div>
+					<div class="cell status-cell" th:data-id="${usuario.idUsuario}">
+						<span th:if="${usuario.statusUsuario == 'ATIVO'}">Ativo</span>
+						<span th:if="${usuario.statusUsuario == 'INATIVO'}">Inativo</span>
+					</div>
+					<div class="cell nivel-cell" th:data-id="${usuario.idUsuario}">
+						<span th:if="${usuario.nivelAcesso.name() == 'USER'}">Usuário</span>
+						<span th:if="${usuario.nivelAcesso.name() == 'ADMIN'}">Admin</span>
+					</div>
+					<div class="cell editar">
+						<a href="#" onclick="editarLinha(this)"> Editar </a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script src="/js/adm-modificar-usuarios.js"></script>
+</body>
+
+</html>
