@@ -3,6 +3,8 @@ package br.itb.projeto.AKECY.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.time.format.DateTimeFormatter;
 
 import br.itb.projeto.AKECY.model.entity.Usuario;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/AKECY/ADM/")
@@ -69,18 +72,25 @@ public class ADMController {
 	}
 
 	@PostMapping("/salvar-usuario/{idUsuario}")
-	public String salvarUsuario(@PathVariable int idUsuario, @RequestBody Usuario usuario, Model model) {
-		Usuario usuarioExistente = usuarioService.findById(idUsuario); // Buscar usuário existente
-		if (usuarioExistente != null) {
-			usuarioExistente.setNome(usuario.getNome());
-			usuarioExistente.setEmail(usuario.getEmail());
-			usuarioExistente.setTelefone(usuario.getTelefone());
-			usuarioExistente.setCpf(usuario.getCpf());
-			usuarioExistente.setSexo(usuario.getSexo());
-			usuarioService.save(usuarioExistente); // Salvar as alterações
-		}
-		return "redirect:/AKECY/ADM/modificar-usuarios";
+	public ResponseEntity<?> salvarUsuario(@PathVariable int idUsuario, @RequestBody Usuario usuario) {
+	    Usuario usuarioExistente = usuarioService.findById(idUsuario);
+	    if (usuarioExistente != null) {
+	        usuarioExistente.setNome(usuario.getNome());
+	        usuarioExistente.setEmail(usuario.getEmail());
+	        usuarioExistente.setTelefone(usuario.getTelefone());
+	        usuarioExistente.setCpf(usuario.getCpf());
+	        usuarioExistente.setSexo(usuario.getSexo());
+	        usuarioExistente.setDataNasc(usuario.getDataNasc());
+	        usuarioExistente.setStatusUsuario(usuario.getStatusUsuario());
+	        usuarioExistente.setNivelAcesso(usuario.getNivelAcesso());
+	        
+	        usuarioService.save(usuarioExistente);
+	        return ResponseEntity.ok(usuarioExistente);
+	    }
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
 	}
+
+
 	
 	@PostMapping("/mudar-sexo/{idUsuario}/{novoSexo}")
 	public String mudarSexoUsuario(@PathVariable int idUsuario, @PathVariable String novoSexo, Model model) {
@@ -90,6 +100,12 @@ public class ADMController {
 	        usuarioService.save(usuario);
 	    }
 	    return "redirect:/AKECY/ADM/modificar-usuarios";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loggedInUser"); // Remove o atributo da sessão
+		return "redirect:/AKECY/index"; // Redireciona para a página inicial
 	}
 
 }

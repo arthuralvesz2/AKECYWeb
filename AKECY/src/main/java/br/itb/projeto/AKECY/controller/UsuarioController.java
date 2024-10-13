@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.itb.projeto.AKECY.service.FavoritoService;
 import br.itb.projeto.AKECY.model.entity.Favorito;
 import br.itb.projeto.AKECY.model.entity.Produto;
-import br.itb.projeto.AKECY.model.entity.Usuario; 
-
+import br.itb.projeto.AKECY.model.entity.Usuario;
+import br.itb.projeto.AKECY.model.entity.Usuario.NivelAcesso;
 import br.itb.projeto.AKECY.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 
@@ -75,10 +75,10 @@ public class UsuarioController {
 		Usuario _usuario = usuarioService.acessar(usuario.getEmail(), usuario.getSenha());
 
 		if (_usuario != null) {
-			if ("INATIVO".equals(_usuario.getStatusUsuario())) {
-				session.setAttribute("serverMessage", "Seu usuário está inativo.");
-				return "redirect:/AKECY/usuario/login";
-			}
+		    if ("INATIVO".equals(_usuario.getStatusUsuario())) {
+		        session.setAttribute("serverMessage", "Seu usuário está inativo.");
+		        return "redirect:/AKECY/usuario/login";
+		    }
 
 			String primeiroNome = _usuario.getNome().split(" ")[0];
 			session.setAttribute("loggedInUser", primeiroNome); // Armazena o nome na sessão
@@ -86,14 +86,14 @@ public class UsuarioController {
 			System.out.println("Nome do usuário armazenado na sessão: " + session.getAttribute("loggedInUserName"));
 			System.out.println("Email do usuário armazenado na sessão: " + session.getAttribute("loggedInUserEmail"));
 
-			if ("ADMIN".equals(_usuario.getNivelAcesso())) {
-				return "redirect:/AKECY/ADM/adicionar-produto";
+			if (_usuario.getNivelAcesso() == NivelAcesso.ADMIN) {
+			    return "redirect:/AKECY/ADM/adicionar-produto";
 			} else {
-				return "redirect:/AKECY/index";
-			}
+		        return "redirect:/AKECY/index";
+		    }
 		} else {
-			session.setAttribute("serverMessage", "Email ou senha incorretos.");
-			return "redirect:/AKECY/usuario/login";
+		    session.setAttribute("serverMessage", "Email ou senha incorretos.");
+		    return "redirect:/AKECY/usuario/login";
 		}
 	}
 

@@ -38,8 +38,8 @@ public class Usuario {
 		USER, ADMIN
 	}
 
-    @Enumerated(EnumType.STRING) 
-    private NivelAcesso nivelAcesso;
+	@Enumerated(EnumType.STRING)
+	private NivelAcesso nivelAcesso;
 	private String statusUsuario;
 
 	@Transient
@@ -123,12 +123,12 @@ public class Usuario {
 	}
 
 	public NivelAcesso getNivelAcesso() {
-		  return nivelAcesso;
-		}
+		return nivelAcesso;
+	}
 
-		public void setNivelAcesso(NivelAcesso nivelAcesso) {
-		  this.nivelAcesso = nivelAcesso;
-		}
+	public void setNivelAcesso(NivelAcesso nivelAcesso) {
+		this.nivelAcesso = nivelAcesso;
+	}
 
 	public String getStatusUsuario() {
 		return statusUsuario;
