@@ -23,4 +23,9 @@ public class CategoriaService {
         Categoria categoria = categoriaRepository.findByNome(nomeCategoria);
         return produtoRepository.findByCategoria(categoria);
     }
+    
+	public List<Categoria> findAll() {
+		List<Categoria> categorias = categoriaRepository.findAll();
+		return categorias;
+	}
 }

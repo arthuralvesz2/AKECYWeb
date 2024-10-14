@@ -76,7 +76,7 @@ input[type=submit] {
 	background-color: #ffa600;
 	border: none;
 	position: absolute;
-	right: 492px;
+	right: 510px;
 	top: 86%;
 	color: white;
 	padding: 10px 50px;
@@ -90,7 +90,6 @@ input[type=submit] {
 	box-shadow: 0 10px 30px 0 rgba(255, 166, 0, 0.2);
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
-	margin: 30px 10px 10px 1150px;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -162,6 +161,19 @@ body.dark .box {
       }
     }
   }
+}
+
+.descricaoCompleta {
+	position: absolute;
+	top: 550px;
+	left: 550px;
+}
+
+#foto1, #foto2, #foto3, #foto4, #foto5 {
+	display: none;
+	margin-top: 10%;
+	width: 150px;
+	border-radius: 5px;
 }
 
 body.dark .box h2,

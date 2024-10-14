@@ -22,80 +22,90 @@
 				<h3> Cadastrar Produto </h3>
 				<div class="row gx-3 mb-3">
 					<div class="col-md-6 user-box">
-						<input type="text" placeholder="ㅤ" maxlength="30" required th:field="*{nome}">
+						<input title="Nome principal do produto (ex.: 'Camisa Nike Corinthians')" type="text"
+							placeholder="ㅤ" maxlength="30" required th:field="*{nome}">
 						<label> Nome </label>
 					</div>
 
 					<div class="col-md-6 user-box">
-						<input type="text" placeholder="ㅤ" maxlength="50" required th:field="*{descricao}">
+						<input title="Descrição breve do produto (ex.: '2024 Masculina')" type="text" placeholder="ㅤ"
+							maxlength="50" required th:field="*{descricao}">
 						<label> Descrição </label>
 					</div>
 
 					<div class="col-md-6 user-box">
-						<input list="categoriaSelecionar" placeholder="ㅤ"
-							pattern="Masculino|Feminino|Infantil|Acessórios|Equipamentos|Bolas" th:field="*{categoria}">
+						<input title="Categoria do produto" list="categoriaSelecionar" placeholder="ㅤ"
+						       id="categoriaInput" onchange="atualizarIdCategoria()" th:field="*{categoria.nome}">
 						<label> Categoria </label>
 						<datalist id="categoriaSelecionar">
-							<option value="Masculino">
-							<option value="Feminino">
-							<option value="Infantil">
-							<option value="Acessórios">
-							<option value="Equipamentos">
-							<option value="Bolas">
+						    <option th:each="categoria : ${categorias}" 
+						            th:value="${categoria.nome}" 
+						            th:data-id="${categoria.idCategoria}">
+						    </option>
 						</datalist>
+						<input type="hidden" id="idCategoria" th:field="*{categoria.idCategoria}">
 					</div>
 
 					<div class="col-md-3 user-box">
-						<input type="text" placeholder="ㅤ" required th:field="*{preco}">
+						<input title="Preço do produto" id="valor" oninput="formatarMoeda(this)" type="text"
+							placeholder="ㅤ" required>
+						<input type="hidden" id="preco" th:field="*{preco}">
 						<label> Preço </label>
 					</div>
 
 					<div class="col-md-3 user-box">
-						<input type="text" placeholder="ㅤ" maxlength="30" required th:field="*{tamanhos_disponiveis}">
+						<input title="Digite dois espaços para separar os tamanhos (ex.: 'P - PP')" id="tamanhos"
+							type="text" placeholder="ㅤ" maxlength="30" required th:field="*{tamanhos_disponiveis}">
 						<label> Tamanhos Disponíveis </label>
 					</div>
 				</div>
 
 				<div class="row gx-3 mb-3 filesInput">
 					<div class="col">
-						<label class='fileInput'>
-							<span data-default='Selecione um arquivo'>Imagem Principal</span>
-							<input type="file" required th:field="*{foto1}">
+						<label class="fileInput">
+							<span>Imagem Principal</span>
+							<input id="input-foto1" type="file" required th:field="*{foto1}"> <br>
+							<img id="foto1" src="" />
 						</label>
 					</div>
 
-					<div class="col">
-						<label class='fileInput'>
-							<span data-default='Selecione um arquivo'>Imagem Opcional</span>
-							<input type="file" required th:field="*{foto2}">
+					<div id="foto2-container" style="display:none;" class="col">
+						<label class="fileInput">
+							<span>Imagem Opcional</span>
+							<input id="input-foto2" type="file" th:field="*{foto2}"> <br>
+							<img id="foto2" src="" />
 						</label>
 					</div>
 
-					<div class="col">
-						<label class='fileInput'>
-							<span data-default='Selecione um arquivo'>Imagem Opcional</span>
-							<input type="file" required th:field="*{foto3}">
+					<div id="foto3-container" style="display:none;" class="col">
+						<label class="fileInput">
+							<span>Imagem Opcional</span>
+							<input id="input-foto3" type="file" th:field="*{foto3}"> <br>
+							<img id="foto3" src="" />
 						</label>
 					</div>
 
-					<div class="col">
-						<label class='fileInput'>
-							<span data-default='Selecione um arquivo'>Imagem Opcional</span>
-							<input type="file" required th:field="*{foto4}">
+					<div id="foto4-container" style="display:none;" class="col">
+						<label class="fileInput">
+							<span>Imagem Opcional</span>
+							<input id="input-foto4" type="file" th:field="*{foto4}"> <br>
+							<img id="foto4" src="" />
 						</label>
 					</div>
 
-					<div class="col">
-						<label class='fileInput'>
-							<span data-default='Selecione um arquivo'>Imagem Opcional</span>
-							<input type="file" required th:field="*{foto5}">
+					<div id="foto5-container" style="display:none;" class="col">
+						<label class="fileInput">
+							<span>Imagem Opcional</span>
+							<input id="input-foto5" type="file" th:field="*{foto5}"> <br>
+							<img id="foto5" src="" />
 						</label>
 					</div>
 				</div>
-				<div class="col-md-6 user-box form">
-					<h4> Descrição Completa </h4>
-					<textarea rows="8" cols="103" maxlength="1500" th:field="*{descricao_completa}" required></textarea>
-				</div>
+			</div>
+			<div class="col-md-6 user-box form descricaoCompleta">
+				<h4> Descrição Completa </h4>
+				<textarea title="Descreva todos os detalhes do produto" rows="8" cols="103" maxlength="1500"
+					th:field="*{descricao_completa}" required></textarea>
 			</div>
 			<input type="submit" value="Cadastrar Produto">
 		</form>
