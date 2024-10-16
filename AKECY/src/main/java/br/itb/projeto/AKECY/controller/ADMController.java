@@ -57,54 +57,58 @@ public class ADMController {
 	
 	// Produto
 	
-	@GetMapping("/cadastrar-produto")
-	public String mostrarFormularioCadastroProduto(Model model) {
-		model.addAttribute("produto", new Produto());
-		List<Categoria> categorias = categoriaService.findAll();
-		model.addAttribute("categorias", categorias);
-		return "adm-cadastrar-produto";
-	}
+    @GetMapping("/cadastrar-produto")
+    public String mostrarFormularioCadastroProduto(Model model) {
+        model.addAttribute("produto", new Produto());
+        List<Categoria> categorias = categoriaService.findAll();
+        model.addAttribute("categorias", categorias);
+        return "adm-cadastrar-produto";
+    }
 
-	@PostMapping("/cadastrar-produto")
-	public String cadastrarProduto(
-	        @RequestParam("foto1") MultipartFile foto1,
-	        @RequestParam("foto2") MultipartFile foto2,
-	        @RequestParam("foto3") MultipartFile foto3,
-	        @RequestParam("foto4") MultipartFile foto4,
-	        @RequestParam("foto5") MultipartFile foto5,
-	        @ModelAttribute Produto produto,
-	        BindingResult result,
-	        RedirectAttributes attributes) {
+    @PostMapping("/cadastrar-produto")
+    public String cadastrarProduto(
+            @RequestParam("foto1") MultipartFile foto1,
+            @RequestParam("foto2") MultipartFile foto2,
+            @RequestParam("foto3") MultipartFile foto3,
+            @RequestParam("foto4") MultipartFile foto4,
+            @RequestParam("foto5") MultipartFile foto5,
+            @ModelAttribute Produto produto,
+            BindingResult result,
+            RedirectAttributes attributes) {
 
-	    if (result.hasErrors()) {
-	        return "adm-cadastrar-produto";
-	    }
+        if (result.hasErrors()) {
+            return "adm-cadastrar-produto";
+        }
 
-	    try {
-	        if (!foto1.isEmpty()) {
-	            produto.setFoto1(foto1.getBytes());
-	        }
-	        if (!foto2.isEmpty()) {
-	            produto.setFoto2(foto2.getBytes());
-	        }
-	        if (!foto3.isEmpty()) {
-	            produto.setFoto3(foto3.getBytes());
-	        }
-	        if (!foto4.isEmpty()) {
-	            produto.setFoto4(foto4.getBytes());
-	        }
-	        if (!foto5.isEmpty()) {
-	            produto.setFoto5(foto5.getBytes());
-	        }
-	    } catch (IOException e) {
-	        attributes.addFlashAttribute("erro", "Erro ao processar as imagens.");
-	        return "adm-cadastrar-produto";
-	    }
+        try {
+            if (!foto1.isEmpty()) {
+                produto.setFoto1(foto1.getBytes());
+            }
+            if (!foto2.isEmpty()) {
+                produto.setFoto2(foto2.getBytes());
+            }
+            if (!foto3.isEmpty()) {
+                produto.setFoto3(foto3.getBytes());
+            }
+            if (!foto4.isEmpty()) {
+                produto.setFoto4(foto4.getBytes());
+            }
+            if (!foto5.isEmpty()) {
+                produto.setFoto5(foto5.getBytes());
+            }
+        } catch (IOException e) {
+            attributes.addFlashAttribute("erro", "Erro ao processar as imagens.");
+            return "redirect:/AKECY/ADM/cadastrar-produto";
+        }
 
-	    produtoService.create(produto);
-	    attributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
-	    return "redirect:/AKECY/ADM/cadastrar-produto";
-	}
+        // Defina o status do produto
+        produto.setStatusProd("ATIVO");
+
+        // Salvar o produto
+        produtoService.create(produto);
+        attributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
+        return "redirect:/AKECY/ADM/cadastrar-produto";
+    }
 
 
 	@GetMapping("/modificar-produtos")

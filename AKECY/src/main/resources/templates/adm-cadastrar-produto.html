@@ -106,6 +106,9 @@
 				<textarea title="Descreva todos os detalhes do produto" rows="8" cols="103" maxlength="1500"
 					th:field="*{descricao_completa}" required></textarea>
 			</div>
+			<div th:if="${erro}" class="alert alert-danger">
+			    <p th:text="${erro}"></p>
+			</div>
 			<input type="submit" value="Cadastrar Produto">
 		</form>
 	</main>

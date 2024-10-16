@@ -26,22 +26,9 @@ public class ProdutoService {
 
 	@Transactional
 	public Produto create(Produto produto) {
+	    produto.setStatusProd("ATIVO");
 
-		produto.setIdProduto(null);
-		produto.setNome(null);
-		produto.setDescricao(null);
-		produto.setDescricao_completa(null);
-		produto.setTamanhos_disponiveis(null);
-		produto.setFoto1(null);
-		produto.setFoto2(null);
-		produto.setFoto3(null);
-		produto.setFoto4(null);
-		produto.setFoto5(null);
-		produto.setPreco(null);
-		produto.setCategoria(null);
-		produto.setStatusProd("ATIVO");
-
-		return produtoRepository.save(produto);
+	    return produtoRepository.save(produto);
 	}
 
 	public Optional<Produto> findById(Long id) {
@@ -89,11 +76,11 @@ public class ProdutoService {
 	}
 
 	public List<Produto> getProdutosEmDestaque() {
-		return produtoRepository.findRandom10Products();
+	    return produtoRepository.findRandom10ProductsFromCategories();
 	}
 
 	public List<Produto> getProdutosRecentes() {
-		return produtoRepository.findAllByOrderByIdProdutoDesc();
+	    return produtoRepository.findTop10RecentProducts();
 	}
 	
     public List<Produto> buscarProdutosPorPalavraChave(String palavraChave) {
