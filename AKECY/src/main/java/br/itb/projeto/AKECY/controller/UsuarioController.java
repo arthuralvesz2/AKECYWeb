@@ -53,7 +53,7 @@ public class UsuarioController {
 	        } else {
 	            usuario.setNivelAcesso(Usuario.NivelAcesso.USER);
 	            usuarioService.create(usuario);
-	            session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!!!");
+	            session.setAttribute("serverMessage", "Usuário cadastrado com sucesso!");
 	        }
 	    } else {
 	        session.setAttribute("serverMessage", "Usuário já cadastrado no sistema!");

@@ -39,64 +39,101 @@ public class ADMController {
 	private br.itb.projeto.AKECY.service.ProdutoService produtoService;
 
 	@Autowired
-	private br.itb.projeto.AKECY.service.CategoriaService categoriaService; // Serviço para categorias
+	private br.itb.projeto.AKECY.service.CategoriaService categoriaService;
 
+	// Base
+	
+	@GetMapping("/cadastrar")
+	public String cadastrar(Model model) {
+
+		return "adm-cadastrar";
+	}
+
+	@GetMapping("/modificar")
+	public String modificar(Model model) {
+
+		return "adm-modificar";
+	}
+	
+	// Produto
+	
 	@GetMapping("/cadastrar-produto")
 	public String mostrarFormularioCadastroProduto(Model model) {
 		model.addAttribute("produto", new Produto());
-		List<Categoria> categorias = categoriaService.findAll(); // Buscar todas as categorias
+		List<Categoria> categorias = categoriaService.findAll();
 		model.addAttribute("categorias", categorias);
 		return "adm-cadastrar-produto";
 	}
 
 	@PostMapping("/cadastrar-produto")
-	public String cadastrarProduto(@ModelAttribute Produto produto, @RequestParam("foto1") MultipartFile foto1,
-			@RequestParam("foto2") MultipartFile foto2, @RequestParam("foto3") MultipartFile foto3,
-			@RequestParam("foto4") MultipartFile foto4, @RequestParam("foto5") MultipartFile foto5,
-			BindingResult result, RedirectAttributes attributes) {
+	public String cadastrarProduto(
+	        @RequestParam("foto1") MultipartFile foto1,
+	        @RequestParam("foto2") MultipartFile foto2,
+	        @RequestParam("foto3") MultipartFile foto3,
+	        @RequestParam("foto4") MultipartFile foto4,
+	        @RequestParam("foto5") MultipartFile foto5,
+	        @ModelAttribute Produto produto,
+	        BindingResult result,
+	        RedirectAttributes attributes) {
 
-		if (result.hasErrors()) {
-			return "adm-cadastrar-produto";
-		}
+	    if (result.hasErrors()) {
+	        return "adm-cadastrar-produto";
+	    }
 
-		String precoString = produto.getPreco().replace("R$ ", "").replace(".", "").replace(",", ".");
-		produto.setPreco(precoString);
+	    try {
+	        if (!foto1.isEmpty()) {
+	            produto.setFoto1(foto1.getBytes());
+	        }
+	        if (!foto2.isEmpty()) {
+	            produto.setFoto2(foto2.getBytes());
+	        }
+	        if (!foto3.isEmpty()) {
+	            produto.setFoto3(foto3.getBytes());
+	        }
+	        if (!foto4.isEmpty()) {
+	            produto.setFoto4(foto4.getBytes());
+	        }
+	        if (!foto5.isEmpty()) {
+	            produto.setFoto5(foto5.getBytes());
+	        }
+	    } catch (IOException e) {
+	        attributes.addFlashAttribute("erro", "Erro ao processar as imagens.");
+	        return "adm-cadastrar-produto";
+	    }
 
-		try {
-			if (!foto1.isEmpty()) {
-				produto.setFoto1(foto1.getBytes());
-			}
-			if (!foto2.isEmpty()) {
-				produto.setFoto2(foto2.getBytes());
-			}
-			if (!foto3.isEmpty()) {
-				produto.setFoto3(foto3.getBytes());
-			}
-			if (!foto4.isEmpty()) {
-				produto.setFoto4(foto4.getBytes());
-			}
-			if (!foto5.isEmpty()) {
-				produto.setFoto5(foto5.getBytes());
-			}
-		} catch (IOException e) {
-			attributes.addFlashAttribute("erro", "Erro ao processar as imagens.");
-			return "adm-cadastrar-produto";
-		}
-
-		produtoService.create(produto);
-
-		attributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
-		return "redirect:/AKECY/ADM/cadastrar-produto";
+	    produtoService.create(produto);
+	    attributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
+	    return "redirect:/AKECY/ADM/cadastrar-produto";
 	}
 
-	@GetMapping("/editar-produtos")
-	public String editarProdutos(Model model) {
 
-		return "adm-editar-produtos";
+	@GetMapping("/modificar-produtos")
+	public String modificarProdutos(Model model) {
+
+		return "adm-modificar-produtos";
+	}
+	
+	// Cupom
+
+
+	@GetMapping("/cadastrar-cupom")
+	public String cadatrarCupom(Model model) {
+
+		return "adm-cadastrar-cupom";
 	}
 
-	@GetMapping("/modificar-usuarios")
-	public String ModificarUsuarios(Model model) {
+	
+	@GetMapping("/modificar-cupom")
+	public String modificarCupom(Model model) {
+
+		return "adm-modificar-cupom";
+	}
+
+
+	// Usuário
+	
+	@GetMapping("/usuarios")
+	public String usuarios(Model model) {
 		List<Usuario> usuarios = usuarioService.findAllOrderByDataCadastroDesc();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -108,25 +145,25 @@ public class ADMController {
 			usuario.setDataNascFormatada(dataNascFormatada);
 		}
 		model.addAttribute("usuarios", usuarios);
-		return "adm-modificar-usuarios";
+		return "adm-usuarios";
 	}
 
 	@PostMapping("/disable/{idUsuario}")
 	public String disableUsuario(@PathVariable int idUsuario, Model model) {
 		usuarioService.disable(idUsuario);
-		return "redirect:/AKECY/ADM/modificar-usuarios";
+		return "redirect:/AKECY/ADM/usuarios";
 	}
 
 	@PostMapping("/enable/{idUsuario}")
 	public String enableUsuario(@PathVariable int idUsuario, Model model) {
 		usuarioService.enable(idUsuario);
-		return "redirect:/AKECY/ADM/modificar-usuarios";
+		return "redirect:/AKECY/ADM/usuarios";
 	}
 
 	@PostMapping("/mudar-nivel/{idUsuario}")
 	public String mudarNivelUsuario(@PathVariable int idUsuario, Model model) {
 		usuarioService.mudarNivelAcesso(idUsuario);
-		return "redirect:/AKECY/ADM/modificar-usuarios";
+		return "redirect:/AKECY/ADM/usuarios";
 	}
 
 	@PostMapping("/salvar-usuario/{idUsuario}")
@@ -155,13 +192,23 @@ public class ADMController {
 			usuario.setSexo(novoSexo);
 			usuarioService.save(usuario);
 		}
-		return "redirect:/AKECY/ADM/modificar-usuarios";
+		return "redirect:/AKECY/ADM/usuarios";
+	}
+	
+	// Mensagens
+	
+	@GetMapping("/mensagens")
+	public String mensagens(Model model) {
+
+		return "adm-mensagens";
 	}
 
+	// ADM
+	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("loggedInUser"); // Remove o atributo da sessão
-		return "redirect:/AKECY/index"; // Redireciona para a página inicial
+		session.removeAttribute("loggedInUser");
+		return "redirect:/AKECY/index";
 	}
 
 }

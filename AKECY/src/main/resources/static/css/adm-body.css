@@ -85,6 +85,15 @@ nav[role="navigation"] .edit a:before {
 	content: "";
 }
 
+
+nav[role="navigation"] .edit a:before {
+	content: "";
+}
+
+nav[role="navigation"] .message a:before {
+	content: "✉";
+}
+
 a {
 	text-decoration: none;
 	color: inherit;

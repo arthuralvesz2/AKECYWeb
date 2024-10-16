@@ -18,6 +18,7 @@
 	<main>
 		<form th:action="@{/AKECY/ADM/cadastrar-produto}" th:object="${produto}" method="post"
 			enctype="multipart/form-data" onsubmit="prodCadastrado()">
+
 			<div class="col-xl-8 box">
 				<h3> Cadastrar Produto </h3>
 				<div class="row gx-3 mb-3">
@@ -35,21 +36,19 @@
 
 					<div class="col-md-6 user-box">
 						<input title="Categoria do produto" list="categoriaSelecionar" placeholder="ㅤ"
-						       id="categoriaInput" onchange="atualizarIdCategoria()" th:field="*{categoria.nome}">
+							id="categoriaInput" onchange="atualizarIdCategoria()" th:field="*{categoria.nome}">
 						<label> Categoria </label>
 						<datalist id="categoriaSelecionar">
-						    <option th:each="categoria : ${categorias}" 
-						            th:value="${categoria.nome}" 
-						            th:data-id="${categoria.idCategoria}">
-						    </option>
+							<option th:each="categoria : ${categorias}" th:value="${categoria.nome}"
+								th:data-id="${categoria.idCategoria}">
+							</option>
 						</datalist>
 						<input type="hidden" id="idCategoria" th:field="*{categoria.idCategoria}">
 					</div>
 
 					<div class="col-md-3 user-box">
-						<input title="Preço do produto" id="valor" oninput="formatarMoeda(this)" type="text"
-							placeholder="ㅤ" required>
-						<input type="hidden" id="preco" th:field="*{preco}">
+						<input title="Preço do produto" placeholder="ㅤ" id="valor" oninput="formatarMoeda(this)"
+							th:field="*{preco}" type="text" required>
 						<label> Preço </label>
 					</div>
 
