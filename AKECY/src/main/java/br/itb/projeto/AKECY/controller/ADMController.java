@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import br.itb.projeto.AKECY.model.entity.Categoria;
+import br.itb.projeto.AKECY.model.entity.Mensagem;
 import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.model.entity.Usuario;
 import jakarta.servlet.http.HttpSession;
@@ -41,6 +42,9 @@ public class ADMController {
 
 	@Autowired
 	private br.itb.projeto.AKECY.service.CategoriaService categoriaService;
+	
+	@Autowired
+	private br.itb.projeto.AKECY.model.repository.MensagemRepository mensagemRepository;
 
 	// Base
 	
@@ -216,8 +220,9 @@ public class ADMController {
 	
 	@GetMapping("/mensagens")
 	public String mensagens(Model model) {
-
-		return "adm-mensagens";
+	    List<Mensagem> mensagens = mensagemRepository.findAll(); 
+	    model.addAttribute("mensagens", mensagens);
+	    return "adm-mensagens";
 	}
 
 	// ADM

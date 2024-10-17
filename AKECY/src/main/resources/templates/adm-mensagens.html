@@ -12,7 +12,33 @@
 <body>
 	<div th:replace="~{fragments/adm :: div}"></div>
 	<main>
+		<div class="wrapper">
+			<div class="table">
+				<div class="row header">
+					<div class="cell"> Nome </div>
+					<div class="cell"> Email </div>
+					<div class="cell"> Telefone </div>
+					<div class="cell"> Status </div>
+					<div class="cell"> Mensagem </div>
+					<div class="cell"> ‎  </div>
+				</div>
+				<div class="row" th:each="mensagem : ${mensagens}">
+					<div class="cell" th:text="${mensagem.emissorMensagem}" data-field="emissorMensagem"></div>
+					<div class="cell" th:text="${mensagem.email}" data-field="email"></div>
+					<div class="cell" th:text="${mensagem.telefone}" data-field="telefone"></div>
+					<div class="cell" th:text="${mensagem.statusMensagem}" data-field="statusMensagem"></div>
+					<div class="cell" th:text="${mensagem.texto}" data-field="texto"></div>
+					<div class="cell responder" th:if="${mensagem.statusMensagem == 'PENDENTE'}">
+						<a th:href="'mailto:' + ${mensagem.email}">Responder mensagem</a>
+					</div>
+					<div class="cell responder" th:if="${mensagem.statusMensagem != 'PENDENTE'}">
+						‎ 
+					</div>
+				</div>
 
+
+			</div>
+		</div>
 	</main>
 </body>
 
