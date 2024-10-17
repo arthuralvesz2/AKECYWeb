@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
@@ -57,8 +58,11 @@ public class ADMController {
 	
 	// Produto
 	
+	private static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
+
     @GetMapping("/cadastrar-produto")
     public String mostrarFormularioCadastroProduto(Model model) {
+        logger.info("Acessando o formulário de cadastro de produto.");
         model.addAttribute("produto", new Produto());
         List<Categoria> categorias = categoriaService.findAll();
         model.addAttribute("categorias", categorias);
@@ -76,36 +80,45 @@ public class ADMController {
             BindingResult result,
             RedirectAttributes attributes) {
 
+        logger.info("Tentando cadastrar o produto: {}", produto.getNome());
+
         if (result.hasErrors()) {
-            return "adm-cadastrar-produto";
+            logger.error("Erros encontrados ao cadastrar o produto: {}", result.getAllErrors());
+            attributes.addFlashAttribute("erro", "Erro ao cadastrar o produto. Verifique os campos."); // Mensagem de erro mais amigável
+            return "redirect:/AKECY/ADM/cadastrar-produto"; // Redireciona para o formulário com a mensagem de erro
         }
 
         try {
             if (!foto1.isEmpty()) {
                 produto.setFoto1(foto1.getBytes());
+                logger.info("Foto 1 processada.");
             }
             if (!foto2.isEmpty()) {
                 produto.setFoto2(foto2.getBytes());
+                logger.info("Foto 2 processada.");
             }
             if (!foto3.isEmpty()) {
                 produto.setFoto3(foto3.getBytes());
+                logger.info("Foto 3 processada.");
             }
             if (!foto4.isEmpty()) {
                 produto.setFoto4(foto4.getBytes());
+                logger.info("Foto 4 processada.");
             }
             if (!foto5.isEmpty()) {
                 produto.setFoto5(foto5.getBytes());
+                logger.info("Foto 5 processada.");
             }
         } catch (IOException e) {
+            logger.error("Erro ao processar as imagens: {}", e.getMessage());
             attributes.addFlashAttribute("erro", "Erro ao processar as imagens.");
             return "redirect:/AKECY/ADM/cadastrar-produto";
         }
 
-        // Defina o status do produto
         produto.setStatusProd("ATIVO");
 
-        // Salvar o produto
         produtoService.create(produto);
+        logger.info("Produto cadastrado com sucesso: {}", produto.getNome());
         attributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
         return "redirect:/AKECY/ADM/cadastrar-produto";
     }

@@ -37,6 +37,10 @@ function formatarMoeda(input) {
     document.getElementById('preco').value = (valor / 100).toFixed(2).replace('.', ',');
 }
 
+const input = document.getElementById('tamanhos');
+input.addEventListener('input', function() {
+    this.value = this.value.replace(/ {2}/g, " - ");
+});
 
 
 $(window).on("load", () => {

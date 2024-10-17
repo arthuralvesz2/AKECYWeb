@@ -47,10 +47,12 @@
 					</div>
 
 					<div class="col-md-3 user-box">
-						<input title="Preço do produto" placeholder="ㅤ" id="valor" oninput="formatarMoeda(this)"
-							th:field="*{preco}" type="text" required>
+						<input title="Preço do produto" id="valor" oninput="formatarMoeda(this)" type="text"
+							placeholder="ㅤ" required>
 						<label> Preço </label>
 					</div>
+
+					<input type="hidden" id="preco" th:field="*{preco}">
 
 					<div class="col-md-3 user-box">
 						<input title="Digite dois espaços para separar os tamanhos (ex.: 'P - PP')" id="tamanhos"
