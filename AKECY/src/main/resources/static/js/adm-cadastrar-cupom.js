@@ -1,22 +1,20 @@
 function formatarCashback(input) {
-    // Remove tudo que não é dígito ou vírgula
-    let valor = input.value.replace(/[^0-9,]/g, "");
+    let valor = input.value.replace(/\D/g, ""); // Remove tudo que não é dígito
+    valor = valor.replace(/^0+/, ""); // Remove zeros à esquerda
 
-    // Adiciona o símbolo de porcentagem
-    if (valor) {
-        valor = valor.replace(',', '.'); // Troca vírgula por ponto para manipulação numérica
-        let valorNumerico = parseFloat(valor);
-        
-        // Formata o valor com duas casas decimais
-        if (!isNaN(valorNumerico)) {
-            let cashbackFormatado = valorNumerico.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
-            input.value = cashbackFormatado;
-            
-            // Salva o valor original no campo oculto para o envio
-            document.getElementById('cashback').value = `+${valorNumerico.toFixed(1).replace('.', ',')} de cashback`;
-        }
-    } else {
+    if (valor === "") {
         input.value = "";
         document.getElementById('cashback').value = ""; // Limpa o campo oculto
+        return;
     }
+
+    // Limita o valor a 3 dígitos (para porcentagens)
+    valor = valor.slice(0, 3); 
+
+    // Formata o valor como porcentagem
+    let valorFormatado = (valor / 100).toLocaleString("pt-BR", { style: "percent", minimumFractionDigits: 1 });
+    input.value = valorFormatado.replace(".", ","); // Exibe o valor formatado
+
+    // Salva o valor original no campo oculto para o envio
+    document.getElementById('cashback').value = `+ ${valor / 100},0% de cashback`;
 }

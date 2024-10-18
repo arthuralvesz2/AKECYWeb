@@ -27,14 +27,15 @@
 				<input type="hidden" id="desconto" th:field="*{desconto}">
 
 				<div class="user-box">
-					<input title="Deixe vazio caso não tenha cashback" type="text" placeholder="ㅤ" maxlength="3"
-						required th:field="*{cashback}" id="cashbackInput" oninput="formatarCashback(this)">
+					<input title="Deixe vazio caso não tenha cashback" type="text" placeholder="ㅤ"
+						oninput="formatarCashback(this)" id="porcentagem">
 					<label> Cashback </label>
 				</div>
-				<input type="hidden" id="cashback" name="cashback" />
+				<input type="hidden" id="cashback" th:field="*{cashback}" />
 
 
-				<div class="user-box">
+
+				<div class=" user-box">
 					<input title="PROMOCAO100" type="text" placeholder="ㅤ" maxlength="100" required
 						th:field="*{codigo}">
 					<label> Código </label>
