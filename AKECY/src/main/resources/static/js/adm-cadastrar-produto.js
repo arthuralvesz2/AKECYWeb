@@ -1,5 +1,5 @@
-$(function(){  
-  $('input').change(function(){
+$(document).ready(function() {
+  $('file').change(function(){
     var label = $(this).parent().find('span'); 
     if(typeof(this.files) != 'undefined'){ 
       if(this.files.length == 0){
@@ -7,7 +7,8 @@ $(function(){
       } else {
         var file = this.files[0]; 
         var name = file.name;
-        var size = (file.size / 1048576).toFixed(3);
+        var size = (file.size / 1048576).toFixed(3);   
+
         label.addClass('withFile').text(name);
       }
     } else {

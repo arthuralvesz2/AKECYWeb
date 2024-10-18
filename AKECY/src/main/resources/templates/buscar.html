@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<div th:unless="${not #lists.isEmpty(produtos)}">
-			<p class="destacado">Nenhum produto encontrado.</p>
+			<p class="nenhum">Nenhum produto encontrado.</p>
 		</div>
 	</main>
 	<div th:replace="~{fragments/footer :: footer}"></div>

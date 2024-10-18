@@ -24,7 +24,7 @@
 
 				<div class="user-box">
 					<input th:field="*{nome}" placeholder="ㅤ" type="text" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]+" required
-						title="Por favor, Digite apenas letras!">
+						title="Por favor, digite apenas letras">
 					<label> Nome Completo </label>
 				</div>
 
@@ -35,7 +35,7 @@
 				</div>
 
 				<div class="user-box">
-					<input id="senha1" th:field="*{senha}" placeholder="ㅤ" type="password" minlength="7"
+					<input id="senha1"  th:field="*{senha}" placeholder="ㅤ" type="password" minlength="7"
 						pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$" required>
 					<label> Senha </label>
 				</div>
