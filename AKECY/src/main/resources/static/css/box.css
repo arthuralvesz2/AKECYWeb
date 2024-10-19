@@ -49,7 +49,8 @@
 	transition: .5s;
 }
 
-.login-box .user-box input:not(:placeholder-shown)~label, .login-box .user-box input:focus ~ label {
+.login-box .user-box input:not(:placeholder-shown)~label,
+.login-box .user-box input:focus~label {
 	top: -20px;
 	left: 0;
 	color: #ffa600;
@@ -105,6 +106,39 @@ input[type=submit]:active {
 .mensagem {
 	color: rgb(255, 181, 43);
 	text-align: center;
+}
+
+.erro {
+	color: rgb(255, 79, 79);
+	text-align: center;
+}
+
+.mensagem-recuperar {
+	color: rgb(255, 181, 43);
+	text-align: center;
+	position: absolute;
+	top: 225px;
+	left: 89px;
+}
+
+.erro-recuperar {
+	color: rgb(255, 79, 79);
+	text-align: center;
+	position: absolute;
+	top: 225px;
+	left: 130px;
+}
+
+.erro-recuperar-confirmar {
+	color: rgb(255, 79, 79);
+	text-align: center;
+	position: absolute;
+	top: 245px;
+	left: 80px;
+}
+
+.code {
+	left: 100px;
 }
 
 p {

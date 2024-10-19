@@ -19,7 +19,7 @@
 	<div th:replace="~{fragments/header :: header}"></div>
 	<main>
 		<div class="col-xl-8 box">
-				<h2>Trocar senha</h2>
+				<h2>Redefinir senha</h2>
 				<form th:action="@{/AKECY/usuario/trocar-senha}" th:object="${usuario}"
 					onsubmit="return verificarSenhas()" method="post">
 
@@ -40,8 +40,7 @@
 						<label> Repita a nova senha </label>
 					</div>
 
-					<p id="mensagem" class="mensagem" th:text="${serverMessage}"></p>
-					<p id="mensagemSenha" class="mensagem"></p>
+					<p id="mensagem" class="erro" th:text="${serverMessage}"></p>
 					
 					<input type="submit" value="Atualizar senha">
 					<a class="link baixo-botao" href="minha-conta"> Voltar </a>

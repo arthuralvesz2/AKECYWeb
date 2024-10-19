@@ -15,9 +15,9 @@
 </head>
 
 <body>
+	<div class="ocultar-login"></div>
 	<div th:replace="~{fragments/header :: header}"></div> 
 	<main>
-
 		<div class="login-box">
 			<h2>Login</h2>
 			<form th:action="@{/AKECY/usuario/verificar-login}" name="" th:object="${usuario}" method="post">
@@ -36,6 +36,7 @@
 
 				<p class="mensagem" th:if="${session.serverMessage}" th:text="${session.serverMessage}"></p>
 				<p class="mensagem" th:if="${serverMessage != null}" th:text="${serverMessage}"></p>
+				<p class="erro" th:if="${session.serverError != null}" th:text="${session.serverError}"></p>
 
 				<input type="submit" value="Entrar">
 

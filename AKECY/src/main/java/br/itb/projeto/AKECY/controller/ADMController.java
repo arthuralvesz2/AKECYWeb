@@ -27,6 +27,11 @@ import br.itb.projeto.AKECY.model.entity.Cupom;
 import br.itb.projeto.AKECY.model.entity.Mensagem;
 import br.itb.projeto.AKECY.model.entity.Produto;
 import br.itb.projeto.AKECY.model.entity.Usuario;
+import br.itb.projeto.AKECY.model.repository.MensagemRepository;
+import br.itb.projeto.AKECY.service.CategoriaService;
+import br.itb.projeto.AKECY.service.CupomService;
+import br.itb.projeto.AKECY.service.ProdutoService;
+import br.itb.projeto.AKECY.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -34,19 +39,19 @@ import jakarta.servlet.http.HttpSession;
 public class ADMController {
 
 	@Autowired
-	private br.itb.projeto.AKECY.service.UsuarioService usuarioService;
+	private UsuarioService usuarioService;
 
 	@Autowired
-	private br.itb.projeto.AKECY.service.CupomService cupomService;
+	private CupomService cupomService;
 
 	@Autowired
-	private br.itb.projeto.AKECY.service.ProdutoService produtoService;
+	private ProdutoService produtoService;
 
 	@Autowired
-	private br.itb.projeto.AKECY.service.CategoriaService categoriaService;
+	private CategoriaService categoriaService;
 
 	@Autowired
-	private br.itb.projeto.AKECY.model.repository.MensagemRepository mensagemRepository;
+	private MensagemRepository mensagemRepository;
 
 	// Base
 

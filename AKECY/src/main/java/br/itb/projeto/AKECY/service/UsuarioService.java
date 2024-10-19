@@ -54,6 +54,10 @@ public class UsuarioService {
 	public Usuario findByTelefone(String telefone) {
 		return usuarioRepository.findByTelefone(telefone);
 	}
+	
+	public Usuario findByCpf(String cpf) {
+		return usuarioRepository.findByCpf(cpf);
+	}
 
 	@Transactional
 	public Usuario create(Usuario usuario) {
@@ -129,20 +133,8 @@ public class UsuarioService {
 		return null;
 	}
 
-	@Transactional
-	public Usuario solicitarTrocaSenha(String emailOuTelefone) {
-		Usuario usuario = usuarioRepository.findByEmail(emailOuTelefone);
-
-		if (usuario == null) {
-			usuario = usuarioRepository.findByTelefone(emailOuTelefone);
-		}
-
-		if (usuario != null && !"INATIVO".equals(usuario.getStatusUsuario())) {
-			usuario.setStatusUsuario("TROCAR_SENHA");
-			return usuarioRepository.save(usuario);
-		}
-
-		return null;
+	public Usuario solicitarTrocaSenha(String email) {
+	    return usuarioRepository.findByEmail(email); // Busca por email, sem filtro de status
 	}
 
 	@Transactional
@@ -162,6 +154,21 @@ public class UsuarioService {
 
 	    return null;
 	}
+	
+    @Transactional
+    public Usuario updateMinhaConta(Usuario usuario) {
+        Optional<Usuario> existingUser = usuarioRepository.findById(usuario.getIdUsuario());
+
+        if (existingUser.isPresent()) {
+            Usuario usuarioAtualizado = existingUser.get();
+
+            usuarioAtualizado.setStatusUsuario("ATIVO");
+
+            return usuarioRepository.save(usuarioAtualizado);
+        }
+
+        return null;
+    }
 
 	public List<Usuario> findAllOrderByDataCadastroDesc() {
 		return usuarioRepository.findAllByOrderByDataCadastroDesc();

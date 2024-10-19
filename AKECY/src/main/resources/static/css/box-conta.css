@@ -1,6 +1,6 @@
 .box {
 	margin-top: 10%;
-	margin-bottom: 14px;
+	margin-bottom: 75px;
 	margin-left: 25%;
 	width: 1000px;
 	padding: 70px;
@@ -21,6 +21,11 @@
 	position: relative;
 }
 
+.erro {
+	color: rgb(255, 79, 79);
+	text-align: center;
+}
+
 .box .user-box input {
 	width: 100%;
 	padding: 10px 0;
@@ -31,6 +36,13 @@
 	border-bottom: 1px solid #fafafa;
 	outline: none;
 	background: transparent;
+}
+
+.mensagem-conta {
+	color: rgb(255, 181, 43);
+	text-align: center;
+	position: absolute;
+	left: 900px;
 }
 
 .box .user-box label {

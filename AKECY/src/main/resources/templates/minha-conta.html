@@ -81,8 +81,10 @@
 						</div>
 					</div>
 			</div>
+			<p class="erro-conta" th:if="${serverError != null}" th:text="${serverError}"></p>
+			<p class="mensagem-conta" th:if="${serverMessage != null}" th:text="${serverMessage}"></p>
 			<a class="trocar-senha" href="trocar-senha">
-				<i class="fas fa-key" aria-label="Trocar senha"></i> Trocar senha
+				<i class="fas fa-key" aria-label="Redefinir senha"></i> Redefinir senha
 			</a>
 			<input type="submit" value="Salvar mudanças">
 			</form>

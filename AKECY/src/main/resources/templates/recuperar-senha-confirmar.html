@@ -15,6 +15,7 @@
 </head>
 
 <body>
+	<div class="ocultar-login"></div>
 	<div th:replace="~{fragments/header :: header}"></div> 
 	<main>
 
@@ -37,6 +38,8 @@
 				<input type="submit" value="Cadastrar" id="cadastrar">
 				<p class="baixo-botao"> Lembrou da senha? <a class="link" href="login"> Faça login aqui</a></p>
 			</form>
+
+			<p class="erro-recuperar-confirmar" th:if="${serverError != null}" th:text="${serverError}"></p>
 		</div>
 
 	</main>

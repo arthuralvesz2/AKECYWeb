@@ -15,9 +15,9 @@
 </head>
 
 <body>
+	<div class="ocultar-login"></div>
 	<div th:replace="~{fragments/header :: header}"></div> 
 	<main>
-
 		<div class="login-box">
 			<h2>Recuperar Senha</h2>
 			<div id="div-email">
@@ -48,11 +48,11 @@
 					</div>
 
 					<input id="confirmar" type="submit" value="Confirmar">
-
 				</form>
 			</div>
-
-			<p class="mensagem" th:if="${serverMessage != null}" th:text="${serverMessage}"></p> <br>
+			<p class="mensagem-recuperar" th:if="${serverMessage != null}" th:text="${serverMessage}"></p>
+			<p class="erro-recuperar" th:if="${serverError != null}" th:text="${serverError}"></p>
+			<p class="erro-recuperar code" th:if="${serverErrorCode != null}" th:text="${serverErrorCode}"></p>
 			<p class="baixo-botao"> Lembrou da senha? <a class="link" href="login"> Faça login aqui</a></p>
 		</div>
 
