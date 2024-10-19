@@ -65,7 +65,7 @@ public class UsuarioService {
 
 		return usuarioRepository.save(usuario);
 	}
-
+	
 	@Transactional
 	public Usuario acessar(String email, String senha) {
 		Usuario usuario = usuarioRepository.findByEmail(email);
@@ -147,17 +147,20 @@ public class UsuarioService {
 
 	@Transactional
 	public Usuario update(Usuario usuario) {
-		Optional<Usuario> existingUser = usuarioRepository.findById(usuario.getIdUsuario());
+	    Optional<Usuario> existingUser = usuarioRepository.findById(usuario.getIdUsuario());
 
-		if (existingUser.isPresent()) {
-			Usuario usuarioAtualizado = existingUser.get();
+	    if (existingUser.isPresent()) {
+	        Usuario usuarioAtualizado = existingUser.get();
 
-			usuarioAtualizado.setStatusUsuario("ATIVO");
+	        String novaSenhaCodificada = Base64.getEncoder().encodeToString(usuario.getSenha().getBytes());
+	        usuarioAtualizado.setSenha(novaSenhaCodificada);
 
-			return usuarioRepository.save(usuarioAtualizado);
-		}
+	        usuarioAtualizado.setStatusUsuario("ATIVO");
 
-		return null;
+	        return usuarioRepository.save(usuarioAtualizado);
+	    }
+
+	    return null;
 	}
 
 	public List<Usuario> findAllOrderByDataCadastroDesc() {

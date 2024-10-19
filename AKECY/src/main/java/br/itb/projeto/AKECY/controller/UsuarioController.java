@@ -285,54 +285,57 @@ public class UsuarioController {
 			// Lidar com o caso em que o usuário não é encontrado
 			model.addAttribute("errorMessage", "Usuário não encontrado");
 			usuario = new Usuario(); // Cria um novo objeto Usuario para evitar erros no Thymeleaf
+			
 		}
 
 		model.addAttribute("usuario", usuario);
 		return "trocar-senha"; // Nome da sua view de troca de senha (ajuste se necessário)
 	}
 
-    @PostMapping("/trocar-senha")
-    public String trocarSenha(@RequestParam String senhaAtual, @RequestParam String novaSenha,
-            @RequestParam String novaSenhaConfirmacao, HttpSession session, Model model) {
+	@PostMapping("/trocar-senha")
+	public String trocarSenha(@RequestParam String senhaAtual, @RequestParam String novaSenha,
+	        @RequestParam String novaSenhaConfirmacao, HttpSession session, Model model) {
 
-        String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
+	    String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
 
-        if (loggedInUserEmail == null) {
-            return "redirect:/AKECY/usuario/login";
-        }
+	    if (loggedInUserEmail == null) {
+	        return "redirect:/AKECY/usuario/login";
+	    }
 
-        if (novaSenha == null || novaSenha.isEmpty() || novaSenhaConfirmacao == null || novaSenhaConfirmacao.isEmpty()
-                || senhaAtual == null || senhaAtual.isEmpty()) {
+	    if (novaSenha == null || novaSenha.isEmpty() || novaSenhaConfirmacao == null || novaSenhaConfirmacao.isEmpty()
+	            || senhaAtual == null || senhaAtual.isEmpty()) {
 
-            model.addAttribute("serverMessage", "Por favor, preencha todos os campos.");
-            return "trocar-senha"; 
-        }
+	        model.addAttribute("serverMessage", "Por favor, preencha todos os campos.");
+	        return "trocar-senha"; 
+	    }
 
-        if (!novaSenha.equals(novaSenhaConfirmacao)) {
-            model.addAttribute("serverMessage", "As senhas não coincidem. Por favor, verifique.");
-            return "trocar-senha"; 
-        }
+	    if (!novaSenha.equals(novaSenhaConfirmacao)) {
+	        model.addAttribute("serverMessage", "As senhas não coincidem. Por favor, verifique.");
+	        return "trocar-senha"; 
+	    }
 
-        Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
+	    Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
 
-        if (usuario != null) {
-            String senhaAtualCodificada = Base64.getEncoder().encodeToString(senhaAtual.getBytes());
-            if (!usuario.getSenha().equals(senhaAtualCodificada)) {
-                model.addAttribute("serverMessage", "Senha atual incorreta.");
-                return "trocar-senha"; 
-            }
+	    if (usuario != null) {
+	        String senhaAtualCodificada = Base64.getEncoder().encodeToString(senhaAtual.getBytes());
+	        if (!usuario.getSenha().equals(senhaAtualCodificada)) {
+	            model.addAttribute("serverMessage", "Senha atual incorreta.");
+	            return "trocar-senha"; 
+	        }
 
-            String novaSenhaCodificada = Base64.getEncoder().encodeToString(novaSenha.getBytes());
-            usuario.setSenha(novaSenhaCodificada);
-            usuarioService.update(usuario);
+	        // Codifica a nova senha em Base64
+	        String novaSenhaCodificada = Base64.getEncoder().encodeToString(novaSenha.getBytes()); 
 
-            model.addAttribute("serverMessage", "Senha alterada com sucesso!");
-        } else {
-            model.addAttribute("serverMessage", "Erro ao alterar a senha. Tente novamente.");
-        }
+	        usuario.setSenha(novaSenhaCodificada); // Salva a senha codificada
+	        usuarioService.update(usuario);
 
-        return "trocar-senha"; 
-    }
+	        model.addAttribute("serverMessage", "Senha alterada com sucesso!");
+	    } else {
+	        model.addAttribute("serverMessage", "Erro ao alterar a senha. Tente novamente.");
+	    }
+
+	    return "trocar-senha"; 
+	}
 
 	@PostMapping("/verificar-senha-atual")
 	@ResponseBody
