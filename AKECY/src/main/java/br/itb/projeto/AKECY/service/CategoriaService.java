@@ -1,6 +1,8 @@
 package br.itb.projeto.AKECY.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import br.itb.projeto.AKECY.model.entity.Categoria;
 import br.itb.projeto.AKECY.model.entity.Produto;
@@ -27,5 +29,9 @@ public class CategoriaService {
 	public List<Categoria> findAll() {
 		List<Categoria> categorias = categoriaRepository.findAll();
 		return categorias;
+	}
+	
+	public Optional<Categoria> findById(Long id) {
+		return categoriaRepository.findById(id);
 	}
 }

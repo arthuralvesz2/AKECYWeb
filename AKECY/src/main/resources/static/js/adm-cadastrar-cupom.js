@@ -1,20 +1,43 @@
-function formatarCashback(input) {
-    let valor = input.value.replace(/\D/g, ""); // Remove tudo que não é dígito
-    valor = valor.replace(/^0+/, ""); // Remove zeros à esquerda
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtém a mensagem de erro do atributo do modelo Thymeleaf
+    var mensagemErro = /*[[${error}]]*/ null; 
 
-    if (valor === "") {
-        input.value = "";
-        document.getElementById('cashback').value = ""; // Limpa o campo oculto
-        return;
+    // Verifica se há uma mensagem de erro
+    if (mensagemErro) {
+        document.getElementById('erro').textContent = mensagemErro;
     }
 
-    // Limita o valor a 3 dígitos (para porcentagens)
-    valor = valor.slice(0, 3); 
+    // Adiciona o event listener para o submit do formulário
+    document.getElementById('cupomForm').addEventListener('submit', function(event) {
+        event.preventDefault(); 
 
-    // Formata o valor como porcentagem
-    let valorFormatado = (valor / 100).toLocaleString("pt-BR", { style: "percent", minimumFractionDigits: 1 });
-    input.value = valorFormatado.replace(".", ","); // Exibe o valor formatado
+        var form = this;
+        var formData = new FormData(form);
 
-    // Salva o valor original no campo oculto para o envio
-    document.getElementById('cashback').value = `+ ${valor / 100},0% de cashback`;
-}
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => { // Analisa a resposta como JSON
+                    throw new Error(data.error); // Lança um erro com a mensagem do backend
+                });
+            }
+            return response.json(); // Analisa a resposta como JSON em caso de sucesso
+        })
+		.then(data => {
+		    if (data.message) {
+		        form.reset(); 
+		        // Exibe um alert em vez de exibir a mensagem na página
+		        alert(data.message); 
+		        // Redireciona para a página modificar-cupons
+		        window.location.href = '/AKECY/ADM/modificar-cupons'; 
+		    }
+		})
+        .catch(error => {
+            console.log(error); // Log do erro no console
+            document.getElementById('erro').textContent = error.message; // Exibe a mensagem de erro
+        });
+    });
+});

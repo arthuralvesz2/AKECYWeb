@@ -14,7 +14,7 @@
 <body>
 	<div th:replace="~{fragments/adm :: div}"></div>
 	<main>
-		<form th:action="@{/AKECY/ADM/cadastrar-cupom}" th:object="${cupom}" method="post">
+		<form id="cupomForm" th:action="@{/AKECY/ADM/cadastrar-cupom}" th:object="${cupom}" method="post">
 
 			<div class="box">
 				<h1> Cadastrar Cupom </h1> <br> <br>
@@ -28,24 +28,30 @@
 
 				<div class="user-box">
 					<input title="Deixe vazio caso não tenha cashback" type="text" placeholder="ㅤ"
-						oninput="formatarCashback(this)" id="porcentagem">
-					<label> Cashback </label>
+						oninput="formatarCashback(this)" maxlength="2" id="porcentagem">
+					<label> Porcentagem de Cashback </label>
 				</div>
 				<input type="hidden" id="cashback" th:field="*{cashback}" />
 
-
+				<div class="user-box">
+					<input title=" (Ex.: Em produtos acima de R$ 499,99)" th:field="*{descricao}" required
+						maxlength="50" type="text" placeholder="ㅤ">
+					<label> Descrição </label>
+				</div>
 
 				<div class=" user-box">
-					<input title="PROMOCAO100" type="text" placeholder="ㅤ" maxlength="100" required
-						th:field="*{codigo}">
+					<input title="(Ex.: PROMOCAO100)" type="text" oninput="formatarCodigo(this)" placeholder="ㅤ"
+						maxlength="20" required th:field="*{codigo}">
 					<label> Código </label>
+					<p id="sucesso" class="mensagem" th:if="${message}" th:text="${message}"></p>
+					<p id="erro" class="erro"></p>
 				</div>
 			</div>
 			<input type="submit" value="Cadastrar Cupom">
 		</form>
 	</main>
-	<script src="/js/adm-cadastrar-cupom.js"></script>
-	<script src="/js/adm-formatar-moeda.js"></script>
+	<script src="/js/adm-formatar-cupom.js"></script>
+	<script src="/js/adm-cadastra-cupom.js"></script>
 </body>
 
 </html>

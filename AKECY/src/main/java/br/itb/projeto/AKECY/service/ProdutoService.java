@@ -15,77 +15,100 @@ import jakarta.transaction.Transactional;
 @Service
 public class ProdutoService {
 
-    @Autowired
-    private ProdutoRepository produtoRepository;
+	@Autowired
+	private ProdutoRepository produtoRepository;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
-        super();
-        this.produtoRepository = produtoRepository;
-    }
-    
-    public Produto save(Produto produto) {
-        produto.setStatusProd("ATIVO");
-        return produtoRepository.save(produto);
-    }
+	public ProdutoService(ProdutoRepository produtoRepository) {
+		super();
+		this.produtoRepository = produtoRepository;
+	}
 
-    public List<Produto> findAll() {
-        List<Produto> produtos = produtoRepository.findAll();
-        return produtos;
-    }
+	public Produto saveNew(MultipartFile foto1, MultipartFile foto2, MultipartFile foto3, MultipartFile foto4,
+			MultipartFile foto5, Produto produto) {
 
-    public Optional<Produto> findById(Long id) {
-        return produtoRepository.findById(id);
-    }
+		try {
+			if (foto1 != null && !foto1.isEmpty()) {
+				produto.setFoto1(foto1.getBytes());
+			}
+			if (foto2 != null && !foto2.isEmpty()) {
+				produto.setFoto2(foto2.getBytes());
+			}
+			if (foto3 != null && !foto3.isEmpty()) {
+				produto.setFoto3(foto3.getBytes());
+			}
+			if (foto4 != null && !foto4.isEmpty()) {
+				produto.setFoto4(foto4.getBytes());
+			}
+			if (foto5 != null && !foto5.isEmpty()) {
+				produto.setFoto5(foto5.getBytes());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    @Transactional
-    public Produto inativar(long id) {
-        Optional<Produto> _produto = produtoRepository.findById(id);
+		produto.setStatusProd("ATIVO");
+		return produtoRepository.save(produto);
+	}
 
-        if (_produto.isPresent()) {
-            Produto produtoAtualizado = _produto.get();
-            produtoAtualizado.setStatusProd("INATIVO");
+	public List<Produto> findAll() {
+		List<Produto> produtos = produtoRepository.findAll();
+		return produtos;
+	}
 
-            return produtoRepository.save(produtoAtualizado);
-        }
-        return null;
-    }
+	public Optional<Produto> findById(Long id) {
+		return produtoRepository.findById(id);
+	}
 
-    @Transactional
-    public Produto alterar(long id, Produto produto) {
-        Optional<Produto> _produto = produtoRepository.findById(id);
+	@Transactional
+	public Produto inativar(long id) {
+		Optional<Produto> _produto = produtoRepository.findById(id);
 
-        if (_produto.isPresent()) {
-            Produto produtoAtualizado = _produto.get();
+		if (_produto.isPresent()) {
+			Produto produtoAtualizado = _produto.get();
+			produtoAtualizado.setStatusProd("INATIVO");
 
-            produtoAtualizado.setPreco(produto.getPreco());
+			return produtoRepository.save(produtoAtualizado);
+		}
+		return null;
+	}
 
-            return produtoRepository.save(produtoAtualizado);
-        }
-        return null;
-    }
+	@Transactional
+	public Produto alterar(long id, Produto produto) {
+		Optional<Produto> _produto = produtoRepository.findById(id);
 
-    @Transactional
-    public Produto reativar(long id) {
-        Optional<Produto> _produto = produtoRepository.findById(id);
+		if (_produto.isPresent()) {
+			Produto produtoAtualizado = _produto.get();
 
-        if (_produto.isPresent()) {
-            Produto produtoAtualizado = _produto.get();
-            produtoAtualizado.setStatusProd("ATIVO");
+			produtoAtualizado.setPreco(produto.getPreco());
 
-            return produtoRepository.save(produtoAtualizado);
-        }
-        return null;
-    }
+			return produtoRepository.save(produtoAtualizado);
+		}
+		return null;
+	}
 
-    public List<Produto> getProdutosEmDestaque() {
-        return produtoRepository.findRandom10ProductsFromCategories();
-    }
+	@Transactional
+	public Produto reativar(long id) {
+		Optional<Produto> _produto = produtoRepository.findById(id);
 
-    public List<Produto> getProdutosRecentes() {
-        return produtoRepository.findTop10RecentProducts();
-    }
-    
-    public List<Produto> buscarProdutosPorPalavraChave(String palavraChave) {
-        return produtoRepository.findByNomeContainingIgnoreCaseOrDescricaoContainingIgnoreCase(palavraChave, palavraChave);
-    }
+		if (_produto.isPresent()) {
+			Produto produtoAtualizado = _produto.get();
+			produtoAtualizado.setStatusProd("ATIVO");
+
+			return produtoRepository.save(produtoAtualizado);
+		}
+		return null;
+	}
+
+	public List<Produto> getProdutosEmDestaque() {
+		return produtoRepository.findRandom10ProductsFromCategories();
+	}
+
+	public List<Produto> getProdutosRecentes() {
+		return produtoRepository.findTop10RecentProducts();
+	}
+
+	public List<Produto> buscarProdutosPorPalavraChave(String palavraChave) {
+		return produtoRepository.findByNomeContainingIgnoreCaseOrDescricaoContainingIgnoreCase(palavraChave,
+				palavraChave);
+	}
 }

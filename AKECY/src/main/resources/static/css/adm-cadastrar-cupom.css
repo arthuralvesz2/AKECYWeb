@@ -27,9 +27,10 @@ body {
 	position: relative;
 }
 
-.mensagem {
-	color: rgb(255, 181, 43);
+.erro {
+	color: rgb(255, 79, 79);
 	position: absolute;
+	top: 35px;
 	text-align: center;
 }
 
@@ -70,12 +71,11 @@ input[type=submit] {
 	background-color: #ffa600;
 	border: none;
 	position: absolute;
-	right: 510px;
-	top: 86%;
+	right: 760px;
+	top: 650px;
 	color: white;
-	padding: 10px 50px;
+	padding: 10px 15px;
 	text-align: center;
-	margin-left: 10px;
 	text-decoration: none;
 	display: inline-block;
 	text-transform: uppercase;

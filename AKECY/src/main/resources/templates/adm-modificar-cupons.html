@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title> ADM:AKECY - Modificar Cupom </title>
+	<link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
+	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="/css/adm-body.css" />
+	<link rel="stylesheet" href="/css/adm-modificar-cupom.css" />
+</head>
+
+<body>
+	<div th:replace="~{fragments/adm :: div}"></div>
+	<main>
+		<div class="wrapper">
+			<div class="table">
+				<div class="row header">
+					<div class="cell"> Desconto </div>
+					<div class="cell"> Cashback </div>
+					<div class="cell"> Descrição </div>
+					<div class="cell"> Código </div>
+					<div class="cell"> Status </div>
+					<div class="cell"> </div>
+				</div>
+				<div class="row" th:each="cupom : ${cupons}">
+					<div class="cell" th:text="${cupom.desconto}" data-field="desconto"></div>
+					<div class="cell" th:text="${cupom.cashback}" data-field="cashback"></div>
+					<div class="cell" th:text="${cupom.descricao}" data-field="descricao"></div>
+					<div class="cell" th:text="${cupom.codigo}" data-field="codigo"></div>
+					<div class="cell status-cell" th:data-id="${cupom.statusCupom}">
+						<span th:if="${cupom.statusCupom == 'ATIVO'}">ATIVO</span>
+						<span th:if="${cupom.statusCupom == 'INATIVO'}">INATIVO</span>
+					</div>
+					<div class="cell editar">
+						<a href="#" onclick="editarLinha(this)"> Editar </a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script src="/js/adm-formatar-cupom.js"></script>
+	<script src="/js/adm-modificar-cupom.js"></script>
+</body>
+
+</html>
