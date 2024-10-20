@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title> ADM:AKECY - Cadastrar Produto </title>
+	<title> ADM:AKECY - Modificando Produto </title>
 	<link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
 	<meta charset="utf-8">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -16,11 +16,11 @@
 <body>
 	<div th:replace="~{fragments/adm :: div}"></div>
 	<main>
-		<form th:action="@{/AKECY/ADM/cadastrar-produto}" action="#" th:object="${produto}"
-			enctype="multipart/form-data" method="post">
+		<form th:action="@{/AKECY/ADM/modificar-produtos}" action="#" th:object="${produto}" enctype="multipart/form-data" method="post">
+		    <input type="hidden" name="idProduto" th:value="*{idProduto}" /> 
 
 			<div class="col-xl-8 box">
-				<h3> Cadastrar Produto </h3>
+				<h3> Modificar Produto </h3>
 				<div class="row gx-3 mb-3">
 					<div class="col-md-6 user-box">
 						<input title="Nome principal do produto (ex.: 'Camisa Nike Corinthians')" type="text"
@@ -47,12 +47,10 @@
 					</div>
 
 					<div class="col-md-3 user-box">
-						<input title="Preço do produto" id="valor" oninput="formatarMoeda(this)" type="text"
-							placeholder="ㅤ" required>
+						<input title="Preço do produto" id="preco" th:field="*{preco}" type="text" placeholder="ㅤ"
+							required>
 						<label> Preço </label>
 					</div>
-
-					<input type="hidden" id="preco" th:field="*{preco}">
 
 					<div class="col-md-3 user-box">
 						<input title="Digite dois espaços para separar os tamanhos (ex.: 'P - PP')" id="tamanhos"
@@ -113,11 +111,11 @@
 				<p th:text="${errorMessage}"></p>
 			</div>
 
-			<input type="submit" value="Cadastrar Produto">
+			<input type="submit" id="modificarProdutoBtn" value="Modificar Produto">
 		</form>
 	</main>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="/js/adm-cadastrar-produto.js"></script>
+	<script src="/js/adm-modificar-produto.js"></script>
 </body>
 
 </html>

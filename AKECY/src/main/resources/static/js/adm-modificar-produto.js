@@ -1,4 +1,4 @@
-document.getElementById('cadastrarProdutoBtn').addEventListener('click', function(event) {
+document.getElementById('modificarProdutoBtn').addEventListener('click', function(event) {
 
     // Validação do nome
     var nomeInput = document.getElementById('nome');
@@ -57,7 +57,7 @@ document.getElementById('cadastrarProdutoBtn').addEventListener('click', functio
 	}
 
   // Se passou pelas validações, exibe o alerta de sucesso e redireciona
-  alert("Produto cadastrado com sucesso!");
+  alert("Produto modificado com sucesso!");
   window.location.href = "/AKECY/ADM/modificar-produtos"; 
 });
 

@@ -26,7 +26,10 @@
 					<div class="cell" th:text="${mensagem.emissorMensagem}" data-field="emissorMensagem"></div>
 					<div class="cell" th:text="${mensagem.email}" data-field="email"></div>
 					<div class="cell" th:text="${mensagem.telefone}" data-field="telefone"></div>
-					<div class="cell" th:text="${mensagem.statusMensagem}" data-field="statusMensagem"></div>
+					<div class="cell status-cell" th:data-id="${mensagem.idMensagem}"> 
+					  <span th:if="${mensagem.statusMensagem == 'RESPONDIDO'}">RESPONDIDO</span>
+					  <span th:if="${mensagem.statusMensagem == 'PENDENTE'}">PENDENTE</span>
+					</div>
 					<div class="cell" th:text="${mensagem.texto}" data-field="texto"></div>
 					<div class="cell responder" th:if="${mensagem.statusMensagem == 'PENDENTE'}">
 						<a th:href="'mailto:' + ${mensagem.email}">Responder mensagem</a>
@@ -40,6 +43,7 @@
 			</div>
 		</div>
 	</main>
+	<script src="/js/adm-mensagens.js"></script>
 </body>
 
 </html>

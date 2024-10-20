@@ -17,20 +17,26 @@
 		<div class="wrapper">
 			<div class="produtos">
 				<div th:each="produto : ${produtos}" class="item">
-					<a th:href="@{/AKECY/ADM/sproduto/{id}(id=${produto.idProduto})}">
-						<img class="itemimg" th:if="${produto.base64Image != null}"
-							th:src="@{'data:image/png;base64,' + ${produto.base64Image}}">
-						<p class="n1" th:text="${produto.nome}"></p>
-						<p class="n2" th:text="${produto.descricao}"></p>
-						<p class="n3" th:text="'R$ ' + ${produto.preco}"></p>
-						<p class="n4" th:text="${produto.statusProd}"></p>
+					<a th:href="@{/AKECY/ADM/produto/{id}(id=${produto.idProduto})}">
+					    <img class="itemimg" th:if="${produto.base64Image != null}" th:src="@{'data:image/png;base64,' + ${produto.base64Image}}">
+					    <p class="n1" th:text="${produto.nome}"></p>
+					    <p class="n2" th:text="${produto.descricao}"></p>
+					    <p class="n3" th:text="'R$ ' + ${produto.preco}"></p>
 					</a>
+
+					<button class="status-btn" th:data-status="${produto.statusProd}" th:data-id="${produto.idProduto}" onclick="toggleStatusProduto(this)">
+					    <span th:text="${produto.statusProd}"></span> 
+					</button>
 				</div>
 			</div>
 	</main>
 	<script th:if="${successMessage}">
 	    alert("Produto cadastrado com sucesso!");
 	</script>
+	<script th:if="${successMessageEdit}">
+	    alert("Produto modificado com sucesso!");
+	</script>
+	<script src="/js/adm-modificar-produtos.js"></script>
 </body>
 
 </html>

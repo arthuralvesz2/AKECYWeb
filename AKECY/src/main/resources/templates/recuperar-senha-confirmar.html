@@ -38,7 +38,7 @@
 				<input type="submit" value="Cadastrar" id="cadastrar">
 				<p class="baixo-botao"> Lembrou da senha? <a class="link" href="login"> Faça login aqui</a></p>
 			</form>
-
+			<p class="erro-recuperar-confirmar" id="mensagemSenha"></p>
 			<p class="erro-recuperar-confirmar" th:if="${serverError != null}" th:text="${serverError}"></p>
 		</div>
 
@@ -46,6 +46,7 @@
 
 	<script src="/js/header.js"></script>
 	<script src="/js/cadastro.js"></script>
+	<script src="/js/verificar-senhas.js"></script>
 </body>
 
 </html>

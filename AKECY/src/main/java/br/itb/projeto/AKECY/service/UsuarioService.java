@@ -43,6 +43,19 @@ public class UsuarioService {
 		}
 	}
 	
+
+	public boolean existsByEmailAndDifferentId(String email, int idUsuario) {
+	    return usuarioRepository.existsByEmailAndIdUsuarioNot(email, idUsuario);
+	}
+
+	public boolean existsByTelefoneAndDifferentId(String telefone, int idUsuario) {
+	    return usuarioRepository.existsByTelefoneAndIdUsuarioNot(telefone, idUsuario);
+	}
+
+	public boolean existsByCpfAndDifferentId(String cpf, int idUsuario) {
+	    return usuarioRepository.existsByCpfAndIdUsuarioNot(cpf, idUsuario);
+	}
+	
 	public Usuario findById(long id) {
 		  return usuarioRepository.findById(id).orElse(null);
 		}

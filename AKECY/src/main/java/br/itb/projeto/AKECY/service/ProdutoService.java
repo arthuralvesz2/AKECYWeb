@@ -22,6 +22,33 @@ public class ProdutoService {
 		super();
 		this.produtoRepository = produtoRepository;
 	}
+	
+    @Transactional
+    public Produto save(Produto produto) {
+        return produtoRepository.save(produto);
+    }
+    
+	public void update(MultipartFile foto1, MultipartFile foto2, MultipartFile foto3, MultipartFile foto4, MultipartFile foto5, Produto produto) {
+	    try {
+	        if (foto1 != null && !foto1.isEmpty()) {
+	            produto.setFoto1(foto1.getBytes());
+	        }
+	        if (foto2 != null && !foto2.isEmpty()) {
+	            produto.setFoto2(foto2.getBytes());
+	        }
+	        if (foto3 != null && !foto3.isEmpty()) {
+	            produto.setFoto3(foto3.getBytes());
+	        }
+	        if (foto4 != null && !foto4.isEmpty()) {
+	            produto.setFoto4(foto4.getBytes());
+	        }
+	        if (foto5 != null && !foto5.isEmpty()) {
+	            produto.setFoto5(foto5.getBytes());
+	        }
+	        save(produto);
+	    } catch (IOException e) {
+	    }
+	}
 
 	public Produto saveNew(MultipartFile foto1, MultipartFile foto2, MultipartFile foto3, MultipartFile foto4,
 			MultipartFile foto5, Produto produto) {

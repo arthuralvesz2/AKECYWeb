@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -117,6 +119,71 @@ public class ADMController {
 	    model.addAttribute("produtos", produtos); 
 	    return "adm-modificar-produtos";
 	}
+	
+	@GetMapping("/produto/{id}")
+	public String editarProduto(@PathVariable("id") Long id, Model model) {
+	    Optional<Produto> optionalProduto = produtoService.findById(id);
+	    if (optionalProduto.isPresent()) {
+	        Produto produto = optionalProduto.get();
+	        model.addAttribute("produto", produto);
+	        List<Categoria> categorias = categoriaService.findAll();
+	        model.addAttribute("categorias", categorias);
+	        return "adm-modificar-produto"; // View para editar o produto
+	    } else {
+	        // Lidar com o caso em que o produto não é encontrado
+	        return "redirect:/AKECY/ADM/modificar-produtos"; 
+	    }
+	}
+	
+	@PostMapping("/modificar-produtos")
+	public String atualizarProduto(
+	        @RequestParam(value = "foto1", required = false) MultipartFile foto1,
+	        @RequestParam(value = "foto2", required = false) MultipartFile foto2,
+	        @RequestParam(value = "foto3", required = false) MultipartFile foto3,
+	        @RequestParam(value = "foto4", required = false) MultipartFile foto4,
+	        @RequestParam(value = "foto5", required = false) MultipartFile foto5,
+	        @RequestParam("idProduto") Long idProduto, 
+	        @RequestParam("nome") String nome,
+	        @RequestParam("descricao") String descricao,
+	        @RequestParam("descricao_completa") String descricaoCompleta,
+	        @RequestParam("tamanhos_disponiveis") String tamanhosDisponiveis,
+	        @RequestParam("preco") String preco,
+	        @RequestParam("categoria.idCategoria") Long idCategoria,
+	        RedirectAttributes redirectAttributes) {
+
+	    Optional<Produto> optionalProduto = produtoService.findById(idProduto);
+	    if (optionalProduto.isPresent()) {
+	        Produto produto = optionalProduto.get();
+	        produto.setNome(nome);
+	        produto.setDescricao(descricao);
+	        produto.setDescricao_completa(descricaoCompleta);
+	        produto.setTamanhos_disponiveis(tamanhosDisponiveis);
+	        produto.setPreco(preco);
+
+	        Categoria categoria = categoriaService.findById(idCategoria).orElse(null);
+	        produto.setCategoria(categoria);
+
+	        produtoService.update(foto1, foto2, foto3, foto4, foto5, produto); // Método para atualizar o produto
+
+	        redirectAttributes.addFlashAttribute("successMessageEdit", "Produto modificado com sucesso!");
+	        return "redirect:/AKECY/ADM/modificar-produtos";
+	    } else {
+	        // Lidar com o caso em que o produto não é encontrado
+	        return "redirect:/AKECY/ADM/modificar-produtos";
+	    }
+	}
+	
+	@PostMapping("/mudar-status-produto/{idProduto}")
+	public ResponseEntity<?> mudarStatusProduto(@PathVariable Long idProduto, @RequestBody Produto produto) {
+	    try {
+	        Produto produtoExistente = produtoService.findById(idProduto).orElseThrow(); 
+	        produtoExistente.setStatusProd(produto.getStatusProd());
+	        produtoService.save(produtoExistente); 
+	        return ResponseEntity.ok(produtoExistente);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
+	    }
+	}
 
 	private void encodeProductImages(Produto produto) {
 	    if (produto.getFoto1() != null) {
@@ -148,7 +215,6 @@ public class ADMController {
 	public String salvarCupom(@ModelAttribute("cupom") Cupom cupom, Model model, RedirectAttributes redirectAttributes) {
 	    try {
 	        cupomService.create(cupom); 
-	        redirectAttributes.addFlashAttribute("successMessage", "Cupom cadastrado com sucesso!"); 
 	        return "redirect:/AKECY/ADM/modificar-cupons";  
 	    } catch (DataIntegrityViolationException e) {
 	        model.addAttribute("serverError", "Código já cadastrado, por favor, tente outro.");
@@ -265,6 +331,21 @@ public class ADMController {
 		}
 		return "redirect:/AKECY/ADM/usuarios";
 	}
+	
+	@PostMapping("/verificar-duplicatas")
+	public ResponseEntity<?> verificarDuplicatas(@RequestBody Map<String, String> request, Model model) {
+	    String email = request.get("email");
+	    String telefone = request.get("telefone");
+	    String cpf = request.get("cpf");
+	    int idUsuario = Integer.parseInt(request.get("idUsuario")); 
+
+	    Map<String, Boolean> duplicatas = new HashMap<>();
+	    duplicatas.put("email", usuarioService.existsByEmailAndDifferentId(email, idUsuario));
+	    duplicatas.put("telefone", usuarioService.existsByTelefoneAndDifferentId(telefone, idUsuario));
+	    duplicatas.put("cpf", usuarioService.existsByCpfAndDifferentId(cpf, idUsuario));
+
+	    return ResponseEntity.ok(Map.of("duplicatas", duplicatas));
+	}
 
 	// Mensagens
 
@@ -273,6 +354,22 @@ public class ADMController {
 		List<Mensagem> mensagens = mensagemRepository.findAll();
 		model.addAttribute("mensagens", mensagens);
 		return "adm-mensagens";
+	}
+	
+	@PutMapping("/mensagens/{id}")
+	public ResponseEntity<?> atualizarStatusMensagem(@PathVariable Long id, @RequestBody Mensagem mensagem) {
+	    // Busca a mensagem pelo ID
+	    Optional<Mensagem> mensagemOptional = mensagemRepository.findById(id); 
+
+	    // Verifica se a mensagem existe
+	    if (mensagemOptional.isPresent()) { 
+	        Mensagem mensagemExistente = mensagemOptional.get();
+	        mensagemExistente.setStatusMensagem(mensagem.getStatusMensagem());
+	        mensagemRepository.save(mensagemExistente);
+	        return ResponseEntity.ok(mensagemExistente);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Mensagem não encontrada");
+	    }
 	}
 
 	// ADM

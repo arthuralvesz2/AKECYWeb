@@ -12,8 +12,8 @@ main {
 
 .item {
 	padding: 10px;
-	margin-left: 25px;
-	margin-right: 25px;
+	margin-left: 20px;
+	margin-right: 20px;
 	text-align: center;
 }
 
@@ -24,6 +24,11 @@ main {
 	text-align: center;
 	margin-top: 20%;
 	margin-bottom: 11%;
+}
+
+button {
+	color: #ffa600;
+	background: #171717;
 }
 
 .nenhum {
