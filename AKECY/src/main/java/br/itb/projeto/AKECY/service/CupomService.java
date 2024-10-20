@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import br.itb.projeto.AKECY.model.entity.Cupom;
+import br.itb.projeto.AKECY.model.entity.Mensagem;
 import br.itb.projeto.AKECY.model.repository.CupomRepository;
 import jakarta.transaction.Transactional;
 
@@ -24,7 +25,7 @@ public class CupomService {
 	
 	@Transactional
 	public Cupom create(Cupom cupom) {
-		
+		cupom.setStatusCupom("ATIVO");
 		return cupomRepository.save(cupom);
 	}
 	
@@ -37,6 +38,14 @@ public class CupomService {
 		}
 		
 		return null;
+	}
+	
+    public Cupom findByCodigo(String codigo) {
+        return cupomRepository.findByCodigo(codigo);
+    }
+	
+	public Cupom save(Cupom cupom) {
+	    return cupomRepository.save(cupom); 
 	}
 
 }

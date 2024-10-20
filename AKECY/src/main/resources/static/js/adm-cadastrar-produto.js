@@ -1,3 +1,26 @@
+document.getElementById('cadastrarProdutoBtn').addEventListener('click', function(event) {
+  // Validação da imagem principal
+  var inputFoto1 = document.getElementById('input-foto1');
+  if (inputFoto1.files.length == 0) {
+    alert("Selecione a foto principal do produto");
+    event.preventDefault();
+    return;
+  }
+
+  // Validação da categoria
+  var categoriaInput = document.getElementById('categoriaInput');
+  var categoriasValidas = ["Masculino", "Feminino", "Infantil", "Acessórios", "Equipamento", "Bolas"];
+  if (!categoriasValidas.includes(categoriaInput.value)) {
+    alert("Selecione uma categoria válida.");
+    event.preventDefault();
+    return;
+  }
+
+  // Se passou pelas validações, exibe o alerta de sucesso e redireciona
+  alert("Produto cadastrado com sucesso!");
+  window.location.href = "/AKECY/ADM/modificar-produtos"; 
+});
+
 $(document).ready(function() {
   $('file').change(function(){
     var label = $(this).parent().find('span'); 
@@ -23,7 +46,6 @@ const input = document.getElementById('tamanhos');
 input.addEventListener('input', function() {
     this.value = this.value.replace(/ {2}/g, " - ");
 });
-
 
 $(window).on("load", () => {
   $(() => {
@@ -111,7 +133,6 @@ $(document).ready(function() {
         }
     }
 });
-
 
 function formatarMoeda(input) {
     let valor = input.value.replace(/\D/g, ""); // Remove tudo que não é dígito

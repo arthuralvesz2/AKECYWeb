@@ -18,21 +18,21 @@ input {
 	background: #171717;
 }
 
-.nome {
-	width: 190px;
-}
-
-.email {
-	width: 145px;
-}
-
-
-.telefone {
-	width: 125px;
-}
-
-.dataNasc {
+.desconto {
 	width: 90px;
+}
+
+.cashback {
+	width: 155px;
+}
+
+
+.descricao {
+	width: 330px;
+}
+
+.codigo {
+	width: 150px;
 }
 
 .cpf {

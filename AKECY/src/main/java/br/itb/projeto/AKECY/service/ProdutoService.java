@@ -58,6 +58,10 @@ public class ProdutoService {
 	public Optional<Produto> findById(Long id) {
 		return produtoRepository.findById(id);
 	}
+	
+	public List<Produto> findAllProdutos() { 
+	    return produtoRepository.findAll();
+	}
 
 	@Transactional
 	public Produto inativar(long id) {

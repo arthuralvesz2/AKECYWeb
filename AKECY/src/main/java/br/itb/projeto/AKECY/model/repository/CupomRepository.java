@@ -7,5 +7,5 @@ import br.itb.projeto.AKECY.model.entity.Cupom;
 
 @Repository
 public interface CupomRepository extends JpaRepository<Cupom, Long> {
-
+    Cupom findByCodigo(String codigo);
 }

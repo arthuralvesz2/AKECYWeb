@@ -5,6 +5,8 @@
 	<title> ADM:AKECY - Modificar Produtos </title>
 	<link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
 	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="stylesheet" href="/css/adm-body.css" />
 	<link rel="stylesheet" href="/css/adm-modificar-produtos.css" />
 </head>
@@ -12,8 +14,23 @@
 <body>
 	<div th:replace="~{fragments/adm :: div}"></div>
 	<main>
-
+		<div class="wrapper">
+			<div class="produtos">
+				<div th:each="produto : ${produtos}" class="item">
+					<a th:href="@{/AKECY/ADM/sproduto/{id}(id=${produto.idProduto})}">
+						<img class="itemimg" th:if="${produto.base64Image != null}"
+							th:src="@{'data:image/png;base64,' + ${produto.base64Image}}">
+						<p class="n1" th:text="${produto.nome}"></p>
+						<p class="n2" th:text="${produto.descricao}"></p>
+						<p class="n3" th:text="'R$ ' + ${produto.preco}"></p>
+						<p class="n4" th:text="${produto.statusProd}"></p>
+					</a>
+				</div>
+			</div>
 	</main>
+	<script th:if="${successMessage}">
+	    alert("Produto cadastrado com sucesso!");
+	</script>
 </body>
 
 </html>

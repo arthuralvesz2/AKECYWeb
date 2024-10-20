@@ -1,5 +1,6 @@
 package br.itb.projeto.AKECY.controller;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import br.itb.projeto.AKECY.model.entity.Categoria;
@@ -88,9 +89,8 @@ public class ADMController {
 	        @RequestParam("tamanhos_disponiveis") String tamanhosDisponiveis,
 	        @RequestParam("preco") String preco,
 	        @RequestParam("categoria.idCategoria") Long idCategoria,
-	        Model model) {
+	        RedirectAttributes redirectAttributes) { // Alteração aqui
 
-	    // Crie uma instância de Produto e preencha seus atributos
 	    Produto produto = new Produto();
 	    produto.setNome(nome);
 	    produto.setDescricao(descricao);
@@ -98,13 +98,42 @@ public class ADMController {
 	    produto.setTamanhos_disponiveis(tamanhosDisponiveis);
 	    produto.setPreco(preco); 
 
-	    // Recupere a categoria pelo ID
 	    Categoria categoria = categoriaService.findById(idCategoria).orElse(null);
 	    produto.setCategoria(categoria);
 
-	    Produto p = produtoService.saveNew(foto1, foto2, foto3, foto4, foto5, produto);
+	    produtoService.saveNew(foto1, foto2, foto3, foto4, foto5, produto);
 
-	    return "redirect:/AKECY/ADM/cadastrar-produto";
+	    redirectAttributes.addFlashAttribute("successMessage", "Produto cadastrado com sucesso!");
+	    return "redirect:/AKECY/ADM/modificar-produtos";
+	}
+
+	
+	@GetMapping("/modificar-produtos")
+	public String modificarProdutos(Model model) {
+	    List<Produto> produtos = produtoService.findAllProdutos();
+	    for (Produto produto : produtos) {
+	        encodeProductImages(produto);
+	    }
+	    model.addAttribute("produtos", produtos); 
+	    return "adm-modificar-produtos";
+	}
+
+	private void encodeProductImages(Produto produto) {
+	    if (produto.getFoto1() != null) {
+	        produto.setBase64Image(Base64.getEncoder().encodeToString(produto.getFoto1()));
+	    }
+	    if (produto.getFoto2() != null) {
+	        produto.setBase64Image2(Base64.getEncoder().encodeToString(produto.getFoto2()));
+	    }
+	    if (produto.getFoto3() != null) {
+	        produto.setBase64Image3(Base64.getEncoder().encodeToString(produto.getFoto3()));
+	    }
+	    if (produto.getFoto4() != null) {
+	        produto.setBase64Image4(Base64.getEncoder().encodeToString(produto.getFoto4()));
+	    }
+	    if (produto.getFoto5() != null) {
+	        produto.setBase64Image5(Base64.getEncoder().encodeToString(produto.getFoto5()));
+	    }
 	}
 
 	// Cupom
@@ -116,19 +145,43 @@ public class ADMController {
 	}
 
 	@PostMapping("/cadastrar-cupom")
-	public ResponseEntity<Map<String, String>> salvarCupom(@ModelAttribute("cupom") Cupom cupom) {
-	    Map<String, String> response = new HashMap<>();
+	public String salvarCupom(@ModelAttribute("cupom") Cupom cupom, Model model, RedirectAttributes redirectAttributes) {
 	    try {
 	        cupomService.create(cupom); 
-	        response.put("message", "Cupom cadastrado com sucesso!");
-	        return ResponseEntity.ok(response);
+	        redirectAttributes.addFlashAttribute("successMessage", "Cupom cadastrado com sucesso!"); 
+	        return "redirect:/AKECY/ADM/modificar-cupons";  
 	    } catch (DataIntegrityViolationException e) {
-	        response.put("error", "Código já cadastrado, por favor, tente outro.");
-	        return ResponseEntity.badRequest().body(response);
+	        model.addAttribute("serverError", "Código já cadastrado, por favor, tente outro.");
+	        return "adm-cadastrar-cupom";
 	    } catch (Exception e) {
-	        response.put("error", "Ocorreu um erro ao cadastrar o cupom.");
-	        return ResponseEntity.status(500).body(response);
+	        model.addAttribute("serverError", "Ocorreu um erro ao cadastrar o cupom.");
+	        return "adm-cadastrar-cupom"; 
 	    }
+	}
+
+	@PostMapping("/salvar-cupom/{idCupom}")
+	public ResponseEntity<?> salvarCupom(@PathVariable int idCupom, @RequestBody Cupom cupom) {
+	    Cupom cupomExistente = cupomService.findById(idCupom);
+	    if (cupomExistente != null) {
+	        if (!cupomExistente.getCodigo().equals(cupom.getCodigo())) {
+	            Cupom cupomComMesmoCodigo = cupomService.findByCodigo(cupom.getCodigo());
+	            if (cupomComMesmoCodigo != null && cupomComMesmoCodigo.getIdCupom() != idCupom) {
+	                Map<String, String> response = new HashMap<>();
+	                response.put("error", "Código já cadastrado, por favor, tente outro.");
+	                return ResponseEntity.badRequest().body(response); 
+	            }
+	        }
+
+	        cupomExistente.setDesconto(cupom.getDesconto());
+	        cupomExistente.setCashback(cupom.getCashback());
+	        cupomExistente.setDescricao(cupom.getDescricao());
+	        cupomExistente.setCodigo(cupom.getCodigo());
+	        cupomExistente.setStatusCupom(cupom.getStatusCupom());
+
+	        cupomService.save(cupomExistente); 
+	        return ResponseEntity.ok(cupomExistente);
+	    }
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cupom não encontrado");
 	}
 	
 	@GetMapping("/cupons/{id}")

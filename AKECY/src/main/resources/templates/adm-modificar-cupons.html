@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title> ADM:AKECY - Modificar Cupom </title>
+	<title> ADM:AKECY - Modificar Cupons </title>
 	<link rel="shortcut icon" href="/images/icon.png" type="image/x-icon">
 	<meta charset="utf-8">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -29,7 +29,7 @@
 					<div class="cell" th:text="${cupom.cashback}" data-field="cashback"></div>
 					<div class="cell" th:text="${cupom.descricao}" data-field="descricao"></div>
 					<div class="cell" th:text="${cupom.codigo}" data-field="codigo"></div>
-					<div class="cell status-cell" th:data-id="${cupom.statusCupom}">
+					<div class="cell status-cell" th:data-id="${cupom.idCupom}">
 						<span th:if="${cupom.statusCupom == 'ATIVO'}">ATIVO</span>
 						<span th:if="${cupom.statusCupom == 'INATIVO'}">INATIVO</span>
 					</div>
@@ -42,6 +42,9 @@
 	</main>
 	<script src="/js/adm-formatar-cupom.js"></script>
 	<script src="/js/adm-modificar-cupom.js"></script>
+	<script th:if="${successMessage}">
+	    alert("Cupom cadastrado com sucesso!");
+	</script>
 </body>
 
 </html>
