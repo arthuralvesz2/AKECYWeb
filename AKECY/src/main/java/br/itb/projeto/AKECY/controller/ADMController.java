@@ -388,7 +388,8 @@ public class ADMController {
 
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("loggedInUser");
-		return "redirect:/AKECY/index";
+		session.removeAttribute("loggedInUser"); // Remove o atributo da sessão
+		session.removeAttribute("loggedInUserEmail");
+		return "redirect:/AKECY/index"; // Redireciona para a página inicial
 	}
 }

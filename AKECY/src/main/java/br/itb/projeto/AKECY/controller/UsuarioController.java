@@ -2,7 +2,7 @@ package br.itb.projeto.AKECY.controller;
 
 import java.util.Base64;
 import java.util.List;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -237,6 +237,7 @@ public class UsuarioController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("loggedInUser"); // Remove o atributo da sessão
+		session.removeAttribute("loggedInUserEmail");
 		return "redirect:/AKECY/index"; // Redireciona para a página inicial
 	}
 
@@ -265,7 +266,7 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/minha-conta")
-	public String updateDadosPessoais(@ModelAttribute("usuario") Usuario usuarioAtualizado, HttpSession session) {
+	public String updateDadosPessoais(@ModelAttribute("usuario") Usuario usuarioAtualizado, HttpSession session, RedirectAttributes redirectAttributes) {
 		String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
 
 		if (loggedInUserEmail == null) {
@@ -284,21 +285,20 @@ public class UsuarioController {
 		Usuario existingUserByCpf = usuarioService.findByCpf(usuarioAtualizado.getCpf());
 		Usuario existingUserByTelefone = usuarioService.findByTelefone(usuarioAtualizado.getTelefone());
 
-		// Mensagens de erro para duplicidade
-		if (existingUserByEmail != null && !existingUserByEmail.getEmail().equals(loggedInUserEmail)) {
-			session.setAttribute("serverError", "Email já cadastrado. Tente outro.");
-			return "redirect:/AKECY/usuario/minha-conta";
-		}
+	    if (existingUserByEmail != null && !existingUserByEmail.getEmail().equals(loggedInUserEmail)) {
+	        redirectAttributes.addFlashAttribute("serverError", "Email já cadastrado. Tente outro.");
+	        return "redirect:/AKECY/usuario/minha-conta";
+	    }
 
-		if (existingUserByCpf != null && !existingUserByCpf.getCpf().equals(usuario.getCpf())) {
-			session.setAttribute("serverError", "CPF já cadastrado. Tente outro.");
-			return "redirect:/AKECY/usuario/minha-conta";
-		}
+	    if (existingUserByCpf != null && !existingUserByCpf.getCpf().equals(usuario.getCpf())) {
+	        redirectAttributes.addFlashAttribute("serverError", "CPF já cadastrado. Tente outro.");
+	        return "redirect:/AKECY/usuario/minha-conta";
+	    }
 
-		if (existingUserByTelefone != null && !existingUserByTelefone.getTelefone().equals(usuario.getTelefone())) {
-			session.setAttribute("serverError", "Telefone já cadastrado. Tente outro.");
-			return "redirect:/AKECY/usuario/minha-conta";
-		}
+	    if (existingUserByTelefone != null && !existingUserByTelefone.getTelefone().equals(usuario.getTelefone())) {
+	        redirectAttributes.addFlashAttribute("serverError", "Telefone já cadastrado. Tente outro.");
+	        return "redirect:/AKECY/usuario/minha-conta";
+	    }
 
 		// Atualizar os dados do usuário existente
 		usuario.setNome(usuarioAtualizado.getNome());
