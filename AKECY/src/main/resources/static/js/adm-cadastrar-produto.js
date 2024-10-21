@@ -18,7 +18,7 @@ document.getElementById('cadastrarProdutoBtn').addEventListener('click', functio
 
     // Validação da categoria
     var categoriaInput = document.getElementById('categoriaInput');
-    var categoriasValidas = ["Masculino", "Feminino", "Infantil", "Acessórios", "Equipamento", "Bolas"];
+    var categoriasValidas = ["Masculino", "Feminino", "Infantil", "Acessórios", "Equipamentos", "Bolas"];
     if (!categoriasValidas.includes(categoriaInput.value)) {
         alert("Selecione uma categoria válida.");
         event.preventDefault();

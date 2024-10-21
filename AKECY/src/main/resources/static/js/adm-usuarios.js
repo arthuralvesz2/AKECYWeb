@@ -118,7 +118,15 @@ function salvarLinha(link, idUsuario) {
 				alert("Ano não bissexto, 29 de fevereiro não é válido.");
 				return;
 			}
+			
 
+			const anoAtual = new Date().getFullYear();
+
+			if (ano < 1900 || ano > anoAtual) {
+			    alert("Ano inválido. O ano deve estar entre 1900 e " + anoAtual + ".");
+			    return;
+			}
+			
 			const dataNascimento = new Date(ano, mes - 1, dia);
 			const idade = new Date().getFullYear() - dataNascimento.getFullYear();
 

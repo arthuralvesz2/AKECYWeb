@@ -125,12 +125,12 @@ public class ADMController {
 	    Optional<Produto> optionalProduto = produtoService.findById(id);
 	    if (optionalProduto.isPresent()) {
 	        Produto produto = optionalProduto.get();
+	        encodeProductImages(produto); // Codifica as imagens em Base64
 	        model.addAttribute("produto", produto);
 	        List<Categoria> categorias = categoriaService.findAll();
 	        model.addAttribute("categorias", categorias);
-	        return "adm-modificar-produto"; // View para editar o produto
+	        return "adm-modificar-produto"; 
 	    } else {
-	        // Lidar com o caso em que o produto não é encontrado
 	        return "redirect:/AKECY/ADM/modificar-produtos"; 
 	    }
 	}
@@ -163,12 +163,24 @@ public class ADMController {
 	        Categoria categoria = categoriaService.findById(idCategoria).orElse(null);
 	        produto.setCategoria(categoria);
 
-	        produtoService.update(foto1, foto2, foto3, foto4, foto5, produto); // Método para atualizar o produto
+	        if (foto2 == null) {
+	            produto.setFoto2(null);
+	        }
+	        if (foto3 == null) {
+	            produto.setFoto3(null);
+	        }
+	        if (foto4 == null) {
+	            produto.setFoto4(null);
+	        }
+	        if (foto5 == null) {
+	            produto.setFoto5(null);
+	        }
+
+	        produtoService.update(foto1, foto2, foto3, foto4, foto5, produto); 
 
 	        redirectAttributes.addFlashAttribute("successMessageEdit", "Produto modificado com sucesso!");
 	        return "redirect:/AKECY/ADM/modificar-produtos";
 	    } else {
-	        // Lidar com o caso em que o produto não é encontrado
 	        return "redirect:/AKECY/ADM/modificar-produtos";
 	    }
 	}

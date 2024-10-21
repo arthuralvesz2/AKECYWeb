@@ -1,0 +1,45 @@
+#textatual {
+	position: absolute;
+	font-size: 20px;
+	top: 112px;
+	right: 80px}
+
+#foto1atual {
+	position: absolute;
+	top: 170px;
+	right: 60px;
+	width: 15%;
+	border-radius: 5px;
+}
+
+#foto2atual {
+	position: absolute;
+	top: 480px;
+	right: 213px;
+	width: 7%;
+	border-radius: 5px;
+}
+
+#foto3atual {
+	position: absolute;
+	top: 480px;
+	right: 60px;
+	width: 7%; 
+	border-radius: 5px;
+}
+
+#foto4atual {
+	position: absolute;
+	top: 637px;
+	right: 213px;
+	width: 7%;
+	border-radius: 5px;
+}
+
+#foto5atual {
+	position: absolute;
+	top: 637px;
+	right: 60px;
+	width: 7%;
+	border-radius: 5px;
+}

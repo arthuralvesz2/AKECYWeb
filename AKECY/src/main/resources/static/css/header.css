@@ -213,6 +213,30 @@ body.dark #esconder-dropdown {
 	background-color: #fafafa;
 }
 
+body.dark .mensagem {
+	color: #ffa600;
+}
+
+body.dark .mensagem-recuperar {
+	color: #ffa600;
+}
+
+body.dark .mensagem-conta {
+	color: #ffa600;
+}
+
+body.dark .erro {
+	color: rgb(255, 79, 79);;
+}
+
+body.dark .erro-recuperar {
+	color: rgb(255, 79, 79);;
+}
+
+body.dark .erro-recuperar-confirmar {
+	color: rgb(255, 79, 79);;
+}
+
 body.dark .dropdown-menu {
  	background-color: #121212;
 }

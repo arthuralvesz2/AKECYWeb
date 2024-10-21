@@ -10,7 +10,8 @@
 		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<link rel="stylesheet" href="/css/adm-body.css" />
-	<link rel="stylesheet" href="/css/adm-cadastrar-produto.css" />
+	<link rel="stylesheet" href="/css/adm-produto.css" />
+	<link rel="stylesheet" href="/css/adm-modificar-produto.css" />
 </head>
 
 <body>
@@ -113,6 +114,14 @@
 
 			<input type="submit" id="modificarProdutoBtn" value="Modificar Produto">
 		</form>
+		
+		<p id="textatual"> Imagens atuais do produto </p>
+		<img id="foto1atual" th:src="'data:image/jpeg;base64,' + ${produto.base64Image}" />
+		<img id="foto2atual" th:if="${produto.base64Image2 != null}" th:src="'data:image/jpeg;base64,' + ${produto.base64Image2}" />
+		<img id="foto3atual" th:if="${produto.base64Image3 != null}" th:src="'data:image/jpeg;base64,' + ${produto.base64Image3}" />
+		<img id="foto4atual" th:if="${produto.base64Image4 != null}" th:src="'data:image/jpeg;base64,' + ${produto.base64Image4}" />
+		<img id="foto5atual" th:if="${produto.base64Image5 != null}" th:src="'data:image/jpeg;base64,' + ${produto.base64Image5}" />
+		
 	</main>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="/js/adm-modificar-produto.js"></script>

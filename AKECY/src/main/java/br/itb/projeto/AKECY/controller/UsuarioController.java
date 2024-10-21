@@ -116,7 +116,7 @@ public class UsuarioController {
 			System.out.println("Email do usuário armazenado na sessão: " + session.getAttribute("loggedInUserEmail"));
 
 			if (_usuario.getNivelAcesso() == NivelAcesso.ADMIN) {
-				return "redirect:/AKECY/ADM/cadastrar-produto";
+				return "redirect:/AKECY/ADM/cadastrar";
 			} else {
 				return "redirect:/AKECY/index";
 			}
