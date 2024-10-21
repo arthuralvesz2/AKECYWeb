@@ -69,9 +69,11 @@ function formatarData() {
 
 	input.value = value;
 
+	// Verifica se a data tem exatamente 10 caracteres
 	if (value.length === 10) {
 		const [dia, mes, ano] = value.split('/');
 
+		// Valida dia, mês e ano
 		if (dia < 1 || dia > 31) {
 			input.setCustomValidity('Dia inválido. Insira um valor entre 1 e 31');
 		} else if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30) {
@@ -80,10 +82,8 @@ function formatarData() {
 			input.setCustomValidity('Dia inválido para fevereiro');
 		} else if (mes == 2 && dia > 28 && (ano % 4 != 0 || (ano % 100 == 0 && ano % 400 != 0))) {
 			input.setCustomValidity('Dia inválido para fevereiro em ano não bissexto');
-
 		} else if (mes < 1 || mes > 12) {
 			input.setCustomValidity('Mês inválido. Insira um valor entre 1 e 12');
-
 		} else {
 			const hoje = new Date();
 			const dataNasc = new Date(ano, mes - 1, dia);
@@ -104,5 +104,9 @@ function formatarData() {
 				input.setCustomValidity('');
 			}
 		}
+	} else if (value.length < 10) {
+		input.setCustomValidity('Data de nascimento deve ser preenchida no formato DD/MM/AAAA');
+	} else {
+		input.setCustomValidity('');
 	}
 }

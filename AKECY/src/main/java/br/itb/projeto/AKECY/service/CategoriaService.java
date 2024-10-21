@@ -23,7 +23,7 @@ public class CategoriaService {
 
     public List<Produto> findProdutosByNomeCategoria(String nomeCategoria) {
         Categoria categoria = categoriaRepository.findByNome(nomeCategoria);
-        return produtoRepository.findByCategoria(categoria);
+        return produtoRepository.findByCategoriaAtiva(categoria);
     }
     
 	public List<Categoria> findAll() {

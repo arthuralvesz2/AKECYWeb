@@ -241,49 +241,25 @@ public class UsuarioController {
 		return "redirect:/AKECY/index"; // Redireciona para a página inicial
 	}
 
-	@GetMapping("/minha-conta")
-	public String showDadosPessoais(Model model, HttpSession session) {
-		String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail"); // Recupera o email da sessão
-
-	    model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
-	    session.removeAttribute("serverMessage"); // Remove a mensagem da sessão após exibir
-
-		if (loggedInUserEmail == null) {
-			return "redirect:/AKECY/usuario/login";
-		}
-
-		Usuario usuario = usuarioService.findByEmail(loggedInUserEmail); // Busca pelo email completo
-
-		if (usuario == null) {
-			// Lidar com o caso em que o usuário não é encontrado (exibir uma mensagem de
-			// erro)
-			model.addAttribute("errorMessage", "Usuário não encontrado");
-			usuario = new Usuario(); // Cria um novo objeto Usuario para evitar erros no Thymeleaf
-		}
-
-		model.addAttribute("usuario", usuario);
-		return "minha-conta";
-	}
-
 	@PostMapping("/minha-conta")
 	public String updateDadosPessoais(@ModelAttribute("usuario") Usuario usuarioAtualizado, HttpSession session, RedirectAttributes redirectAttributes) {
-		String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
+	    String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
 
-		if (loggedInUserEmail == null) {
-			return "redirect:/AKECY/usuario/login";
-		}
+	    if (loggedInUserEmail == null) {
+	        return "redirect:/AKECY/usuario/login";
+	    }
 
-		// Buscar o usuário logado pelo email
-		Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
-		if (usuario == null) {
-			session.setAttribute("serverError", "Usuário não encontrado");
-			return "redirect:/AKECY/usuario/minha-conta";
-		}
+	    // Buscar o usuário logado pelo email
+	    Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
+	    if (usuario == null) {
+	        session.setAttribute("serverError", "Usuário não encontrado");
+	        return "redirect:/AKECY/usuario/minha-conta";
+	    }
 
-		// Verificar duplicidade antes de atualizar
-		Usuario existingUserByEmail = usuarioService.findByEmail(usuarioAtualizado.getEmail());
-		Usuario existingUserByCpf = usuarioService.findByCpf(usuarioAtualizado.getCpf());
-		Usuario existingUserByTelefone = usuarioService.findByTelefone(usuarioAtualizado.getTelefone());
+	    // Verificar duplicidade antes de atualizar
+	    Usuario existingUserByEmail = usuarioService.findByEmail(usuarioAtualizado.getEmail());
+	    Usuario existingUserByCpf = usuarioService.findByCpf(usuarioAtualizado.getCpf());
+	    Usuario existingUserByTelefone = usuarioService.findByTelefone(usuarioAtualizado.getTelefone());
 
 	    if (existingUserByEmail != null && !existingUserByEmail.getEmail().equals(loggedInUserEmail)) {
 	        redirectAttributes.addFlashAttribute("serverError", "Email já cadastrado. Tente outro.");
@@ -300,17 +276,43 @@ public class UsuarioController {
 	        return "redirect:/AKECY/usuario/minha-conta";
 	    }
 
-		// Atualizar os dados do usuário existente
-		usuario.setNome(usuarioAtualizado.getNome());
-		usuario.setDataNasc(usuarioAtualizado.getDataNasc());
-		usuario.setCpf(usuarioAtualizado.getCpf());
-		usuario.setSexo(usuarioAtualizado.getSexo());
-		usuario.setTelefone(usuarioAtualizado.getTelefone());
+	    // Atualizar os dados do usuário existente
+	    usuario.setNome(usuarioAtualizado.getNome());
+	    usuario.setDataNasc(usuarioAtualizado.getDataNasc());
+	    usuario.setCpf(usuarioAtualizado.getCpf());
+	    usuario.setSexo(usuarioAtualizado.getSexo());
+	    usuario.setTelefone(usuarioAtualizado.getTelefone());
 
-		usuarioService.updateMinhaConta(usuario);
+	    usuarioService.updateMinhaConta(usuario);
 
-		return "redirect:/AKECY/usuario/minha-conta";
+	    // Adiciona mensagem de sucesso
+	    redirectAttributes.addFlashAttribute("serverMessage", "Dados alterados com sucesso.");
+	    
+	    return "redirect:/AKECY/usuario/minha-conta";
 	}
+
+	@GetMapping("/minha-conta")
+	public String showDadosPessoais(Model model, HttpSession session) {
+	    String loggedInUserEmail = (String) session.getAttribute("loggedInUserEmail");
+
+	    model.addAttribute("serverMessage", session.getAttribute("serverMessage"));
+	    session.removeAttribute("serverMessage"); // Remove a mensagem da sessão após exibir
+
+	    if (loggedInUserEmail == null) {
+	        return "redirect:/AKECY/usuario/login";
+	    }
+
+	    Usuario usuario = usuarioService.findByEmail(loggedInUserEmail);
+
+	    if (usuario == null) {
+	        model.addAttribute("errorMessage", "Usuário não encontrado");
+	        usuario = new Usuario();
+	    }
+
+	    model.addAttribute("usuario", usuario);
+	    return "minha-conta";
+	}
+
 
 	@GetMapping("/trocar-senha")
 	public String exibirFormularioTrocarSenha(Model model, HttpSession session) {

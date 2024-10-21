@@ -146,8 +146,20 @@ public class UsuarioService {
 		return null;
 	}
 
-	public Usuario solicitarTrocaSenha(String email) {
-	    return usuarioRepository.findByEmail(email); // Busca por email, sem filtro de status
+	@Transactional
+	public Usuario solicitarTrocaSenha(String emailOuTelefone) {
+		Usuario usuario = usuarioRepository.findByEmail(emailOuTelefone);
+
+		if (usuario == null) {
+			usuario = usuarioRepository.findByTelefone(emailOuTelefone);
+		}
+
+		if (usuario != null && !"INATIVO".equals(usuario.getStatusUsuario())) {
+			usuario.setStatusUsuario("TROCAR_SENHA");
+			return usuarioRepository.save(usuario);
+		}
+
+		return null;
 	}
 
 	@Transactional
